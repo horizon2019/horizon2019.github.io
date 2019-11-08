@@ -1,6 +1,6 @@
 ---
 title: Hexo 搭建全记录
-header_img: hexobuild.jpg
+header_img: img/hexobuild.jpg
 date: 2019-11-07 22:28:46
 tags:
 ---
@@ -49,4 +49,30 @@ Hexo 是一款基于node 的静态博客网站生成器，使用Markdown语法�
 
 其中第一第三种方法更容易，但是使用nvm安装提供最大的灵活性，可以选择或者移除你的nodejs版本，可以根据实际情况选择。
 
+### Hexo主题下载安装
 
+关于主题安装可以先去hexo的主题网站里面挑选比较喜欢的主题，在github找到源代码，然后这里我用了git子模块来管理主题。
+
+参考文章：https://blog.csdn.net/guotianqing/article/details/82391665
+
+简单解释下博文里面这条命令：
+`git submodule add <url> <path>`
+`url`指的是你的githuburl为子模块仓库的url路径，而`path`指的是你执行该条命令时文件夹的相对路径。例如，处在/var/www/blog/themes路径下面执行该条命令，那么就是`git submodule add https://.... /theme_name`
+
+然后在hexo的根目录下面的theme文件夹里就可以看到以及管理的你的主题代码。
+
+
+### Hexo主题配置及发布博文命令
+关于hexo的全局配置在hexo根目录下面的站点配置文件`_config.yml`
+
+而关于主题的相关配置就在theme里面的`_config.yml`
+
+
+关于使本地代码各项配置项生效发布到网站的操作简要命令就是一键三连~
+``` python
+hexo clean
+hexo generate ==hexo g
+hexo deploy ==hexo d
+```
+
+### Hexo使用问题小结（不断更新）
