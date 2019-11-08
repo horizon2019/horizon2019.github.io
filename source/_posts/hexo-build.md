@@ -1,5 +1,6 @@
 ---
 title: Hexo 搭建全记录
+header_img: hexobuild.jpg
 date: 2019-11-07 22:28:46
 tags:
 ---
