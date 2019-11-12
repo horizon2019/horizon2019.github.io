@@ -1,10 +1,3 @@
----
-title: Hexo 搭建全记录
-header_img: img/hexobuild.jpg
-date: 2019-11-07 22:28:46
-tags:
----
-
 ## Hexo 搭建全记录
 
 > Markdown 本篇文章主要记录hexo博客的环境搭建以及到后期功能优化，以及问题修复。    
@@ -68,7 +61,7 @@ Hexo 是一款基于node 的静态博客网站生成器，使用Markdown语法�
 而关于主题的相关配置就在theme里面的`_config.yml`
 
 
-关于使本地代码各项配置项生效发布到网站的操作简要命令就是一键三连~
+关于使本地代码各项配置项生效发布到网站的操作简要命令就是以下三个~
 ``` python
 hexo clean
 hexo generate ==hexo g
@@ -76,3 +69,39 @@ hexo deploy ==hexo d
 ```
 
 ### Hexo使用问题小结（不断更新）
+
+bug1.`YAMLException: end of the stream or a document separator is expected at line 2, column 6:
+    title: about`
+    
+solution:网上看到的结论都是文件中所有冒号后面的空格，格式很严格，必须是只有一个，半角。不管是多了还是少了都会报错，这是yml解释器所定义的语法。如果不确定的话，将输入法调整到英文模式，删除所有冒号后面的空格重新输入，不要使用Tab。
+但是我反复改正空格之后错误依然存在，问题在于我创建about页面时，将
+```title: about
+date: 2017-05-31 10:05:56
+layout: about
+---
+```
+复制成了
+```
+--
+title: about
+date: 2017-05-31 10:05:56
+layout: about
+---
+```
+目前不清楚这个`--`为何会导致以上错误，这里需要注意不要多出其他字符。
+
+bug2.当发现配置的hexo博文下方作者头像不能正常显示，404错误时.F12使用谷歌浏览器查看图片完整的路径，在相应的文件夹添加图片。
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
