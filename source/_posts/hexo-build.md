@@ -1,3 +1,10 @@
+---
+title: Hexo 搭建全记录
+header_img: img/hexobuild.jpg
+date: 2019-11-07 22:28:46
+tags:
+---
+
 ## Hexo 搭建全记录
 
 > Markdown 本篇文章主要记录hexo博客的环境搭建以及到后期功能优化，以及问题修复。    
