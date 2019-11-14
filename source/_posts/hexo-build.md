@@ -99,7 +99,7 @@ layout: about
 
 bug2.当发现配置的hexo博文下方作者头像不能正常显示，404错误时.F12使用谷歌浏览器查看图片完整的路径，在相应的文件夹添加图片。如果图片不多，也可以保存在source/img文件夹下面，直接使用绝对路径来表示图片路径。
 
-![你想输入的替代文字](hexo-build/pic_bug.jpg)
+![你想输入的替代文字](/hexo-build/pic_bug.jpg)
 
  把主页配置文件_config.yml 里的post_asset_folder:这个选项设置为true
 
