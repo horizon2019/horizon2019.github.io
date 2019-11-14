@@ -97,9 +97,38 @@ layout: about
 ```
 目前不清楚这个`--`为何会导致以上错误，这里需要注意不要多出其他字符。
 
-bug2.当发现配置的hexo博文下方作者头像不能正常显示，404错误时.F12使用谷歌浏览器查看图片完整的路径，在相应的文件夹添加图片。
+bug2.当发现配置的hexo博文下方作者头像不能正常显示，404错误时.F12使用谷歌浏览器查看图片完整的路径，在相应的文件夹添加图片。如果图片不多，也可以保存在source/img文件夹下面，直接使用绝对路径来表示图片路径。
+
+![你想输入的替代文字](hexo-build/pic_bug.jpg)
+
+ 把主页配置文件_config.yml 里的post_asset_folder:这个选项设置为true
+
+ 在你的hexo目录下执行这样一句话npm install hexo-asset-image --save，这是下载安装一个可以上传本地图片的插件，来自dalao：dalao的git
+
+ 等待一小段时间后，再运行hexo n "xxxx"来生成md博文时，/source/_posts文件夹内除了xxxx.md文件还有一个同名的文件夹
+
+ 最后在xxxx.md中想引入图片时，先把图片复制到xxxx这个文件夹中，然后只需要在xxxx.md中按照markdown的格式引入图片：
+
+![你想输入的替代文字](xxxx/图片名.jpg)
+
+二、本地source中建立img文件夹
+
+<img src="img/图片名.jpg>
+这里如果显示不出来，请使用<img src="/img/图片名.jpg>绝对路径
 
 
+
+
+
+
+
+
+
+
+
+
+
+ 
 
 
 
