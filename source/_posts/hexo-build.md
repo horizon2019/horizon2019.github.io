@@ -73,6 +73,9 @@ Hexo 是一款基于node 的静态博客网站生成器，使用Markdown语法�
 hexo clean
 hexo generate ==hexo g
 hexo deploy ==hexo d
+
+删除博文，在source/_post/下面执行
+hexo d thisisnewblog
 ```
 
 ### Hexo使用问题小结（不断更新）
@@ -99,22 +102,46 @@ layout: about
 
 bug2.当发现配置的hexo博文下方作者头像不能正常显示，404错误时.F12使用谷歌浏览器查看图片完整的路径，在相应的文件夹添加图片。如果图片不多，也可以保存在source/img文件夹下面，直接使用绝对路径来表示图片路径。
 
-![你想输入的替代文字](/hexo-build/pic_bug.jpg)
 
- 把主页配置文件_config.yml 里的post_asset_folder:这个选项设置为true
-
- 在你的hexo目录下执行这样一句话npm install hexo-asset-image --save，这是下载安装一个可以上传本地图片的插件，来自dalao：dalao的git
-
- 等待一小段时间后，再运行hexo n "xxxx"来生成md博文时，/source/_posts文件夹内除了xxxx.md文件还有一个同名的文件夹
-
- 最后在xxxx.md中想引入图片时，先把图片复制到xxxx这个文件夹中，然后只需要在xxxx.md中按照markdown的格式引入图片：
-
-![你想输入的替代文字](xxxx/图片名.jpg)
-
-二、本地source中建立img文件夹
+`尝试本地source中建立img文件夹`
 
 <img src="img/图片名.jpg>
 这里如果显示不出来，请使用<img src="/img/图片名.jpg>绝对路径
+
+
+bug3.`博文里面图片引入显示失败,hexo博文图片前缀有.com不能正常显示`
+
+1.先安装插件
+ npm install https://github.com/CodeFalling/hexo-asset-image --save
+ 
+ 
+中途出现这个错误，可以忽略
+```
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@2.1.1 (node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@2.1.1: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.9 (node_modules/nunjucks/node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.9: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+```
+
+2.打开_config.yml文件，修改下述内容
+post_asset_folder: true
+
+
+3.这里以防插件bug，建议替换一下这个位置的文件/node_modules/hexo-asset-image/index.js
+
+参考博文：https://blog.csdn.net/xjm850552586/article/details/84101345
+
+
+
+
+
+
+
+
+
+
+ 
+
 
 
 
