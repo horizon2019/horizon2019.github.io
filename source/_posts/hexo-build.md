@@ -1,8 +1,7 @@
 ---
 title: Hexo 搭建全记录
 header_img: img/hexobuild.jpg
-date: 2019-11-07 22:28:46
-tags:
+tags:hexobuild
 ---
 
 ## Hexo 搭建全记录
@@ -68,7 +67,7 @@ Hexo 是一款基于node 的静态博客网站生成器，使用Markdown语法�
 而关于主题的相关配置就在theme里面的`_config.yml`
 
 
-关于使本地代码各项配置项生效发布到网站的操作简要命令就是以下三个~
+关于使本地代码各项配置项生效发布到网站的操作简要命令就是以下几个
 ``` python
 hexo clean
 hexo generate ==hexo g
@@ -99,13 +98,11 @@ layout: about
 ```
 目前不清楚这个`--`为何会导致以上错误，这里需要注意不要多出其他字符。
 
-bug2.当发现配置的hexo博文下方作者头像不能正常显示，404错误时.F12使用谷歌浏览器查看图片完整的路径，在相应的文件夹添加图片。如果图片不多，也可以保存在source/img文件夹下面，直接使用绝对路径来表示图片路径。
-![](hexo-build/pic_bug.jpg)
+bug2.`当发现配置的hexo博文下方作者头像不能正常显示，404错误时.F12使用谷歌浏览器查看图片完整的路径，在相应的文件夹添加图片。如果图片不多，也可以保存在source/img文件夹下面，直接使用绝对路径来表示图片路径。
 
-`尝试本地source中建立img文件夹`
-
+```尝试本地source中建立img文件夹`
 <img src="img/图片名.jpg>
-这里如果显示不出来，请使用<img src="/img/图片名.jpg>绝对路径
+这里如果显示不出来，请使用<img src="/img/图片名.jpg>绝对路径```
 
 
 bug3.`博文里面图片引入显示失败,hexo博文图片前缀有.com不能正常显示`
@@ -130,6 +127,10 @@ post_asset_folder: true
 
 参考博文：https://blog.csdn.net/xjm850552586/article/details/84101345
 
+
+bug4.`hexo博客文章里面插入图片后封面图片就不能正常显示`
+
+尚未解决
 
 
 
