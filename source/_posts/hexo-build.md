@@ -74,8 +74,7 @@ hexo clean
 hexo generate ==hexo g
 hexo deploy ==hexo d
 
-删除博文，在source/_post/下面执行
-hexo d thisisnewblog
+删除博文，在source/_post/下面直接删除就可以
 ```
 
 ### Hexo使用问题小结（不断更新）
@@ -101,7 +100,7 @@ layout: about
 目前不清楚这个`--`为何会导致以上错误，这里需要注意不要多出其他字符。
 
 bug2.当发现配置的hexo博文下方作者头像不能正常显示，404错误时.F12使用谷歌浏览器查看图片完整的路径，在相应的文件夹添加图片。如果图片不多，也可以保存在source/img文件夹下面，直接使用绝对路径来表示图片路径。
-
+![](hexo-build/pic_bug.jpg)
 
 `尝试本地source中建立img文件夹`
 
