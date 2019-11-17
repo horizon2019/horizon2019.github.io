@@ -1,7 +1,7 @@
 ---
 title: Hexo 搭建全记录
 header_img: img/hexobuild.jpg
-tags:hexobuild
+tags: hexobuild
 ---
 
 ## Hexo 搭建全记录
