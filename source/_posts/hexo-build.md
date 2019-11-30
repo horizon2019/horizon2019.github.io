@@ -130,6 +130,9 @@ post_asset_folder: true
 
 bug4.`hexo博客文章里面插入图片后封面图片就不能正常显示`
 
+
+
+![](http://localhost:4000/img/pic_bug.jpg)
 尚未解决
 
 
