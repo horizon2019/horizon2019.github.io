@@ -1,7 +1,7 @@
 ---
 title: hexo-windows环境搭建教程
 date: 2019-11-30 14:35:15
-tags:
+tags: hexo windows
 ---
 
 参考文章：https://www.cnblogs.com/xingyunblog/p/8675681.html
