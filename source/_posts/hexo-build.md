@@ -1,6 +1,6 @@
 ---
 title: Hexo 搭建全记录
-header_img: img/hexobuild.jpg
+header_img: /img/hexobuild.jpg
 tags: hexobuild
 ---
 
@@ -72,6 +72,7 @@ Hexo 是一款基于node 的静态博客网站生成器，使用Markdown语法�
 hexo clean
 hexo generate ==hexo g
 hexo deploy ==hexo d
+hexo new blog_name(博文标题)
 
 删除博文，在source/_post/下面直接删除就可以
 ```
@@ -134,6 +135,8 @@ bug4.`hexo博客文章里面插入图片后封面图片就不能正常显示`
 
 ![](http://localhost:4000/img/pic_bug.jpg)
 尚未解决
+
+此前使用的主题或许存在缺陷，后面选用了https://github.com/fi3ework/hexo-theme-archer主题
 
 
 
