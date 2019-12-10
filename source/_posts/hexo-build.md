@@ -2,6 +2,7 @@
 title: Hexo 搭建全记录
 header_img: /img/hexobuild.jpg
 tags: hexobuild
+categories: hexo
 ---
 
 ## Hexo 搭建全记录
@@ -137,6 +138,32 @@ bug4.`hexo博客文章里面插入图片后封面图片就不能正常显示`
 尚未解决
 
 此前使用的主题或许存在缺陷，后面选用了https://github.com/fi3ework/hexo-theme-archer主题
+
+
+4.切换主题后出现了
+```
+ >> 63|                         <span><%- __('word_count') %>: <span class="post-count word-count"><%= wordcount(page.content) %></span><%= __('reading_time') %>: <span class="post-count reading-time"><%= min2read(page.content) %> min</span></span>
+    64|                     </div>
+    65|                 <% } %>
+    66|                 <div class="post-intro-meta">
+```
+wordcount is not defined,于是执行：npm i --save hexo-wordcount
+
+当时是在hexo-theme-archer主题文件夹下面执行的，后面尝试cd ..在theme下面执行npm i --save hexo-wordcount
+
+虽然有警告但是安装成功
+```
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@2.1.1 (node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@2.1.1: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.9 (node_modules/nunjucks/node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.9: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+
++ hexo-wordcount@6.0.1
+added 8 packages from 25 contributors, updated 1 package and audited 4872 packages in 13.544s
+```
+
+
+
 
 
 
