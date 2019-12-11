@@ -163,8 +163,11 @@ added 8 packages from 25 contributors, updated 1 package and audited 4872 packag
 ```
 
 
+5.更新代码时出现
+```
+warning: b1b4176f05d3fe1a6ae0c03c4cfbd8e4f60d5077:.gitmodules, multiple configurations found for 'submodule./var/www/starmoon.tech.com/blog/themes/hexo-theme-Claudia.path'. Skipping second one!
 
-
+```
 
 
 
