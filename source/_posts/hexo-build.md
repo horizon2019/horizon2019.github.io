@@ -163,11 +163,8 @@ added 8 packages from 25 contributors, updated 1 package and audited 4872 packag
 ```
 
 
-5.更新代码时出现
-```
-warning: b1b4176f05d3fe1a6ae0c03c4cfbd8e4f60d5077:.gitmodules, multiple configurations found for 'submodule./var/www/starmoon.tech.com/blog/themes/hexo-theme-Claudia.path'. Skipping second one!
+5.更新代码之后发现图片显示不出来，但是插件都已经成功安装，最后检查是git提交时自动忽略了public文件夹下面的东西，所有图片并没有更新在服务器，修改.gitignore文件，重新push图片显示成功
 
-```
 
 
 
