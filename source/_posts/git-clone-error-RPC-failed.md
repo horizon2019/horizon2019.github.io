@@ -28,3 +28,15 @@ depth用于指定克隆深度，为1即表示只克隆最近一次commit.
 ```
  git fetch --unshallow
 ```
+
+方法1. 推荐proxychains代理，或者挂米国VPS  
+
+方法2. 把https改成http
+
+方法3. 在release中选择download 而非clone完整仓库，缺点：没有.git本地仓库，不能commit，push
+
+方法4. git clone --depth=1 ,这样只clone当前最新的commit版本，缺点：没有.git本地仓库，不能commit，push
+
+方法5. 在国内同类代码托管网站查找是否有同样的源码，从国内镜像下载。
+
+方法6.网速不好，查看网络情况

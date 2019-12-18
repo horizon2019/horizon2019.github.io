@@ -40,7 +40,7 @@ bash: hexo command not found 问题解决，那么请先配置环境变量，在
 
 
 
-6.在项目文件夹下，git bash中执行hexo-server,直接访问http://localhost:4000/
+7.在项目文件夹下，git bash中执行hexo-server,直接访问http://localhost:4000/
 
 
 
