@@ -2,6 +2,7 @@
 title: Hexo 搭建全记录
 header_img: /img/hexobuild.jpg
 tags: hexo build
+date: 2019-09-11 23:11:46
 categories: blog
 ---
 
@@ -164,6 +165,9 @@ added 8 packages from 25 contributors, updated 1 package and audited 4872 packag
 
 
 5.更新代码之后发现图片显示不出来，但是插件都已经成功安装，最后检查是git提交时自动忽略了public文件夹下面的东西，所有图片并没有更新在服务器，修改.gitignore文件，重新push图片显示成功
+
+
+`这个操作是错误的，因为hexo clean命令会删除数据库以及public文件夹下面的内容，所以还是建议图片存在其他文件夹下面`
 
 
 
