@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>hexo-windows环境搭建教程 · horizon&#39;s Studio</title>
+    <title>laravel orm 优化实用技巧 · horizon&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -218,7 +218,7 @@
                 <a href="/" >horizon&#39;s Studio.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">hexo-windows环境搭建教程</a>
+                <a href="#" class="post-name">laravel orm 优化实用技巧</a>
             </div>
     </div>
     
@@ -248,7 +248,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            hexo-windows环境搭建教程
+            laravel orm 优化实用技巧
             <!-- 404 -->
             
         </h1>
@@ -267,18 +267,18 @@ height:50vh;
                 
                     <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "hexo windows">hexo windows</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "orm模型">orm模型</a>
     
 </div>
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count word-count">312</span>Reading time: <span class="post-count reading-time">1 min</span></span>
+                        <span>Word count: <span class="post-count word-count">542</span>Reading time: <span class="post-count reading-time">2 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/11/30</span>
+                    <span class="post-intro-time">2019/12/15</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -402,28 +402,49 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>参考文章：<a href="https://www.cnblogs.com/xingyunblog/p/8675681.html" target="_blank" rel="noopener">https://www.cnblogs.com/xingyunblog/p/8675681.html</a><br>当在cmd模式下npm –version发现nodejs和npm安装失败时，需要配置nodejs和npm的环境变量</p>
-<p>我是安装在D盘这个位置D:\Program Files\nodejs</p>
-<p>1.首先在node.js的安装目录新建两个文件夹node_global和node_cache<br><img src="/img/hexo_windows1.png" alt></p>
-<p>2.cmd窗口输入以下两行命令：</p>
-<p>npm config set prefix “D:\Program Files\nodejs\node_global”</p>
-<p>npm config set cache “D:\Program Files\nodejs\node_cache”</p>
-<p>3.在环境变量中新建系统变量：<br><img src="/img/hexo_windows2.png" alt></p>
-<p>4.修改【用户变量】中的path变量，将C:\Users\hua\AppData\Roaming\npm修改为D:\install\nodejs\node_global</p>
-<p><img src="/img/hexo_windows3.png" alt><br>5.npm install -g hexo-cli<br><img src="/img/hexo_windows4.png" alt></p>
-<p>发现运行很慢，解决办法就是修改 npm 的安装源，这里选择淘宝 NPM 镜像，这是一个完整 npmjs.org 镜像，你可以用此代替官方版本(只读)，同步频率目前为 10分钟 一次以保证尽量与官方服务同步。执行npm config set registry <a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a></p>
-<p>6.在hexo 博客项目文件夹下面，hexo server,如果遇到<br>bash: hexo command not found 问题解决，那么请先配置环境变量，在Path里添加你的node_modules下的.bin文件路径</p>
-<p>6.在项目文件夹下，git bash中执行hexo-server,直接访问<a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a></p>
-<p>参考文章：<br><a href="https://www.jianshu.com/p/957f5631faa9" target="_blank" rel="noopener">https://www.jianshu.com/p/957f5631faa9</a></p>
+        <h3 id="1-如果要实现某个整型字段的递增或者递减"><a href="#1-如果要实现某个整型字段的递增或者递减" class="headerlink" title="1.如果要实现某个整型字段的递增或者递减"></a>1.如果要实现某个整型字段的递增或者递减</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Article::find($article_id)-&gt;increment(&apos;read_count&apos;);</span><br><span class="line">Article::find($article_id)-&gt;increment(&apos;read_count&apos;,10);</span><br><span class="line">Article::find($article_id)-&gt;decrement(&apos;read_count&apos;);</span><br></pre></td></tr></table></figure>
+<p>代替</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$article = Article::find($article_id);</span><br><span class="line">$article-&gt;read_count++;</span><br><span class="line">$article-&gt;save();</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-先执行-X-方法，X-方法执行不成功则执行-Y-方法"><a href="#2-先执行-X-方法，X-方法执行不成功则执行-Y-方法" class="headerlink" title="2.先执行 X 方法，X 方法执行不成功则执行 Y 方法"></a>2.先执行 X 方法，X 方法执行不成功则执行 Y 方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$user = User::findOrFail($id);</span><br></pre></td></tr></table></figure>
+<p>代替</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$user = User::find($id);</span><br><span class="line">if (!$user) &#123; abort (404); &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-在一个-Eloquent-模型中，有个神奇的地方，叫-boot-，用它可以覆盖默认的行为："><a href="#3-在一个-Eloquent-模型中，有个神奇的地方，叫-boot-，用它可以覆盖默认的行为：" class="headerlink" title="3.在一个 Eloquent 模型中，有个神奇的地方，叫 boot()，用它可以覆盖默认的行为："></a>3.在一个 Eloquent 模型中，有个神奇的地方，叫 boot()，用它可以覆盖默认的行为：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class User extends Model</span><br><span class="line">&#123;</span><br><span class="line">    public static function boot()</span><br><span class="line">    &#123;</span><br><span class="line">        parent::boot();</span><br><span class="line">        static::updating(function($model)</span><br><span class="line">        &#123;</span><br><span class="line">            // 写点日志啥的</span><br><span class="line">            // 覆盖一些属性，类似这样 $model-&gt;something = transform($something);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-带条件与排序的关联关系"><a href="#4-带条件与排序的关联关系" class="headerlink" title="4. 带条件与排序的关联关系"></a>4. 带条件与排序的关联关系</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public function approvedUsers() &#123;</span><br><span class="line">    return $this-&gt;hasMany(&apos;App\User&apos;)-&gt;where(&apos;approved&apos;, 1)-&gt;orderBy(&apos;email&apos;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-通过-ID-查询多条记录"><a href="#5-通过-ID-查询多条记录" class="headerlink" title="5.通过 ID 查询多条记录"></a>5.通过 ID 查询多条记录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$users = User::find([1,2,3]);</span><br></pre></td></tr></table></figure>
+
+<p>这个方法可以接受多个 ID 的数组作为参数.</p>
+<h3 id="6-WhereX"><a href="#6-WhereX" class="headerlink" title="6.WhereX"></a>6.WhereX</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$users = User::whereApproved(1)-&gt;get();</span><br></pre></td></tr></table></figure>
+<p>代替</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$users = User::where(&apos;approved&apos;, 1)-&gt;get();</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-一对多返回默认模型对象"><a href="#7-一对多返回默认模型对象" class="headerlink" title="7.一对多返回默认模型对象"></a>7.一对多返回默认模型对象</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public function author()</span><br><span class="line">&#123;</span><br><span class="line">    return $this-&gt;belongsTo(&apos;App\Author&apos;)-&gt;withDefault([</span><br><span class="line">        &apos;name&apos; =&gt; &apos;Guest Author&apos;</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="8-复制：复制一行的副本"><a href="#8-复制：复制一行的副本" class="headerlink" title="8.复制：复制一行的副本"></a>8.复制：复制一行的副本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$task = Tasks::find(1);</span><br><span class="line">$newTask = $task-&gt;replicate();</span><br><span class="line">$newTask-&gt;save();</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="9-php-artisan-make-model-Company-mcr"><a href="#9-php-artisan-make-model-Company-mcr" class="headerlink" title="9.php artisan make:model Company -mcr"></a>9.php artisan make:model Company -mcr</h3><p>-m 将创建一个迁移文件</p>
+<p>-c 将创建一个控制器</p>
+<p>-r 表示控制器应该是一个资源控制器</p>
+<h3 id="10-update-的结果是什么？"><a href="#10-update-的结果是什么？" class="headerlink" title="10. update () 的结果是什么？"></a>10. update () 的结果是什么？</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$result 会包含受影响的行。 因此如果你想检查多少行受影响， 你不需要额外调用其他任何内容 -- update() 方法会给你返回此数字。</span><br></pre></td></tr></table></figure>
+<h3 id="补充11-find-、findOrFail-、first-、firstOrFail-、get-、list-、toArray-的区别是什么？"><a href="#补充11-find-、findOrFail-、first-、firstOrFail-、get-、list-、toArray-的区别是什么？" class="headerlink" title="补充11.find()、findOrFail()、first()、firstOrFail()、get()、list()、toArray()的区别是什么？"></a>补充11.find()、findOrFail()、first()、firstOrFail()、get()、list()、toArray()的区别是什么？</h3><p>find($id) takes an id and returns a single model. If no matching model exist, it returns null.</p>
+<p>findOrFail($id) takes an id and returns a single model. If no matching model exist, it throws an error1.</p>
+<p>first() returns the first record found in the database. If no matching model exist, it returns null.</p>
+<p>firstOrFail() returns the first record found in the database. If no matching model exist, it throws an error1.</p>
+<p>get() returns a collection of models matching the query.</p>
+<p>pluck($column) returns a collection of just the values in the given column. In previous versions of Laravel this method was called lists.</p>
+<p>toArray() converts the model/collection into a simple PHP array.</p>
 
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>Author：<a href="http://www.starmoon.tech">Horizon</a>
-            <p>原文链接：<a href="http://www.starmoon.tech/2019/11/30/hexo-windows%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/">http://www.starmoon.tech/2019/11/30/hexo-windows%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/</a>
-            <p>发表日期：<a href="http://www.starmoon.tech/2019/11/30/hexo-windows%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/">November 30th 2019, 2:35:15 pm</a>
-            <p>更新日期：<a href="http://www.starmoon.tech/2019/11/30/hexo-windows%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/">December 10th 2019, 11:28:32 pm</a>
+            <p>原文链接：<a href="http://www.starmoon.tech/2019/12/15/laravel-orm-%E4%BC%98%E5%8C%96%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">http://www.starmoon.tech/2019/12/15/laravel-orm-%E4%BC%98%E5%8C%96%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/</a>
+            <p>发表日期：<a href="http://www.starmoon.tech/2019/12/15/laravel-orm-%E4%BC%98%E5%8C%96%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">December 15th 2019, 2:36:35 pm</a>
+            <p>更新日期：<a href="http://www.starmoon.tech/2019/12/15/laravel-orm-%E4%BC%98%E5%8C%96%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">December 15th 2019, 3:34:35 pm</a>
             <p>版权声明：本文采用<a rel="license noopener" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -432,16 +453,16 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/12/11/Http-Https/" title= "Http/Https的区别">
-                    <div class="nextTitle">Http/Https的区别</div>
+                <a href= "/2019/12/17/git-clone-error-RPC-failed/" title= "git clone error: RPC failed;">
+                    <div class="nextTitle">git clone error: RPC failed;</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/11/10/hexo-build/" title= "Hexo 搭建全记录">
-                    <div class="prevTitle">Hexo 搭建全记录</div>
+                <a href= "/2019/12/11/Http-Https/" title= "Http/Https的区别">
+                    <div class="prevTitle">Http/Https的区别</div>
                 </a>
             
         </li>
@@ -564,7 +585,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-如果要实现某个整型字段的递增或者递减"><span class="toc-number">1.</span> <span class="toc-text">1.如果要实现某个整型字段的递增或者递减</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-先执行-X-方法，X-方法执行不成功则执行-Y-方法"><span class="toc-number">2.</span> <span class="toc-text">2.先执行 X 方法，X 方法执行不成功则执行 Y 方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-在一个-Eloquent-模型中，有个神奇的地方，叫-boot-，用它可以覆盖默认的行为："><span class="toc-number">3.</span> <span class="toc-text">3.在一个 Eloquent 模型中，有个神奇的地方，叫 boot()，用它可以覆盖默认的行为：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-带条件与排序的关联关系"><span class="toc-number">4.</span> <span class="toc-text">4. 带条件与排序的关联关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-通过-ID-查询多条记录"><span class="toc-number">5.</span> <span class="toc-text">5.通过 ID 查询多条记录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-WhereX"><span class="toc-number">6.</span> <span class="toc-text">6.WhereX</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-一对多返回默认模型对象"><span class="toc-number">7.</span> <span class="toc-text">7.一对多返回默认模型对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-复制：复制一行的副本"><span class="toc-number">8.</span> <span class="toc-text">8.复制：复制一行的副本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-php-artisan-make-model-Company-mcr"><span class="toc-number">9.</span> <span class="toc-text">9.php artisan make:model Company -mcr</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-update-的结果是什么？"><span class="toc-number">10.</span> <span class="toc-text">10. update () 的结果是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#补充11-find-、findOrFail-、first-、firstOrFail-、get-、list-、toArray-的区别是什么？"><span class="toc-number">11.</span> <span class="toc-text">补充11.find()、findOrFail()、first()、firstOrFail()、get()、list()、toArray()的区别是什么？</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -615,9 +636,38 @@ top:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 4
+        Total : 7
         </div>
         <!-- search  -->
         
@@ -633,12 +683,27 @@ top:50vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">12/18</span><a class="archive-post-title" href= "/2019/12/18/repponse%E7%8A%B6%E6%80%81%E7%A0%81/" >repponse状态码</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/17</span><a class="archive-post-title" href= "/2019/12/17/git-clone-error-RPC-failed/" >git clone error: RPC failed;</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/15</span><a class="archive-post-title" href= "/2019/12/15/laravel-orm-%E4%BC%98%E5%8C%96%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" >laravel orm 优化实用技巧</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">12/11</span><a class="archive-post-title" href= "/2019/12/11/Http-Https/" >Http/Https的区别</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/30</span><a class="archive-post-title" href= "/2019/11/30/hexo-windows%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" >hexo-windows环境搭建教程</a>
+            <span class="archive-post-date">11/30</span><a class="archive-post-title" href= "/2019/11/30/hexo-windows%E7%8E%AF%E5%A2%83%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/" >hexo-windows本地环境部署教程</a>
         </li>
     
     
@@ -656,9 +721,15 @@ top:50vh;
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="hexobuild"><span class="iconfont-archer">&#xe606;</span>hexobuild</span>
+        <span class="sidebar-tag-name" data-tags="git clone"><span class="iconfont-archer">&#xe606;</span>git clone</span>
+    
+        <span class="sidebar-tag-name" data-tags="hexo build"><span class="iconfont-archer">&#xe606;</span>hexo build</span>
     
         <span class="sidebar-tag-name" data-tags="hexo windows"><span class="iconfont-archer">&#xe606;</span>hexo windows</span>
+    
+        <span class="sidebar-tag-name" data-tags="orm模型"><span class="iconfont-archer">&#xe606;</span>orm模型</span>
+    
+        <span class="sidebar-tag-name" data-tags="base"><span class="iconfont-archer">&#xe606;</span>base</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -693,11 +764,15 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
-        <span class="sidebar-category-name" data-categories="Network"><span class="iconfont-archer">&#xe60a;</span>Network</span>
+        <span class="sidebar-category-name" data-categories="base"><span class="iconfont-archer">&#xe60a;</span>base</span>
+    
+        <span class="sidebar-category-name" data-categories="Git"><span class="iconfont-archer">&#xe60a;</span>Git</span>
     
         <span class="sidebar-category-name" data-categories="test"><span class="iconfont-archer">&#xe60a;</span>test</span>
     
-        <span class="sidebar-category-name" data-categories="hexo"><span class="iconfont-archer">&#xe60a;</span>hexo</span>
+        <span class="sidebar-category-name" data-categories="blog"><span class="iconfont-archer">&#xe60a;</span>blog</span>
+    
+        <span class="sidebar-category-name" data-categories="laravel"><span class="iconfont-archer">&#xe60a;</span>laravel</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>

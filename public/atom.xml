@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.starmoon.tech/"/>
-  <updated>2019-12-11T15:14:30.443Z</updated>
+  <updated>2019-12-18T14:02:37.640Z</updated>
   <id>http://www.starmoon.tech/</id>
   
   <author>
@@ -17,11 +17,88 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>repponse状态码</title>
+    <link href="http://www.starmoon.tech/2019/12/18/repponse%E7%8A%B6%E6%80%81%E7%A0%81/"/>
+    <id>http://www.starmoon.tech/2019/12/18/repponse%E7%8A%B6%E6%80%81%E7%A0%81/</id>
+    <published>2019-12-18T14:00:52.000Z</published>
+    <updated>2019-12-18T14:02:37.640Z</updated>
+    
+    <content type="html"><![CDATA[<p>100：继续  客户端应当继续发送请求。客户端应当继续发送请求的剩余部分，或者如果请求已经完成，忽略这个响应。</p><p>101： 转换协议  在发送完这个响应最后的空行后，服务器将会切换到在Upgrade 消息头中定义的那些协议。只有在切换新的协议更有好处的时候才应该采取类似措施。</p><p>102：继续处理   由WebDAV（RFC 2518）扩展的状态码，代表处理将被继续执行。</p><p>200：请求成功      处理方式：获得响应的内容，进行处理</p><p>201：请求完成，结果是创建了新资源。新创建资源的URI可在响应的实体中得到    处理方式：爬虫中不会遇到</p><p>202：请求被接受，但处理尚未完成    处理方式：阻塞等待</p><p>204：服务器端已经实现了请求，但是没有返回新的信 息。如果客户是用户代理，则无须为此更新自身的文档视图。    处理方式：丢弃</p><p>300：该状态码不被HTTP/1.0的应用程序直接使用， 只是作为3XX类型回应的默认解释。存在多个可用的被请求资源。    处理方式：若程序中能够处理，则进行进一步处理，如果程序中不能处理，则丢弃</p><p>301：请求到的资源都会分配一个永久的URL，这样就可以在将来通过该URL来访问此资源    处理方式：重定向到分配的URL</p><p>302：请求到的资源在一个不同的URL处临时保存     处理方式：重定向到临时的URL</p><p>304：请求的资源未更新     处理方式：丢弃</p><p>400：非法请求     处理方式：丢弃</p><p>401：未授权     处理方式：丢弃</p><p>403：禁止     处理方式：丢弃</p><p>404：没有找到     处理方式：丢弃</p><p>500：服务器内部错误  服务器遇到了一个未曾预料的状况，导致了它无法完成对请求的处理。一般来说，这个问题都会在服务器端的源代码出现错误时出现。</p><p>501：服务器无法识别  服务器不支持当前请求所需要的某个功能。当服务器无法识别请求的方法，并且无法支持其对任何资源的请求。</p><p>502：错误网关  作为网关或者代理工作的服务器尝试执行请求时，从上游服务器接收到无效的响应。</p><p>503：服务出错   由于临时的服务器维护或者过载，服务器当前无法处理请求。这个状况是临时的，并且将在一段时间以后恢复。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;100：继续  客户端应当继续发送请求。客户端应当继续发送请求的剩余部分，或者如果请求已经完成，忽略这个响应。&lt;/p&gt;
+&lt;p&gt;101： 转换协议  在发送完这个响应最后的空行后，服务器将会切换到在Upgrade 消息头中定义的那些协议。只有在切换新的协议更有好处的时候才应该
+      
+    
+    </summary>
+    
+    
+    
+      <category term="base" scheme="http://www.starmoon.tech/tags/base/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>git clone error: RPC failed;</title>
+    <link href="http://www.starmoon.tech/2019/12/17/git-clone-error-RPC-failed/"/>
+    <id>http://www.starmoon.tech/2019/12/17/git-clone-error-RPC-failed/</id>
+    <published>2019-12-17T13:30:43.000Z</published>
+    <updated>2019-12-18T13:47:55.778Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="git-clone时发现项目一直反复克隆不下来，并且报错"><a href="#git-clone时发现项目一直反复克隆不下来，并且报错" class="headerlink" title="git clone时发现项目一直反复克隆不下来，并且报错"></a>git clone时发现项目一直反复克隆不下来，并且报错</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">remote: Counting objects: 100% (1640/1640), done.</span><br><span class="line">remote: Compressing objects: 100% (1167/1167), done.</span><br><span class="line">error: RPC failed; curl 18 transfer closed with outstanding read data remaining</span><br><span class="line">fatal: the remote end hung up unexpectedly</span><br><span class="line">fatal: early EOF</span><br><span class="line">fatal: index-pack failed</span><br></pre></td></tr></table></figure><p>于是使用</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone http://github.com/large-repository --depth 1</span><br></pre></td></tr></table></figure><p>depth用于指定克隆深度，为1即表示只克隆最近一次commit.</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd large-repository</span><br></pre></td></tr></table></figure><p>然后再使用 –unshallow 参数把之前的历史重新再 pull 下来</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch --unshallow</span><br></pre></td></tr></table></figure><p>方法1. 推荐proxychains代理，或者挂米国VPS  </p><p>方法2. 把https改成http</p><p>方法3. 在release中选择download 而非clone完整仓库，缺点：没有.git本地仓库，不能commit，push</p><p>方法4. git clone –depth=1 ,这样只clone当前最新的commit版本，缺点：没有.git本地仓库，不能commit，push</p><p>方法5. 在国内同类代码托管网站查找是否有同样的源码，从国内镜像下载。</p><p>方法6.网速不好，查看网络情况</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;git-clone时发现项目一直反复克隆不下来，并且报错&quot;&gt;&lt;a href=&quot;#git-clone时发现项目一直反复克隆不下来，并且报错&quot; class=&quot;headerlink&quot; title=&quot;git clone时发现项目一直反复克隆不下来，并且报错&quot;&gt;&lt;/a&gt;gi
+      
+    
+    </summary>
+    
+    
+      <category term="Git" scheme="http://www.starmoon.tech/categories/Git/"/>
+    
+    
+      <category term="git clone" scheme="http://www.starmoon.tech/tags/git-clone/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>laravel orm 优化实用技巧</title>
+    <link href="http://www.starmoon.tech/2019/12/15/laravel-orm-%E4%BC%98%E5%8C%96%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
+    <id>http://www.starmoon.tech/2019/12/15/laravel-orm-%E4%BC%98%E5%8C%96%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/</id>
+    <published>2019-12-15T06:36:35.000Z</published>
+    <updated>2019-12-15T07:34:35.720Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="1-如果要实现某个整型字段的递增或者递减"><a href="#1-如果要实现某个整型字段的递增或者递减" class="headerlink" title="1.如果要实现某个整型字段的递增或者递减"></a>1.如果要实现某个整型字段的递增或者递减</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Article::find($article_id)-&gt;increment(&apos;read_count&apos;);</span><br><span class="line">Article::find($article_id)-&gt;increment(&apos;read_count&apos;,10);</span><br><span class="line">Article::find($article_id)-&gt;decrement(&apos;read_count&apos;);</span><br></pre></td></tr></table></figure><p>代替</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$article = Article::find($article_id);</span><br><span class="line">$article-&gt;read_count++;</span><br><span class="line">$article-&gt;save();</span><br></pre></td></tr></table></figure><h3 id="2-先执行-X-方法，X-方法执行不成功则执行-Y-方法"><a href="#2-先执行-X-方法，X-方法执行不成功则执行-Y-方法" class="headerlink" title="2.先执行 X 方法，X 方法执行不成功则执行 Y 方法"></a>2.先执行 X 方法，X 方法执行不成功则执行 Y 方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$user = User::findOrFail($id);</span><br></pre></td></tr></table></figure><p>代替</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$user = User::find($id);</span><br><span class="line">if (!$user) &#123; abort (404); &#125;</span><br></pre></td></tr></table></figure><h3 id="3-在一个-Eloquent-模型中，有个神奇的地方，叫-boot-，用它可以覆盖默认的行为："><a href="#3-在一个-Eloquent-模型中，有个神奇的地方，叫-boot-，用它可以覆盖默认的行为：" class="headerlink" title="3.在一个 Eloquent 模型中，有个神奇的地方，叫 boot()，用它可以覆盖默认的行为："></a>3.在一个 Eloquent 模型中，有个神奇的地方，叫 boot()，用它可以覆盖默认的行为：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class User extends Model</span><br><span class="line">&#123;</span><br><span class="line">    public static function boot()</span><br><span class="line">    &#123;</span><br><span class="line">        parent::boot();</span><br><span class="line">        static::updating(function($model)</span><br><span class="line">        &#123;</span><br><span class="line">            // 写点日志啥的</span><br><span class="line">            // 覆盖一些属性，类似这样 $model-&gt;something = transform($something);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="4-带条件与排序的关联关系"><a href="#4-带条件与排序的关联关系" class="headerlink" title="4. 带条件与排序的关联关系"></a>4. 带条件与排序的关联关系</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public function approvedUsers() &#123;</span><br><span class="line">    return $this-&gt;hasMany(&apos;App\User&apos;)-&gt;where(&apos;approved&apos;, 1)-&gt;orderBy(&apos;email&apos;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="5-通过-ID-查询多条记录"><a href="#5-通过-ID-查询多条记录" class="headerlink" title="5.通过 ID 查询多条记录"></a>5.通过 ID 查询多条记录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$users = User::find([1,2,3]);</span><br></pre></td></tr></table></figure><p>这个方法可以接受多个 ID 的数组作为参数.</p><h3 id="6-WhereX"><a href="#6-WhereX" class="headerlink" title="6.WhereX"></a>6.WhereX</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$users = User::whereApproved(1)-&gt;get();</span><br></pre></td></tr></table></figure><p>代替</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$users = User::where(&apos;approved&apos;, 1)-&gt;get();</span><br></pre></td></tr></table></figure><h3 id="7-一对多返回默认模型对象"><a href="#7-一对多返回默认模型对象" class="headerlink" title="7.一对多返回默认模型对象"></a>7.一对多返回默认模型对象</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public function author()</span><br><span class="line">&#123;</span><br><span class="line">    return $this-&gt;belongsTo(&apos;App\Author&apos;)-&gt;withDefault([</span><br><span class="line">        &apos;name&apos; =&gt; &apos;Guest Author&apos;</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="8-复制：复制一行的副本"><a href="#8-复制：复制一行的副本" class="headerlink" title="8.复制：复制一行的副本"></a>8.复制：复制一行的副本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$task = Tasks::find(1);</span><br><span class="line">$newTask = $task-&gt;replicate();</span><br><span class="line">$newTask-&gt;save();</span><br></pre></td></tr></table></figure><h3 id="9-php-artisan-make-model-Company-mcr"><a href="#9-php-artisan-make-model-Company-mcr" class="headerlink" title="9.php artisan make:model Company -mcr"></a>9.php artisan make:model Company -mcr</h3><p>-m 将创建一个迁移文件</p><p>-c 将创建一个控制器</p><p>-r 表示控制器应该是一个资源控制器</p><h3 id="10-update-的结果是什么？"><a href="#10-update-的结果是什么？" class="headerlink" title="10. update () 的结果是什么？"></a>10. update () 的结果是什么？</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$result 会包含受影响的行。 因此如果你想检查多少行受影响， 你不需要额外调用其他任何内容 -- update() 方法会给你返回此数字。</span><br></pre></td></tr></table></figure><h3 id="补充11-find-、findOrFail-、first-、firstOrFail-、get-、list-、toArray-的区别是什么？"><a href="#补充11-find-、findOrFail-、first-、firstOrFail-、get-、list-、toArray-的区别是什么？" class="headerlink" title="补充11.find()、findOrFail()、first()、firstOrFail()、get()、list()、toArray()的区别是什么？"></a>补充11.find()、findOrFail()、first()、firstOrFail()、get()、list()、toArray()的区别是什么？</h3><p>find($id) takes an id and returns a single model. If no matching model exist, it returns null.</p><p>findOrFail($id) takes an id and returns a single model. If no matching model exist, it throws an error1.</p><p>first() returns the first record found in the database. If no matching model exist, it returns null.</p><p>firstOrFail() returns the first record found in the database. If no matching model exist, it throws an error1.</p><p>get() returns a collection of models matching the query.</p><p>pluck($column) returns a collection of just the values in the given column. In previous versions of Laravel this method was called lists.</p><p>toArray() converts the model/collection into a simple PHP array.</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;1-如果要实现某个整型字段的递增或者递减&quot;&gt;&lt;a href=&quot;#1-如果要实现某个整型字段的递增或者递减&quot; class=&quot;headerlink&quot; title=&quot;1.如果要实现某个整型字段的递增或者递减&quot;&gt;&lt;/a&gt;1.如果要实现某个整型字段的递增或者递减&lt;/h3&gt;&lt;
+      
+    
+    </summary>
+    
+    
+      <category term="laravel" scheme="http://www.starmoon.tech/categories/laravel/"/>
+    
+    
+      <category term="orm模型" scheme="http://www.starmoon.tech/tags/orm%E6%A8%A1%E5%9E%8B/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Http/Https的区别</title>
     <link href="http://www.starmoon.tech/2019/12/11/Http-Https/"/>
     <id>http://www.starmoon.tech/2019/12/11/Http-Https/</id>
     <published>2019-12-11T15:11:46.000Z</published>
-    <updated>2019-12-11T15:14:30.443Z</updated>
+    <updated>2019-12-18T14:02:47.912Z</updated>
     
     <content type="html"><![CDATA[<h3 id="1-get和post请求方法的区别？"><a href="#1-get和post请求方法的区别？" class="headerlink" title="1.get和post请求方法的区别？"></a>1.get和post请求方法的区别？</h3><p>get在做后退按钮或者刷新的时候不会有什么影响，但是post数据就会被重新提交<br>get可以被收藏为书签，而post请求不可能被收藏为书签<br>安全性而言，get比post相比较而言要差一些，get请求的数据会显示在url中，而post则不会，对于一些比较敏感的信息一般会采用post请求；</p><p>HTTPS在HTTP的基础上加入了SSL协议，SSL依靠证书来验证服务器的身份，并为浏览器和服务器之间的通信加密。<br>https的工作原理：客户端使用https的url与服务器建立ssl连接，服务器发给客户端一些证书信息，其中包含公钥，客户端与浏览器开始协商ssl连接的等级，也就是信息加密的等级，然后客户端的浏览器建立会话密钥，利用网站的公钥将密钥解密，传送给网站。web服务器利用自己的私钥解密出会话密钥，完成通信。</p><h3 id="2-HTTPS的优点"><a href="#2-HTTPS的优点" class="headerlink" title="2.HTTPS的优点"></a>2.HTTPS的优点</h3><p>　　尽管HTTPS并非绝对安全，掌握根证书的机构、掌握加密算法的组织同样可以进行中间人形式的攻击，但HTTPS仍是现行架构下最安全的解决方案，主要有以下几个好处：<br>　　（1）使用HTTPS协议可认证用户和服务器，确保数据发送到正确的客户机和服务器；<br>　　（2）HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，要比http协议安全，可防止数据在传输过程中不被窃取、改变，确保数据的完整性。<br>　　（3）HTTPS是现行架构下最安全的解决方案，虽然不是绝对安全，但它大幅增加了中间人攻击的成本。<br>　　（4）谷歌曾在2014年8月份调整搜索引擎算法，并称“比起同等HTTP网站，采用HTTPS加密的网站在搜索结果中的排名将会更高”。</p><h3 id="3-HTTPS的缺点"><a href="#3-HTTPS的缺点" class="headerlink" title="3.HTTPS的缺点"></a>3.HTTPS的缺点</h3><p>　　虽然说HTTPS有很大的优势，但其相对来说，还是存在不足之处的：<br>　　（1）HTTPS协议握手阶段比较费时，会使页面的加载时间延长近50%，增加10%到20%的耗电；<br>　　（2）HTTPS连接缓存不如HTTP高效，会增加数据开销和功耗，甚至已有的安全措施也会因此而受到影响；<br>　　（3）SSL证书需要钱，功能越强大的证书费用越高，个人网站、小网站没有必要一般不会用。<br>　   （4）SSL证书通常需要绑定IP，不能在同一IP上绑定多个域名，IPv4资源不可能支撑这个消耗。<br>　　（5）HTTPS协议的加密范围也比较有限，在黑客攻击、拒绝服务攻击、服务器劫持等方面几乎起不到什么作用。最关键的，SSL证书的信用链体系并不安全，特别是在某些国家可以控制CA根证书的情况下，中间人攻击一样可行。</p>]]></content>
     
@@ -35,19 +112,19 @@
     </summary>
     
     
-      <category term="Network" scheme="http://www.starmoon.tech/categories/Network/"/>
+      <category term="base" scheme="http://www.starmoon.tech/categories/base/"/>
     
     
   </entry>
   
   <entry>
-    <title>hexo-windows环境搭建教程</title>
-    <link href="http://www.starmoon.tech/2019/11/30/hexo-windows%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/"/>
-    <id>http://www.starmoon.tech/2019/11/30/hexo-windows%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/</id>
+    <title>hexo-windows本地环境部署教程</title>
+    <link href="http://www.starmoon.tech/2019/11/30/hexo-windows%E7%8E%AF%E5%A2%83%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/"/>
+    <id>http://www.starmoon.tech/2019/11/30/hexo-windows%E7%8E%AF%E5%A2%83%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/</id>
     <published>2019-11-30T06:35:15.000Z</published>
-    <updated>2019-12-10T15:28:32.015Z</updated>
+    <updated>2019-12-19T13:48:38.128Z</updated>
     
-    <content type="html"><![CDATA[<p>参考文章：<a href="https://www.cnblogs.com/xingyunblog/p/8675681.html" target="_blank" rel="noopener">https://www.cnblogs.com/xingyunblog/p/8675681.html</a><br>当在cmd模式下npm –version发现nodejs和npm安装失败时，需要配置nodejs和npm的环境变量</p><p>我是安装在D盘这个位置D:\Program Files\nodejs</p><p>1.首先在node.js的安装目录新建两个文件夹node_global和node_cache<br><img src="/img/hexo_windows1.png" alt></p><p>2.cmd窗口输入以下两行命令：</p><p>npm config set prefix “D:\Program Files\nodejs\node_global”</p><p>npm config set cache “D:\Program Files\nodejs\node_cache”</p><p>3.在环境变量中新建系统变量：<br><img src="/img/hexo_windows2.png" alt></p><p>4.修改【用户变量】中的path变量，将C:\Users\hua\AppData\Roaming\npm修改为D:\install\nodejs\node_global</p><p><img src="/img/hexo_windows3.png" alt><br>5.npm install -g hexo-cli<br><img src="/img/hexo_windows4.png" alt></p><p>发现运行很慢，解决办法就是修改 npm 的安装源，这里选择淘宝 NPM 镜像，这是一个完整 npmjs.org 镜像，你可以用此代替官方版本(只读)，同步频率目前为 10分钟 一次以保证尽量与官方服务同步。执行npm config set registry <a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a></p><p>6.在hexo 博客项目文件夹下面，hexo server,如果遇到<br>bash: hexo command not found 问题解决，那么请先配置环境变量，在Path里添加你的node_modules下的.bin文件路径</p><p>6.在项目文件夹下，git bash中执行hexo-server,直接访问<a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a></p><p>参考文章：<br><a href="https://www.jianshu.com/p/957f5631faa9" target="_blank" rel="noopener">https://www.jianshu.com/p/957f5631faa9</a></p>]]></content>
+    <content type="html"><![CDATA[<p>参考文章：<a href="https://www.cnblogs.com/xingyunblog/p/8675681.html" target="_blank" rel="noopener">https://www.cnblogs.com/xingyunblog/p/8675681.html</a><br>当在cmd模式下npm –version发现nodejs和npm安装失败时，需要配置nodejs和npm的环境变量</p><p>我是安装在D盘这个位置D:\Program Files\nodejs</p><p>1.首先在node.js的安装目录新建两个文件夹node_global和node_cache<br><img src="http://localhost:4000/img/hexo_windows1.png" alt></p><p>2.cmd窗口输入以下两行命令：</p><p>npm config set prefix “D:\Program Files\nodejs\node_global”</p><p>npm config set cache “D:\Program Files\nodejs\node_cache”</p><p>3.在环境变量中新建系统变量：<br><img src="http://localhost:4000/img/hexo_windows2.png" alt></p><p>4.修改【用户变量】中的path变量，将C:\Users\hua\AppData\Roaming\npm修改为D:\install\nodejs\node_global</p><p><img src="http://localhost:4000/img/hexo_windows3.png" alt><br>5.npm install -g hexo-cli<br><img src="http://localhost:4000/img/hexo_windows4.png" alt></p><p>发现运行很慢，解决办法就是修改 npm 的安装源，这里选择淘宝 NPM 镜像，这是一个完整 npmjs.org 镜像，你可以用此代替官方版本(只读)，同步频率目前为 10分钟 一次以保证尽量与官方服务同步。执行npm config set registry <a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a></p><p>6.在hexo 博客项目文件夹下面，hexo server,如果遇到<br>bash: hexo command not found 问题解决，那么请先配置环境变量，在Path里添加你的node_modules下的.bin文件路径</p><p>7.在项目文件夹下，git bash中执行hexo-server,直接访问<a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a></p><p>参考文章：<br><a href="https://www.jianshu.com/p/957f5631faa9" target="_blank" rel="noopener">https://www.jianshu.com/p/957f5631faa9</a></p>]]></content>
     
     <summary type="html">
     
@@ -59,7 +136,7 @@
     </summary>
     
     
-      <category term="hexo" scheme="http://www.starmoon.tech/categories/hexo/"/>
+      <category term="blog" scheme="http://www.starmoon.tech/categories/blog/"/>
     
     
       <category term="hexo windows" scheme="http://www.starmoon.tech/tags/hexo-windows/"/>
@@ -71,7 +148,7 @@
     <link href="http://www.starmoon.tech/2019/11/10/hexo-build/"/>
     <id>http://www.starmoon.tech/2019/11/10/hexo-build/</id>
     <published>2019-11-10T09:16:21.460Z</published>
-    <updated>2019-12-11T14:59:11.776Z</updated>
+    <updated>2019-12-15T05:17:06.801Z</updated>
     
     <content type="html"><![CDATA[<h2 id="Hexo-搭建全记录"><a href="#Hexo-搭建全记录" class="headerlink" title="Hexo 搭建全记录"></a>Hexo 搭建全记录</h2><blockquote><p>Markdown 本篇文章主要记录hexo博客的环境搭建以及到后期功能优化，以及问题修复。    </p></blockquote><h3 id="Hexo-安装环境"><a href="#Hexo-安装环境" class="headerlink" title="Hexo 安装环境"></a>Hexo 安装环境</h3><p>Hexo 是一款基于node 的静态博客网站生成器，使用Markdown语法进行博文编辑，相比其他的静态网页生成器而言有着，生成静态网页最快，插件丰富（已经移植了大量Octopress插件）</p><p>作为一名phper的理解，我们可以将Nodejs理解为php,而npm好比composer,Node.js主要用于构建后端服务器端应用程序，但作为全栈和前端解决方案，它也非常受欢迎。Npm则是一个包管理工具。下面提供了<code>三种</code>安装方法：</p><p>一、安装nodejs和npm(从node source)</p><p>1.启用NodeSource存储库：<code>curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -</code></p><p>2.安装nodejs和npm:<code>sudo apt install nodejs</code></p><p>3.查看node版本：<code>node --version</code></p><p>二、使用nvm来安装nodejs,可以管理nodejs的版本：</p><p>1.<code>curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash</code></p><p>查看版本：<code>nvm --version</code></p><p>2.nvm安装node：<code>nvm install node</code></p><p>3.查看node版本：<code>node --version</code></p><p>4.安装最近的nvm版本：<code>nvm install --lts</code></p><p>三、从ubuntu仓库里安装node和npm<br>1.<code>sudo apt update</code><br><code>sudo apt install nodejs</code></p><p>2.<code>sudo apt install build-essential</code></p><p>3.如果要卸载和node和npm<code>sudo apt remove nodejs npm</code></p><p>其中第一第三种方法更容易，但是使用nvm安装提供最大的灵活性，可以选择或者移除你的nodejs版本，可以根据实际情况选择。</p><h3 id="Hexo主题下载安装"><a href="#Hexo主题下载安装" class="headerlink" title="Hexo主题下载安装"></a>Hexo主题下载安装</h3><p>关于主题安装可以先去hexo的主题网站里面挑选比较喜欢的主题，在github找到源代码，然后这里我用了git子模块来管理主题。</p><p>参考文章：<a href="https://blog.csdn.net/guotianqing/article/details/82391665" target="_blank" rel="noopener">https://blog.csdn.net/guotianqing/article/details/82391665</a></p><p>简单解释下博文里面这条命令：<br><code>git submodule add &lt;url&gt; &lt;path&gt;</code><br><code>url</code>指的是你的githuburl为子模块仓库的url路径，而<code>path</code>指的是你执行该条命令时文件夹的相对路径。例如，处在/var/www/blog/themes路径下面执行该条命令，那么就是<code>git submodule add https://.... /theme_name</code></p><p>然后在hexo的根目录下面的theme文件夹里就可以看到以及管理的你的主题代码。</p><h3 id="Hexo主题配置及发布博文命令"><a href="#Hexo主题配置及发布博文命令" class="headerlink" title="Hexo主题配置及发布博文命令"></a>Hexo主题配置及发布博文命令</h3><p>关于hexo的全局配置在hexo根目录下面的站点配置文件<code>_config.yml</code></p><p>而关于主题的相关配置就在theme里面的<code>_config.yml</code></p><p>关于使本地代码各项配置项生效发布到网站的操作简要命令就是以下几个</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo generate ==hexo g</span><br><span class="line">hexo deploy ==hexo d</span><br><span class="line">hexo new blog_name(博文标题)</span><br><span class="line"></span><br><span class="line">删除博文，在source/_post/下面直接删除就可以</span><br></pre></td></tr></table></figure><h3 id="Hexo使用问题小结（不断更新）"><a href="#Hexo使用问题小结（不断更新）" class="headerlink" title="Hexo使用问题小结（不断更新）"></a>Hexo使用问题小结（不断更新）</h3><p>bug1.<code>YAMLException: end of the stream or a document separator is expected at line 2, column 6:    title: about</code></p><p>solution:网上看到的结论都是文件中所有冒号后面的空格，格式很严格，必须是只有一个，半角。不管是多了还是少了都会报错，这是yml解释器所定义的语法。如果不确定的话，将输入法调整到英文模式，删除所有冒号后面的空格重新输入，不要使用Tab。<br>但是我反复改正空格之后错误依然存在，问题在于我创建about页面时，将</p><figure class="highlight plain"><figcaption><span>about</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">date: 2017-05-31 10:05:56</span><br><span class="line">layout: about</span><br><span class="line">---</span><br></pre></td></tr></table></figure><p>复制成了</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--</span><br><span class="line">title: about</span><br><span class="line">date: 2017-05-31 10:05:56</span><br><span class="line">layout: about</span><br><span class="line">---</span><br></pre></td></tr></table></figure><p>目前不清楚这个<code>--</code>为何会导致以上错误，这里需要注意不要多出其他字符。</p><p>bug2.`当发现配置的hexo博文下方作者头像不能正常显示，404错误时.F12使用谷歌浏览器查看图片完整的路径，在相应的文件夹添加图片。如果图片不多，也可以保存在source/img文件夹下面，直接使用绝对路径来表示图片路径。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;img/图片名.jpg&gt;</span><br><span class="line">这里如果显示不出来，请使用&lt;img src=&quot;/img/图片名.jpg&gt;绝对路径</span><br></pre></td></tr></table></figure><p>bug3.<code>博文里面图片引入显示失败,hexo博文图片前缀有.com不能正常显示</code></p><p>1.先安装插件<br> npm install <a href="https://github.com/CodeFalling/hexo-asset-image" target="_blank" rel="noopener">https://github.com/CodeFalling/hexo-asset-image</a> –save</p><p>中途出现这个错误，可以忽略</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@2.1.1 (node_modules/fsevents):</span><br><span class="line">npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@2.1.1: wanted &#123;&quot;os&quot;:&quot;darwin&quot;,&quot;arch&quot;:&quot;any&quot;&#125; (current: &#123;&quot;os&quot;:&quot;linux&quot;,&quot;arch&quot;:&quot;x64&quot;&#125;)</span><br><span class="line">npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.9 (node_modules/nunjucks/node_modules/fsevents):</span><br><span class="line">npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.9: wanted &#123;&quot;os&quot;:&quot;darwin&quot;,&quot;arch&quot;:&quot;any&quot;&#125; (current: &#123;&quot;os&quot;:&quot;linux&quot;,&quot;arch&quot;:&quot;x64&quot;&#125;)</span><br></pre></td></tr></table></figure><p>2.打开_config.yml文件，修改下述内容<br>post_asset_folder: true</p><p>3.这里以防插件bug，建议替换一下这个位置的文件/node_modules/hexo-asset-image/index.js</p><p>参考博文：<a href="https://blog.csdn.net/xjm850552586/article/details/84101345" target="_blank" rel="noopener">https://blog.csdn.net/xjm850552586/article/details/84101345</a></p><p>bug4.<code>hexo博客文章里面插入图片后封面图片就不能正常显示</code></p><p><img src="http://localhost:4000/img/pic_bug.jpg" alt><br>尚未解决</p><p>此前使用的主题或许存在缺陷，后面选用了<a href="https://github.com/fi3ework/hexo-theme-archer主题" target="_blank" rel="noopener">https://github.com/fi3ework/hexo-theme-archer主题</a></p><p>4.切换主题后出现了</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; 63|                         &lt;span&gt;&lt;%- __(&apos;word_count&apos;) %&gt;: &lt;span class=&quot;post-count word-count&quot;&gt;&lt;%= wordcount(page.content) %&gt;&lt;/span&gt;&lt;%= __(&apos;reading_time&apos;) %&gt;: &lt;span class=&quot;post-count reading-time&quot;&gt;&lt;%= min2read(page.content) %&gt; min&lt;/span&gt;&lt;/span&gt;</span><br><span class="line">   64|                     &lt;/div&gt;</span><br><span class="line">   65|                 &lt;% &#125; %&gt;</span><br><span class="line">   66|                 &lt;div class=&quot;post-intro-meta&quot;&gt;</span><br></pre></td></tr></table></figure><p>wordcount is not defined,于是执行：npm i –save hexo-wordcount</p><p>当时是在hexo-theme-archer主题文件夹下面执行的，后面尝试cd ..在theme下面执行npm i –save hexo-wordcount</p><p>虽然有警告但是安装成功</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@2.1.1 (node_modules/fsevents):</span><br><span class="line">npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@2.1.1: wanted &#123;&quot;os&quot;:&quot;darwin&quot;,&quot;arch&quot;:&quot;any&quot;&#125; (current: &#123;&quot;os&quot;:&quot;linux&quot;,&quot;arch&quot;:&quot;x64&quot;&#125;)</span><br><span class="line">npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.9 (node_modules/nunjucks/node_modules/fsevents):</span><br><span class="line">npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.9: wanted &#123;&quot;os&quot;:&quot;darwin&quot;,&quot;arch&quot;:&quot;any&quot;&#125; (current: &#123;&quot;os&quot;:&quot;linux&quot;,&quot;arch&quot;:&quot;x64&quot;&#125;)</span><br><span class="line"></span><br><span class="line">+ hexo-wordcount@6.0.1</span><br><span class="line">added 8 packages from 25 contributors, updated 1 package and audited 4872 packages in 13.544s</span><br></pre></td></tr></table></figure><p>5.更新代码之后发现图片显示不出来，但是插件都已经成功安装，最后检查是git提交时自动忽略了public文件夹下面的东西，所有图片并没有更新在服务器，修改.gitignore文件，重新push图片显示成功</p>]]></content>
     
@@ -86,10 +163,10 @@
     </summary>
     
     
-      <category term="hexo" scheme="http://www.starmoon.tech/categories/hexo/"/>
+      <category term="blog" scheme="http://www.starmoon.tech/categories/blog/"/>
     
     
-      <category term="hexobuild" scheme="http://www.starmoon.tech/tags/hexobuild/"/>
+      <category term="hexo build" scheme="http://www.starmoon.tech/tags/hexo-build/"/>
     
   </entry>
   

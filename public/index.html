@@ -231,7 +231,7 @@ height:50vh;
     <!-- 文章页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/source/img/index-bg.jpg)"></div>
+    <div class="site-intro-img" style="background-image: url(/source/index-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
@@ -360,6 +360,101 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/18/repponse%E7%8A%B6%E6%80%81%E7%A0%81/" >
+            
+                <span>repponse状态码</span>
+        </a>
+        <div class="abstract-content">
+            100：继续  客户端应当继续发送请求。客户端应当继续发送请求的剩余部分，或者如果请求已经完成，忽略这个响应。
+101： 转换协议  在发送完这个响应最后的空行后，服务器将会切换到在Upgrade 消息头中定义的那些协议。只有在切换新的协议更有好处的时候才应该采取类似措施。
+102：继续处理   由WebDAV（RFC 2518）扩展的状态码，代表处理将被继续执行。
+200：请求成功      处理方式：获得响应的内容，进行处理
+201：请求完成，结果是创建了新资源。新创建资源的URI可在响应的实体中得到    处理方式：爬虫中不会遇到
+202：请求被接受，但处理尚未完成    处理方式...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/18</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "base">base</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/17/git-clone-error-RPC-failed/" >
+            
+                <span>git clone error: RPC failed;</span>
+        </a>
+        <div class="abstract-content">
+            git clone时发现项目一直反复克隆不下来，并且报错123456remote: Counting objects: 100% (1640/1640), done.remote: Compressing objects: 100% (1167/1167), done.error: RPC failed; curl 18 transfer closed with outstanding read data remainingfatal: the remote end hung up unexpectedlyfatal: early EOFfatal: index-pack failed
+...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/17</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "git clone">git clone</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/15/laravel-orm-%E4%BC%98%E5%8C%96%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" >
+            
+                <span>laravel orm 优化实用技巧</span>
+        </a>
+        <div class="abstract-content">
+            1.如果要实现某个整型字段的递增或者递减123Article::find($article_id)-&gt;increment(&apos;read_count&apos;);Article::find($article_id)-&gt;increment(&apos;read_count&apos;,10);Article::find($article_id)-&gt;decrement(&apos;read_count&apos;);
+代替
+123$article = Article::find($article_id);$article-&gt;read_count++;$arti...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/15</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "orm模型">orm模型</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/12/11/Http-Https/" >
             
                 <span>Http/Https的区别</span>
@@ -384,9 +479,9 @@ HTTPS在HTTP的基础上加入了SSL协议，SSL依靠证书来验证服务器�
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/30/hexo-windows%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" >
+        <a class="abstract-title" href = "/2019/11/30/hexo-windows%E7%8E%AF%E5%A2%83%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/" >
             
-                <span>hexo-windows环境搭建教程</span>
+                <span>hexo-windows本地环境部署教程</span>
         </a>
         <div class="abstract-content">
             参考文章：https://www.cnblogs.com/xingyunblog/p/8675681.html当在cmd模式下npm –version发现nodejs和npm安装失败时，需要配置nodejs和npm的环境变量
@@ -439,7 +534,7 @@ Hexo 安装环境Hexo 是一款基于node 的静态博客网站生成器，使�
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "hexobuild">hexobuild</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "hexo build">hexo build</a>
     
 </div>
             
@@ -696,9 +791,38 @@ Mo...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 4
+        Total : 7
         </div>
         <!-- search  -->
         
@@ -714,12 +838,27 @@ Mo...
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">12/18</span><a class="archive-post-title" href= "/2019/12/18/repponse%E7%8A%B6%E6%80%81%E7%A0%81/" >repponse状态码</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/17</span><a class="archive-post-title" href= "/2019/12/17/git-clone-error-RPC-failed/" >git clone error: RPC failed;</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/15</span><a class="archive-post-title" href= "/2019/12/15/laravel-orm-%E4%BC%98%E5%8C%96%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" >laravel orm 优化实用技巧</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">12/11</span><a class="archive-post-title" href= "/2019/12/11/Http-Https/" >Http/Https的区别</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/30</span><a class="archive-post-title" href= "/2019/11/30/hexo-windows%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" >hexo-windows环境搭建教程</a>
+            <span class="archive-post-date">11/30</span><a class="archive-post-title" href= "/2019/11/30/hexo-windows%E7%8E%AF%E5%A2%83%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/" >hexo-windows本地环境部署教程</a>
         </li>
     
     
@@ -737,9 +876,15 @@ Mo...
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="hexobuild"><span class="iconfont-archer">&#xe606;</span>hexobuild</span>
+        <span class="sidebar-tag-name" data-tags="git clone"><span class="iconfont-archer">&#xe606;</span>git clone</span>
+    
+        <span class="sidebar-tag-name" data-tags="hexo build"><span class="iconfont-archer">&#xe606;</span>hexo build</span>
     
         <span class="sidebar-tag-name" data-tags="hexo windows"><span class="iconfont-archer">&#xe606;</span>hexo windows</span>
+    
+        <span class="sidebar-tag-name" data-tags="orm模型"><span class="iconfont-archer">&#xe606;</span>orm模型</span>
+    
+        <span class="sidebar-tag-name" data-tags="base"><span class="iconfont-archer">&#xe606;</span>base</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -774,11 +919,15 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
-        <span class="sidebar-category-name" data-categories="Network"><span class="iconfont-archer">&#xe60a;</span>Network</span>
+        <span class="sidebar-category-name" data-categories="base"><span class="iconfont-archer">&#xe60a;</span>base</span>
+    
+        <span class="sidebar-category-name" data-categories="Git"><span class="iconfont-archer">&#xe60a;</span>Git</span>
     
         <span class="sidebar-category-name" data-categories="test"><span class="iconfont-archer">&#xe60a;</span>test</span>
     
-        <span class="sidebar-category-name" data-categories="hexo"><span class="iconfont-archer">&#xe60a;</span>hexo</span>
+        <span class="sidebar-category-name" data-categories="blog"><span class="iconfont-archer">&#xe60a;</span>blog</span>
+    
+        <span class="sidebar-category-name" data-categories="laravel"><span class="iconfont-archer">&#xe60a;</span>laravel</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>

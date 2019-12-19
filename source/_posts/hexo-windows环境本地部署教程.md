@@ -1,5 +1,5 @@
 ---
-title: hexo-windows环境搭建教程
+title: hexo-windows本地环境部署教程
 date: 2019-11-30 14:35:15
 tags: hexo windows
 categories: blog
@@ -11,7 +11,7 @@ categories: blog
 我是安装在D盘这个位置D:\Program Files\nodejs
 
 1.首先在node.js的安装目录新建两个文件夹node_global和node_cache
-![](/img/hexo_windows1.png)
+![](http://localhost:4000/img/hexo_windows1.png)
 
 2.cmd窗口输入以下两行命令：
 
@@ -21,14 +21,14 @@ npm config set cache "D:\Program Files\nodejs\node_cache"
 
 
 3.在环境变量中新建系统变量：
-![](/img/hexo_windows2.png)
+![](http://localhost:4000/img/hexo_windows2.png)
 
 
 4.修改【用户变量】中的path变量，将C:\Users\hua\AppData\Roaming\npm修改为D:\install\nodejs\node_global
 
-![](/img/hexo_windows3.png)
+![](http://localhost:4000/img/hexo_windows3.png)
 5.npm install -g hexo-cli
-![](/img/hexo_windows4.png)
+![](http://localhost:4000/img/hexo_windows4.png)
 
 发现运行很慢，解决办法就是修改 npm 的安装源，这里选择淘宝 NPM 镜像，这是一个完整 npmjs.org 镜像，你可以用此代替官方版本(只读)，同步频率目前为 10分钟 一次以保证尽量与官方服务同步。执行npm config set registry https://registry.npm.taobao.org
 

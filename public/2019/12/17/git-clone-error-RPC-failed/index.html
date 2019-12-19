@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>horizon&#39;s Studio</title>
+    <title>git clone error: RPC failed; · horizon&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -204,12 +204,23 @@
 </head>
 
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >horizon&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">git clone error: RPC failed;</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>horizon's Studio.</a>
 </header>
@@ -221,24 +232,74 @@
 
 
 
+
+height:50vh;
 ">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+            
+            git clone error: RPC failed;
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "git clone">git clone</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>Word count: <span class="post-count word-count">241</span>Reading time: <span class="post-count reading-time">1 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/12/17</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -339,44 +400,68 @@
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/10/hexo-build/" >
-            
-                <span>Hexo 搭建全记录</span>
-        </a>
-        <div class="abstract-content">
-            Hexo 搭建全记录
-Markdown 本篇文章主要记录hexo博客的环境搭建以及到后期功能优化，以及问题修复。    
+            <main class="main post-page">
+    <article class="article-entry">
+        <h3 id="git-clone时发现项目一直反复克隆不下来，并且报错"><a href="#git-clone时发现项目一直反复克隆不下来，并且报错" class="headerlink" title="git clone时发现项目一直反复克隆不下来，并且报错"></a>git clone时发现项目一直反复克隆不下来，并且报错</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">remote: Counting objects: 100% (1640/1640), done.</span><br><span class="line">remote: Compressing objects: 100% (1167/1167), done.</span><br><span class="line">error: RPC failed; curl 18 transfer closed with outstanding read data remaining</span><br><span class="line">fatal: the remote end hung up unexpectedly</span><br><span class="line">fatal: early EOF</span><br><span class="line">fatal: index-pack failed</span><br></pre></td></tr></table></figure>
+<p>于是使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone http://github.com/large-repository --depth 1</span><br></pre></td></tr></table></figure>
 
-Hexo 安装环境Hexo 是一款基于node 的静态博客网站生成器，使用Markdown语法进行博文编辑，相比其他的静态网页生成器而言有着，生成静态网页最快，插件丰富（已经移植了大量Octopress插件）
-作为一名phper的理解，我们可以将Nodejs理解为php,而npm好比composer,Node.js主要用于构建后端服务器端应用程序，但作为全栈和前端解决方案，它也非常受欢迎。Npm则是一个包管理工具。下面提供了三种安装方法：
-一、安装nodejs和np...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/10</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "hexobuild">hexobuild</a>
-    
-</div>
-            
-        </div>
+<p>depth用于指定克隆深度，为1即表示只克隆最近一次commit.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd large-repository</span><br></pre></td></tr></table></figure>
+<p>然后再使用 –unshallow 参数把之前的历史重新再 pull 下来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch --unshallow</span><br></pre></td></tr></table></figure>
+
+<p>方法1. 推荐proxychains代理，或者挂米国VPS  </p>
+<p>方法2. 把https改成http</p>
+<p>方法3. 在release中选择download 而非clone完整仓库，缺点：没有.git本地仓库，不能commit，push</p>
+<p>方法4. git clone –depth=1 ,这样只clone当前最新的commit版本，缺点：没有.git本地仓库，不能commit，push</p>
+<p>方法5. 在国内同类代码托管网站查找是否有同样的源码，从国内镜像下载。</p>
+<p>方法6.网速不好，查看网络情况</p>
+
     </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>Author：<a href="http://www.starmoon.tech">Horizon</a>
+            <p>原文链接：<a href="http://www.starmoon.tech/2019/12/17/git-clone-error-RPC-failed/">http://www.starmoon.tech/2019/12/17/git-clone-error-RPC-failed/</a>
+            <p>发表日期：<a href="http://www.starmoon.tech/2019/12/17/git-clone-error-RPC-failed/">December 17th 2019, 9:30:43 pm</a>
+            <p>更新日期：<a href="http://www.starmoon.tech/2019/12/17/git-clone-error-RPC-failed/">December 18th 2019, 9:47:55 pm</a>
+            <p>版权声明：本文采用<a rel="license noopener" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
     
     <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2019/12/18/repponse%E7%8A%B6%E6%80%81%E7%A0%81/" title= "repponse状态码">
+                    <div class="nextTitle">repponse状态码</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/12/15/laravel-orm-%E4%BC%98%E5%8C%96%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" title= "laravel orm 优化实用技巧">
+                    <div class="prevTitle">laravel orm 优化实用技巧</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -466,6 +551,24 @@ Hexo 安装环境Hexo 是一款基于node 的静态博客网站生成器，使�
     </div>
     <!-- toc -->
     
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#git-clone时发现项目一直反复克隆不下来，并且报错"><span class="toc-number">1.</span> <span class="toc-text">git clone时发现项目一直反复克隆不下来，并且报错</span></a></li></ol>
+    </div>
+    
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
     <ul class="sidebar-tabs sidebar-tabs-active-0">
@@ -514,9 +617,38 @@ Hexo 安装环境Hexo 是一款基于node 的静态博客网站生成器，使�
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 4
+        Total : 7
         </div>
         <!-- search  -->
         
@@ -532,12 +664,27 @@ Hexo 安装环境Hexo 是一款基于node 的静态博客网站生成器，使�
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">12/18</span><a class="archive-post-title" href= "/2019/12/18/repponse%E7%8A%B6%E6%80%81%E7%A0%81/" >repponse状态码</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/17</span><a class="archive-post-title" href= "/2019/12/17/git-clone-error-RPC-failed/" >git clone error: RPC failed;</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/15</span><a class="archive-post-title" href= "/2019/12/15/laravel-orm-%E4%BC%98%E5%8C%96%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" >laravel orm 优化实用技巧</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">12/11</span><a class="archive-post-title" href= "/2019/12/11/Http-Https/" >Http/Https的区别</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/30</span><a class="archive-post-title" href= "/2019/11/30/hexo-windows%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" >hexo-windows环境搭建教程</a>
+            <span class="archive-post-date">11/30</span><a class="archive-post-title" href= "/2019/11/30/hexo-windows%E7%8E%AF%E5%A2%83%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/" >hexo-windows本地环境部署教程</a>
         </li>
     
     
@@ -555,9 +702,15 @@ Hexo 安装环境Hexo 是一款基于node 的静态博客网站生成器，使�
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="hexobuild"><span class="iconfont-archer">&#xe606;</span>hexobuild</span>
+        <span class="sidebar-tag-name" data-tags="git clone"><span class="iconfont-archer">&#xe606;</span>git clone</span>
+    
+        <span class="sidebar-tag-name" data-tags="hexo build"><span class="iconfont-archer">&#xe606;</span>hexo build</span>
     
         <span class="sidebar-tag-name" data-tags="hexo windows"><span class="iconfont-archer">&#xe606;</span>hexo windows</span>
+    
+        <span class="sidebar-tag-name" data-tags="orm模型"><span class="iconfont-archer">&#xe606;</span>orm模型</span>
+    
+        <span class="sidebar-tag-name" data-tags="base"><span class="iconfont-archer">&#xe606;</span>base</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -592,11 +745,15 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
-        <span class="sidebar-category-name" data-categories="Network"><span class="iconfont-archer">&#xe60a;</span>Network</span>
+        <span class="sidebar-category-name" data-categories="base"><span class="iconfont-archer">&#xe60a;</span>base</span>
+    
+        <span class="sidebar-category-name" data-categories="Git"><span class="iconfont-archer">&#xe60a;</span>Git</span>
     
         <span class="sidebar-category-name" data-categories="test"><span class="iconfont-archer">&#xe60a;</span>test</span>
     
-        <span class="sidebar-category-name" data-categories="hexo"><span class="iconfont-archer">&#xe60a;</span>hexo</span>
+        <span class="sidebar-category-name" data-categories="blog"><span class="iconfont-archer">&#xe60a;</span>blog</span>
+    
+        <span class="sidebar-category-name" data-categories="laravel"><span class="iconfont-archer">&#xe60a;</span>laravel</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
@@ -630,6 +787,8 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
      
     </body>
 </html>
