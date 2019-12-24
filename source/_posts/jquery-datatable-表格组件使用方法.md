@@ -28,7 +28,7 @@ public function productIndexData(\Illuminate\Http\Request $request)
 `Attention:`工具类（后台必须返回 datatables 要求的数据格式，否则不能正常展示数据，该工具类必须返回的数据有 recordsTotal 和 recordsFiltered 和 data 这3个参数！）
 
 `2.html部分：`
-<!--begin: Datatable -->
+```
 <table class="table table-striped- table-bordered table-hover table-bg table-sort table-checkable"
 id="kt_table_1">
 <thead style="white-space:nowrap;">
@@ -44,7 +44,7 @@ id="kt_table_1">
     </tr>
 </thead>
 </table>
-<!--end: Datatable -->
+```
 
 `3.js部分：`
   
