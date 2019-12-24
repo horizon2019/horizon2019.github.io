@@ -48,7 +48,7 @@ id="kt_table_1">
 
 `3.js部分：`
   
-  ``` <script>
+  ```
         $(document).ready(function() {
             $("#kt_table_1").DataTable({
                 retrieve: true,
@@ -248,7 +248,6 @@ id="kt_table_1">
                                         data].title + '</button>';
                             }
 
-</script>
 ```
 
 
