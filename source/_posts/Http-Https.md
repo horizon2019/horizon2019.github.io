@@ -39,5 +39,6 @@ SSL 证书依据功能和品牌不同分类有所不同，但 SSL 证书作为�
 组织验证型(OV)SSL 证书
 域名验证型(DV)SSL 证书
 
-SSL 证书又分为单域名版，多域名版，和通配符版。腾讯阿里这些云服务提供商好像都有免费的单域名 SSL 证书可以申请。
-关于如何配置 SSL 证书，可以参考我的另一篇文章：https://www.blog.starmoon.tech/2019/12/27/nginx%E9%85%8D%E7%BD%AEhttps%E8%AE%BF%E9%97%AE%E5%9F%9F%E5%90%8D/
+SSL 证书又分为单域名版，多域名版，和通配符版。腾讯阿里这些云服务提供商都有免费的单域名 SSL 证书可以申请。
+关于如何配置 SSL 证书，可以参考我的另一篇文章：
+https://www.blog.starmoon.tech/2019/12/27/nginx%E9%85%8D%E7%BD%AEhttps%E8%AE%BF%E9%97%AE%E5%9F%9F%E5%90%8D/
