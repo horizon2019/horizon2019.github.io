@@ -1,5 +1,5 @@
 ---
-title: repponse状态码
+title: response 状态码
 date: 2019-12-18 22:00:52
 tags: base
 ---
