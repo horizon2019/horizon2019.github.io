@@ -273,7 +273,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count word-count">241</span>Reading time: <span class="post-count reading-time">1 min</span></span>
+                        <span>Word count: <span class="post-count word-count">245</span>Reading time: <span class="post-count reading-time">1 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -402,21 +402,23 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h3 id="git-clone时发现项目一直反复克隆不下来，并且报错"><a href="#git-clone时发现项目一直反复克隆不下来，并且报错" class="headerlink" title="git clone时发现项目一直反复克隆不下来，并且报错"></a>git clone时发现项目一直反复克隆不下来，并且报错</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">remote: Counting objects: 100% (1640/1640), done.</span><br><span class="line">remote: Compressing objects: 100% (1167/1167), done.</span><br><span class="line">error: RPC failed; curl 18 transfer closed with outstanding read data remaining</span><br><span class="line">fatal: the remote end hung up unexpectedly</span><br><span class="line">fatal: early EOF</span><br><span class="line">fatal: index-pack failed</span><br></pre></td></tr></table></figure>
+        <h3 id="git-clone-时发现项目一直反复克隆不下来，并且报错"><a href="#git-clone-时发现项目一直反复克隆不下来，并且报错" class="headerlink" title="git clone 时发现项目一直反复克隆不下来，并且报错"></a>git clone 时发现项目一直反复克隆不下来，并且报错</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">remote: Counting objects: 100% (1640/1640), done.</span><br><span class="line">remote: Compressing objects: 100% (1167/1167), done.</span><br><span class="line">error: RPC failed; curl 18 transfer closed with outstanding read data remaining</span><br><span class="line">fatal: the remote end hung up unexpectedly</span><br><span class="line">fatal: early EOF</span><br><span class="line">fatal: index-pack failed</span><br></pre></td></tr></table></figure>
+
 <p>于是使用</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone http://github.com/large-repository --depth 1</span><br></pre></td></tr></table></figure>
 
-<p>depth用于指定克隆深度，为1即表示只克隆最近一次commit.</p>
+<p>depth 用于指定克隆深度，为 1 即表示只克隆最近一次 commit.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd large-repository</span><br></pre></td></tr></table></figure>
+
 <p>然后再使用 –unshallow 参数把之前的历史重新再 pull 下来</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch --unshallow</span><br></pre></td></tr></table></figure>
 
-<p>方法1. 推荐proxychains代理，或者挂米国VPS  </p>
-<p>方法2. 把https改成http</p>
-<p>方法3. 在release中选择download 而非clone完整仓库，缺点：没有.git本地仓库，不能commit，push</p>
-<p>方法4. git clone –depth=1 ,这样只clone当前最新的commit版本，缺点：没有.git本地仓库，不能commit，push</p>
-<p>方法5. 在国内同类代码托管网站查找是否有同样的源码，从国内镜像下载。</p>
-<p>方法6.网速不好，查看网络情况</p>
+<p>方法 1. 推荐 proxychains 代理，或者挂米国 VPS</p>
+<p>方法 2. 把 https 改成 http</p>
+<p>方法 3. 在 release 中选择 download 而非 clone 完整仓库，缺点：没有.git 本地仓库，不能 commit，push</p>
+<p>方法 4. git clone –depth=1 ,这样只 clone 当前最新的 commit 版本，缺点：没有.git 本地仓库，不能 commit，push</p>
+<p>方法 5. 在国内同类代码托管网站查找是否有同样的源码，从国内镜像下载。</p>
+<p>方法 6.网速不好，查看网络情况</p>
 
     </article>
     <!-- license  -->
@@ -425,7 +427,7 @@ height:50vh;
             <p>Author：<a href="http://www.starmoon.tech">Horizon</a>
             <p>原文链接：<a href="http://www.starmoon.tech/2019/12/17/git-clone-error-RPC-failed/">http://www.starmoon.tech/2019/12/17/git-clone-error-RPC-failed/</a>
             <p>发表日期：<a href="http://www.starmoon.tech/2019/12/17/git-clone-error-RPC-failed/">December 17th 2019, 9:30:43 pm</a>
-            <p>更新日期：<a href="http://www.starmoon.tech/2019/12/17/git-clone-error-RPC-failed/">December 18th 2019, 9:47:55 pm</a>
+            <p>更新日期：<a href="http://www.starmoon.tech/2019/12/17/git-clone-error-RPC-failed/">December 30th 2019, 10:05:37 pm</a>
             <p>版权声明：本文采用<a rel="license noopener" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -434,8 +436,8 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/12/18/repponse%E7%8A%B6%E6%80%81%E7%A0%81/" title= "repponse状态码">
-                    <div class="nextTitle">repponse状态码</div>
+                <a href= "/2019/12/18/response%E7%8A%B6%E6%80%81%E7%A0%81/" title= "response 状态码">
+                    <div class="nextTitle">response 状态码</div>
                 </a>
             
         </li>
@@ -566,7 +568,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#git-clone时发现项目一直反复克隆不下来，并且报错"><span class="toc-number">1.</span> <span class="toc-text">git clone时发现项目一直反复克隆不下来，并且报错</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#git-clone-时发现项目一直反复克隆不下来，并且报错"><span class="toc-number">1.</span> <span class="toc-text">git clone 时发现项目一直反复克隆不下来，并且报错</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -646,9 +648,31 @@ top:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 7
+        Total : 9
         </div>
         <!-- search  -->
         
@@ -659,12 +683,36 @@ top:50vh;
     
     
     
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/07</span><a class="archive-post-title" href= "/2020/01/07/windows%E6%90%AD%E5%BB%BAdjango%E6%A1%86%E6%9E%B6%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83/" >windows搭建django框架本地环境</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/18</span><a class="archive-post-title" href= "/2019/12/18/repponse%E7%8A%B6%E6%80%81%E7%A0%81/" >repponse状态码</a>
+            <span class="archive-post-date">12/27</span><a class="archive-post-title" href= "/2019/12/27/nginx%E9%85%8D%E7%BD%AEhttps%E8%AE%BF%E9%97%AE%E5%9F%9F%E5%90%8D/" >nginx配置https访问域名</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/24</span><a class="archive-post-title" href= "/2019/12/24/jquery-datatable-%E8%A1%A8%E6%A0%BC%E7%BB%84%E4%BB%B6%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/" >jquery datatable 表格组件使用方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/18</span><a class="archive-post-title" href= "/2019/12/18/response%E7%8A%B6%E6%80%81%E7%A0%81/" >response 状态码</a>
         </li>
     
     
@@ -689,12 +737,7 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/10</span><a class="archive-post-title" href= "/2019/11/10/hexo-build/" >Hexo 搭建全记录</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/hello-world/" >Hello World</a>
+            <span class="archive-post-date">09/11</span><a class="archive-post-title" href= "/2019/09/11/hexo-build/" >Hexo 搭建全记录</a>
         </li>
     
     </div>
@@ -708,7 +751,11 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="hexo windows"><span class="iconfont-archer">&#xe606;</span>hexo windows</span>
     
+        <span class="sidebar-tag-name" data-tags="datatables"><span class="iconfont-archer">&#xe606;</span>datatables</span>
+    
         <span class="sidebar-tag-name" data-tags="orm模型"><span class="iconfont-archer">&#xe606;</span>orm模型</span>
+    
+        <span class="sidebar-tag-name" data-tags="nginx"><span class="iconfont-archer">&#xe606;</span>nginx</span>
     
         <span class="sidebar-tag-name" data-tags="base"><span class="iconfont-archer">&#xe606;</span>base</span>
     
@@ -749,9 +796,9 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="Git"><span class="iconfont-archer">&#xe60a;</span>Git</span>
     
-        <span class="sidebar-category-name" data-categories="test"><span class="iconfont-archer">&#xe60a;</span>test</span>
-    
         <span class="sidebar-category-name" data-categories="blog"><span class="iconfont-archer">&#xe60a;</span>blog</span>
+    
+        <span class="sidebar-category-name" data-categories="jquery"><span class="iconfont-archer">&#xe60a;</span>jquery</span>
     
         <span class="sidebar-category-name" data-categories="laravel"><span class="iconfont-archer">&#xe60a;</span>laravel</span>
     

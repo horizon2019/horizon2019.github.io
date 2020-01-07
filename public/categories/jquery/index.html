@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>repponse状态码 · horizon&#39;s Studio</title>
+    <title>horizon&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -204,23 +204,12 @@
 </head>
 
     
-        <body class="post-body">
-    
     
 <header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
-    
-    <div class="banner">
-            <div class="blog-title">
-                <a href="/" >horizon&#39;s Studio.</a>
-            </div>
-            <div class="post-title">
-                <a href="#" class="post-name">repponse状态码</a>
-            </div>
-    </div>
     
     <a class="home-link" href=/>horizon's Studio.</a>
 </header>
@@ -232,74 +221,24 @@
 
 
 
-
-height:50vh;
 ">
     
     <!-- 主页  -->
-    
-    
-    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-img" style="background-image: url(/)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
-            
-            repponse状态码
-            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
-            
-            <!-- 404 -->
-            
         </p>
         <!-- 文章页meta -->
-        
-            <div class="post-intros">
-                <!-- 文章页标签  -->
-                
-                    <div class= post-intro-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "base">base</a>
-    
-</div>
-                
-                
-                    <div class="post-intro-read">
-                        <span>Word count: <span class="post-count word-count">688</span>Reading time: <span class="post-count reading-time">2 min</span></span>
-                    </div>
-                
-                <div class="post-intro-meta">
-                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/12/18</span>
-                    
-                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
-                        <span class="iconfont-archer">&#xe602;</span>
-                        <span id="busuanzi_value_page_pv"></span>
-                    </span>
-                    
-                    <span class="shareWrapper">
-                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
-                        <span class="shareText">Share</span>
-                        <ul class="shareList">
-                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
-                                <div class="share-qrcode"></div>
-                            </li>
-                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
-                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
-                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
-                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
-                        </ul>
-                    </span>
-                </div>
-            </div>
         
     </div>
 </div>
@@ -400,67 +339,40 @@ height:50vh;
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main post-page">
-    <article class="article-entry">
-        <p>100：继续  客户端应当继续发送请求。客户端应当继续发送请求的剩余部分，或者如果请求已经完成，忽略这个响应。</p>
-<p>101： 转换协议  在发送完这个响应最后的空行后，服务器将会切换到在Upgrade 消息头中定义的那些协议。只有在切换新的协议更有好处的时候才应该采取类似措施。</p>
-<p>102：继续处理   由WebDAV（RFC 2518）扩展的状态码，代表处理将被继续执行。</p>
-<p>200：请求成功      处理方式：获得响应的内容，进行处理</p>
-<p>201：请求完成，结果是创建了新资源。新创建资源的URI可在响应的实体中得到    处理方式：爬虫中不会遇到</p>
-<p>202：请求被接受，但处理尚未完成    处理方式：阻塞等待</p>
-<p>204：服务器端已经实现了请求，但是没有返回新的信 息。如果客户是用户代理，则无须为此更新自身的文档视图。    处理方式：丢弃</p>
-<p>300：该状态码不被HTTP/1.0的应用程序直接使用， 只是作为3XX类型回应的默认解释。存在多个可用的被请求资源。    处理方式：若程序中能够处理，则进行进一步处理，如果程序中不能处理，则丢弃</p>
-<p>301：请求到的资源都会分配一个永久的URL，这样就可以在将来通过该URL来访问此资源    处理方式：重定向到分配的URL</p>
-<p>302：请求到的资源在一个不同的URL处临时保存     处理方式：重定向到临时的URL</p>
-<p>304：请求的资源未更新     处理方式：丢弃</p>
-<p>400：非法请求     处理方式：丢弃</p>
-<p>401：未授权     处理方式：丢弃</p>
-<p>403：禁止     处理方式：丢弃</p>
-<p>404：没有找到     处理方式：丢弃</p>
-<p>500：服务器内部错误  服务器遇到了一个未曾预料的状况，导致了它无法完成对请求的处理。一般来说，这个问题都会在服务器端的源代码出现错误时出现。</p>
-<p>501：服务器无法识别  服务器不支持当前请求所需要的某个功能。当服务器无法识别请求的方法，并且无法支持其对任何资源的请求。</p>
-<p>502：错误网关  作为网关或者代理工作的服务器尝试执行请求时，从上游服务器接收到无效的响应。</p>
-<p>503：服务出错   由于临时的服务器维护或者过载，服务器当前无法处理请求。这个状况是临时的，并且将在一段时间以后恢复。</p>
-
-    </article>
-    <!-- license  -->
+            <main class="main index-page">
     
-        <div class="license-wrapper">
-            <p>Author：<a href="http://www.starmoon.tech">Horizon</a>
-            <p>原文链接：<a href="http://www.starmoon.tech/2019/12/18/repponse%E7%8A%B6%E6%80%81%E7%A0%81/">http://www.starmoon.tech/2019/12/18/repponse%E7%8A%B6%E6%80%81%E7%A0%81/</a>
-            <p>发表日期：<a href="http://www.starmoon.tech/2019/12/18/repponse%E7%8A%B6%E6%80%81%E7%A0%81/">December 18th 2019, 10:00:52 pm</a>
-            <p>更新日期：<a href="http://www.starmoon.tech/2019/12/18/repponse%E7%8A%B6%E6%80%81%E7%A0%81/">December 18th 2019, 10:02:37 pm</a>
-            <p>版权声明：本文采用<a rel="license noopener" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/24/jquery-datatable-%E8%A1%A8%E6%A0%BC%E7%BB%84%E4%BB%B6%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/" >
+            
+                <span>jquery datatable 表格组件使用方法</span>
+        </a>
+        <div class="abstract-content">
+            1.php后台自定义逻辑部分：
+123456789101112131415public function productIndexData(\Illuminate\Http\Request $request)    &#123;        $data = [];       //中间需要以数组的形式封装好需要传递的list        $count = $this-&gt;getTotalItemCount($request);        $data[&quot;recordsTotal&quot;] = $count;        $data[&quot;recordsFi...
         </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/24</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "datatables">datatables</a>
+    
+</div>
+            
+        </div>
+    </article>
     
     <!-- paginator  -->
-    <ul class="post-paginator">
-        <li class="next">
-            
-        </li>
-        <li class="previous">
-            
-                <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/12/17/git-clone-error-RPC-failed/" title= "git clone error: RPC failed;">
-                    <div class="prevTitle">git clone error: RPC failed;</div>
-                </a>
-            
-        </li>
-    </ul>
-    <!-- 评论插件 -->
-    <!-- 来必力City版安装代码 -->
-
-<!-- City版安装代码已完成 -->
     
-    
-    <!-- partial('_partial/comment/changyan') -->
-    <!--PC版-->
-
-
-    
-    
-
-    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -550,24 +462,6 @@ height:50vh;
     </div>
     <!-- toc -->
     
-    <div class="toc-wrapper" style=
-    
-
-
-
-
-
-
-
-top:50vh;
-
-    >
-        <div class="toc-catalog">
-            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
-        </div>
-        
-    </div>
-    
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
     <ul class="sidebar-tabs sidebar-tabs-active-0">
@@ -645,9 +539,31 @@ top:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 7
+        Total : 9
         </div>
         <!-- search  -->
         
@@ -658,12 +574,36 @@ top:50vh;
     
     
     
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/07</span><a class="archive-post-title" href= "/2020/01/07/windows%E6%90%AD%E5%BB%BAdjango%E6%A1%86%E6%9E%B6%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83/" >windows搭建django框架本地环境</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/18</span><a class="archive-post-title" href= "/2019/12/18/repponse%E7%8A%B6%E6%80%81%E7%A0%81/" >repponse状态码</a>
+            <span class="archive-post-date">12/27</span><a class="archive-post-title" href= "/2019/12/27/nginx%E9%85%8D%E7%BD%AEhttps%E8%AE%BF%E9%97%AE%E5%9F%9F%E5%90%8D/" >nginx配置https访问域名</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/24</span><a class="archive-post-title" href= "/2019/12/24/jquery-datatable-%E8%A1%A8%E6%A0%BC%E7%BB%84%E4%BB%B6%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/" >jquery datatable 表格组件使用方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/18</span><a class="archive-post-title" href= "/2019/12/18/response%E7%8A%B6%E6%80%81%E7%A0%81/" >response 状态码</a>
         </li>
     
     
@@ -688,12 +628,7 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/10</span><a class="archive-post-title" href= "/2019/11/10/hexo-build/" >Hexo 搭建全记录</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/hello-world/" >Hello World</a>
+            <span class="archive-post-date">09/11</span><a class="archive-post-title" href= "/2019/09/11/hexo-build/" >Hexo 搭建全记录</a>
         </li>
     
     </div>
@@ -707,7 +642,11 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="hexo windows"><span class="iconfont-archer">&#xe606;</span>hexo windows</span>
     
+        <span class="sidebar-tag-name" data-tags="datatables"><span class="iconfont-archer">&#xe606;</span>datatables</span>
+    
         <span class="sidebar-tag-name" data-tags="orm模型"><span class="iconfont-archer">&#xe606;</span>orm模型</span>
+    
+        <span class="sidebar-tag-name" data-tags="nginx"><span class="iconfont-archer">&#xe606;</span>nginx</span>
     
         <span class="sidebar-tag-name" data-tags="base"><span class="iconfont-archer">&#xe606;</span>base</span>
     
@@ -748,9 +687,9 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="Git"><span class="iconfont-archer">&#xe60a;</span>Git</span>
     
-        <span class="sidebar-category-name" data-categories="test"><span class="iconfont-archer">&#xe60a;</span>test</span>
-    
         <span class="sidebar-category-name" data-categories="blog"><span class="iconfont-archer">&#xe60a;</span>blog</span>
+    
+        <span class="sidebar-category-name" data-categories="jquery"><span class="iconfont-archer">&#xe60a;</span>jquery</span>
     
         <span class="sidebar-category-name" data-categories="laravel"><span class="iconfont-archer">&#xe60a;</span>laravel</span>
     
@@ -786,8 +725,6 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
-    
-        <script src="/scripts/share.js" async></script>    
      
     </body>
 </html>

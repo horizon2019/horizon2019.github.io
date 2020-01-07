@@ -1,0 +1,737 @@
+
+{
+  "header": {
+    "reportVersion": 1,
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "FatalError",
+    "filename": "report.20191230.221337.1268.0.001.json",
+    "dumpEventTime": "2019-12-30T22:13:37Z",
+    "dumpEventTimeStamp": "1577715217724",
+    "processId": 1268,
+    "cwd": "E:\\www\\work\\Personal-blog",
+    "commandLine": [
+      "D:\\Program Files\\nodejs\\node.exe",
+      "E:\\www\\work\\Personal-blog\\node_modules\\.bin/../hexo/bin/hexo",
+      "server"
+    ],
+    "nodejsVersion": "v12.13.1",
+    "wordSize": 64,
+    "arch": "x64",
+    "platform": "win32",
+    "componentVersions": {
+      "node": "12.13.1",
+      "v8": "7.7.299.13-node.16",
+      "uv": "1.33.1",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.15.0",
+      "modules": "72",
+      "nghttp2": "1.39.2",
+      "napi": "5",
+      "llhttp": "1.1.4",
+      "http_parser": "2.8.0",
+      "openssl": "1.1.1d",
+      "cldr": "35.1",
+      "icu": "64.2",
+      "tz": "2019c",
+      "unicode": "12.1"
+    },
+    "release": {
+      "name": "node",
+      "lts": "Erbium",
+      "headersUrl": "https://nodejs.org/download/release/v12.13.1/node-v12.13.1-headers.tar.gz",
+      "sourceUrl": "https://nodejs.org/download/release/v12.13.1/node-v12.13.1.tar.gz",
+      "libUrl": "https://nodejs.org/download/release/v12.13.1/win-x64/node.lib"
+    },
+    "osName": "Windows_NT",
+    "osRelease": "10.0.14393",
+    "osVersion": "Windows 10 Enterprise 2016 LTSB",
+    "osMachine": "x86_64",
+    "cpus": [
+      {
+        "model": "Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz",
+        "speed": 2712,
+        "user": 7680671,
+        "nice": 0,
+        "sys": 10108250,
+        "idle": 62322265,
+        "irq": 969078
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz",
+        "speed": 2712,
+        "user": 7444843,
+        "nice": 0,
+        "sys": 8453140,
+        "idle": 64212781,
+        "irq": 66375
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz",
+        "speed": 2712,
+        "user": 8140171,
+        "nice": 0,
+        "sys": 9785093,
+        "idle": 62185500,
+        "irq": 61546
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz",
+        "speed": 2712,
+        "user": 8145296,
+        "nice": 0,
+        "sys": 7163859,
+        "idle": 64801609,
+        "irq": 58437
+      }
+    ],
+    "networkInterfaces": [
+      {
+        "name": "WLAN",
+        "internal": false,
+        "mac": "f4:96:34:94:7b:13",
+        "address": "2409:8a55:3010:2330:9dc9:2e84:cec3:4f44",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "WLAN",
+        "internal": false,
+        "mac": "f4:96:34:94:7b:13",
+        "address": "2409:8a55:3010:2330:79b0:ceb2:b47:2ba1",
+        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "WLAN",
+        "internal": false,
+        "mac": "f4:96:34:94:7b:13",
+        "address": "fe80::9dc9:2e84:cec3:4f44",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 15
+      },
+      {
+        "name": "WLAN",
+        "internal": false,
+        "mac": "f4:96:34:94:7b:13",
+        "address": "192.168.1.4",
+        "netmask": "255.255.255.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "Loopback Pseudo-Interface 1",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "::1",
+        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "Loopback Pseudo-Interface 1",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "127.0.0.1",
+        "netmask": "255.0.0.0",
+        "family": "IPv4"
+      }
+    ],
+    "host": "DESKTOP-O12F45A"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ]
+  },
+  "nativeStack": [
+    {
+      "pc": "0x00007ff783dd1729",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783dd5b4c",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783dd4b08",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783ec369b",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff7846c82de",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff7846b0321",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff78457dbec",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784559be3",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784557edb",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff78458355d",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784585264",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff78457b353",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784581a84",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff7845b816b",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff7843085c9",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784af404d",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a9a724",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784b06ef8",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a71191",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a70d7c",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff7845d62d3",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff7845d5c56",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff7846a6ecb",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783f3ac60",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783f3afa9",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783ecb591",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783ecc9cb",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff78467c4e0",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff78467ba27",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff78467bd68",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff78467bb6e",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784af414d",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a6f1c7",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784b54e70",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a6f1f0",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784b54e70",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a6f1f0",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784b54e70",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a6cf8c",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a6cf8c",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a6cf8c",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a73bdc",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a6cf8c",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a71191",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784a70d7c",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff7845d62d3",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff7845d5c56",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff7846a6ecb",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783f3d395",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783f368f3",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783ebff23",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783eb5351",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783f6da27",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783f6a4eb",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783f69c8c",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783f69e54",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783e8bc12",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783ee9a73",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff783da667c",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ff784ba7138",
+      "symbol": ""
+    },
+    {
+      "pc": "0x00007ffaeade84d4",
+      "symbol": "BaseThreadInitThunk+20"
+    },
+    {
+      "pc": "0x00007ffaec9ee8b1",
+      "symbol": "RtlUserThreadStart+33"
+    }
+  ],
+  "javascriptHeap": {
+    "totalMemory": 59703296,
+    "totalCommittedMemory": 59703296,
+    "usedMemory": 22805712,
+    "availableMemory": 2122655208,
+    "memoryLimit": 2149580800,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 262144,
+        "committedMemory": 262144,
+        "capacity": 261872,
+        "used": 32296,
+        "available": 229576
+      },
+      "new_space": {
+        "memorySize": 33554432,
+        "committedMemory": 33554432,
+        "capacity": 16759808,
+        "used": 2408160,
+        "available": 14351648
+      },
+      "old_space": {
+        "memorySize": 19509248,
+        "committedMemory": 19509248,
+        "capacity": 15853200,
+        "used": 15031496,
+        "available": 821704
+      },
+      "code_space": {
+        "memorySize": 688128,
+        "committedMemory": 688128,
+        "capacity": 380512,
+        "used": 380512,
+        "available": 0
+      },
+      "map_space": {
+        "memorySize": 1576960,
+        "committedMemory": 1576960,
+        "capacity": 913120,
+        "used": 913120,
+        "available": 0
+      },
+      "large_object_space": {
+        "memorySize": 3891200,
+        "committedMemory": 3891200,
+        "capacity": 3865112,
+        "used": 3865112,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 49152,
+        "committedMemory": 49152,
+        "capacity": 3552,
+        "used": 3552,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 172032,
+        "committedMemory": 172032,
+        "capacity": 16759808,
+        "used": 171464,
+        "available": 16588344
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": 1.562,
+    "kernelCpuSeconds": 1.25,
+    "cpuConsumptionPercent": 140.6,
+    "maxRss": 80674816,
+    "pageFaults": {
+      "IORequired": 27592,
+      "IONotRequired": 0
+    },
+    "fsActivity": {
+      "reads": 1747,
+      "writes": 88
+    }
+  },
+  "libuv": [
+  ],
+  "environmentVariables": {
+    "=::": "::\\",
+    "=C:": "C:\\",
+    "ACLOCAL_PATH": "D:\\Program Files\\Git\\mingw64\\share\\aclocal;D:\\Program Files\\Git\\usr\\share\\aclocal",
+    "ALLUSERSPROFILE": "C:\\ProgramData",
+    "APPDATA": "C:\\Users\\horizon\\AppData\\Roaming",
+    "COMMONPROGRAMFILES": "C:\\Program Files\\Common Files",
+    "COMPOSE_CONVERT_WINDOWS_PATHS": "true",
+    "COMPUTERNAME": "DESKTOP-O12F45A",
+    "COMSPEC": "C:\\Windows\\system32\\cmd.exe",
+    "CONFIG_SITE": "D:/Program Files/Git/mingw64/etc/config.site",
+    "CommonProgramFiles(x86)": "C:\\Program Files (x86)\\Common Files",
+    "CommonProgramW6432": "C:\\Program Files\\Common Files",
+    "DISPLAY": "needs-to-be-defined",
+    "EXEPATH": "D:\\Program Files\\Git",
+    "HOME": "C:\\Users\\horizon",
+    "HOMEDRIVE": "C:",
+    "HOMEPATH": "\\Users\\horizon",
+    "HOSTNAME": "DESKTOP-O12F45A",
+    "INFOPATH": "D:\\Program Files\\Git\\usr\\local\\info;D:\\Program Files\\Git\\usr\\share\\info;D:\\Program Files\\Git\\usr\\info;D:\\Program Files\\Git\\share\\info",
+    "LANG": "zh_CN.UTF-8",
+    "LOCALAPPDATA": "C:\\Users\\horizon\\AppData\\Local",
+    "LOGONSERVER": "\\\\DESKTOP-O12F45A",
+    "MANPATH": "D:\\Program Files\\Git\\mingw64\\local\\man;D:\\Program Files\\Git\\mingw64\\share\\man;D:\\Program Files\\Git\\usr\\local\\man;D:\\Program Files\\Git\\usr\\share\\man;D:\\Program Files\\Git\\usr\\man;D:\\Program Files\\Git\\share\\man",
+    "MINGW_CHOST": "x86_64-w64-mingw32",
+    "MINGW_PACKAGE_PREFIX": "mingw-w64-x86_64",
+    "MINGW_PREFIX": "D:/Program Files/Git/mingw64",
+    "MSYSTEM": "MINGW64",
+    "MSYSTEM_CARCH": "x86_64",
+    "MSYSTEM_CHOST": "x86_64-w64-mingw32",
+    "MSYSTEM_PREFIX": "D:/Program Files/Git/mingw64",
+    "NODE_PATH": "D:\\Program Files\\nodejs\\node_global\\node_modules",
+    "NO_PROXY": "192.168.99.100",
+    "NUMBER_OF_PROCESSORS": "4",
+    "ORIGINAL_PATH": "D:\\Program Files\\Git\\mingw64\\bin;D:\\Program Files\\Git\\usr\\bin;C:\\Users\\horizon\\bin;D:\\Program Files (x86)\\NetSarang\\Xshell 6;D:\\Program Files (x86)\\NetSarang\\Xftp 6;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0;D:\\Program Files\\nodejs;E:\\www\\work\\Personal-blog\\node_modules\\.bin;D:\\Program Files\\Git\\cmd;C:\\Users\\horizon\\AppData\\Local\\Programs\\Python\\Python38-32\\Scripts;C:\\Users\\horizon\\AppData\\Local\\Programs\\Python\\Python38-32;C:\\Users\\horizon\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\horizon\\AppData\\Local\\BypassRuntm;D:\\Users\\horizon\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;D:\\Program Files\\nodejs\\node_global",
+    "ORIGINAL_TEMP": "C:/Users/horizon/AppData/Local/Temp",
+    "ORIGINAL_TMP": "C:/Users/horizon/AppData/Local/Temp",
+    "OS": "Windows_NT",
+    "OneDrive": "C:\\Users\\horizon\\OneDrive",
+    "PATH": "C:\\Users\\horizon\\bin;D:\\Program Files\\Git\\mingw64\\bin;D:\\Program Files\\Git\\usr\\local\\bin;D:\\Program Files\\Git\\usr\\bin;D:\\Program Files\\Git\\usr\\bin;D:\\Program Files\\Git\\mingw64\\bin;D:\\Program Files\\Git\\usr\\bin;C:\\Users\\horizon\\bin;D:\\Program Files (x86)\\NetSarang\\Xshell 6;D:\\Program Files (x86)\\NetSarang\\Xftp 6;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0;D:\\Program Files\\nodejs;E:\\www\\work\\Personal-blog\\node_modules\\.bin;D:\\Program Files\\Git\\cmd;C:\\Users\\horizon\\AppData\\Local\\Programs\\Python\\Python38-32\\Scripts;C:\\Users\\horizon\\AppData\\Local\\Programs\\Python\\Python38-32;C:\\Users\\horizon\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\horizon\\AppData\\Local\\BypassRuntm;D:\\Users\\horizon\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;D:\\Program Files\\nodejs\\node_global;D:\\Program Files\\Git\\usr\\bin\\vendor_perl;D:\\Program Files\\Git\\usr\\bin\\core_perl",
+    "PATHEXT": ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC",
+    "PKG_CONFIG_PATH": "D:\\Program Files\\Git\\mingw64\\lib\\pkgconfig;D:\\Program Files\\Git\\mingw64\\share\\pkgconfig",
+    "PLINK_PROTOCOL": "ssh",
+    "PROCESSOR_ARCHITECTURE": "AMD64",
+    "PROCESSOR_IDENTIFIER": "Intel64 Family 6 Model 142 Stepping 9, GenuineIntel",
+    "PROCESSOR_LEVEL": "6",
+    "PROCESSOR_REVISION": "8e09",
+    "PROGRAMFILES": "C:\\Program Files",
+    "PSModulePath": "C:\\Program Files\\WindowsPowerShell\\Modules;C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules",
+    "PUBLIC": "C:\\Users\\Public",
+    "PWD": "E:/www/work/Personal-blog",
+    "ProgramData": "C:\\ProgramData",
+    "ProgramFiles(x86)": "C:\\Program Files (x86)",
+    "ProgramW6432": "C:\\Program Files",
+    "SESSIONNAME": "Console",
+    "SHELL": "D:\\Program Files\\Git\\usr\\bin\\bash.exe",
+    "SHLVL": "2",
+    "SSH_ASKPASS": "D:/Program Files/Git/mingw64/libexec/git-core/git-gui--askpass",
+    "SYSTEMDRIVE": "C:",
+    "SYSTEMROOT": "C:\\Windows",
+    "TEMP": "C:\\Users\\horizon\\AppData\\Local\\Temp",
+    "TERM": "xterm",
+    "TMP": "C:\\Users\\horizon\\AppData\\Local\\Temp",
+    "TMPDIR": "C:\\Users\\horizon\\AppData\\Local\\Temp",
+    "USERDOMAIN": "DESKTOP-O12F45A",
+    "USERDOMAIN_ROAMINGPROFILE": "DESKTOP-O12F45A",
+    "USERNAME": "horizon",
+    "USERPROFILE": "C:\\Users\\horizon",
+    "WINDIR": "C:\\Windows",
+    "_": "D:/Program Files/nodejs/node",
+    "asl.log": "Destination=file"
+  },
+  "sharedObjects": [
+    "D:\\Program Files\\nodejs\\node.exe",
+    "C:\\Windows\\SYSTEM32\\ntdll.dll",
+    "C:\\Windows\\System32\\KERNEL32.DLL",
+    "C:\\Windows\\System32\\KERNELBASE.dll",
+    "C:\\Windows\\System32\\WS2_32.dll",
+    "C:\\Windows\\System32\\sechost.dll",
+    "C:\\Windows\\System32\\RPCRT4.dll",
+    "C:\\Windows\\SYSTEM32\\dbghelp.dll",
+    "C:\\Windows\\System32\\ADVAPI32.dll",
+    "C:\\Windows\\System32\\ucrtbase.dll",
+    "C:\\Windows\\System32\\msvcrt.dll",
+    "C:\\Windows\\System32\\USER32.dll",
+    "C:\\Windows\\System32\\win32u.dll",
+    "C:\\Windows\\System32\\GDI32.dll",
+    "C:\\Windows\\System32\\gdi32full.dll",
+    "C:\\Windows\\System32\\PSAPI.DLL",
+    "C:\\Windows\\System32\\CRYPT32.dll",
+    "C:\\Windows\\SYSTEM32\\IPHLPAPI.DLL",
+    "C:\\Windows\\System32\\MSASN1.dll",
+    "C:\\Windows\\SYSTEM32\\USERENV.dll",
+    "C:\\Windows\\SYSTEM32\\bcrypt.dll",
+    "C:\\Windows\\System32\\profapi.dll",
+    "C:\\Windows\\SYSTEM32\\WINMM.dll",
+    "C:\\Windows\\SYSTEM32\\WINMMBASE.dll",
+    "C:\\Windows\\System32\\cfgmgr32.dll",
+    "C:\\Windows\\System32\\IMM32.DLL",
+    "C:\\Windows\\System32\\powrprof.dll",
+    "C:\\Windows\\SYSTEM32\\CRYPTBASE.DLL",
+    "C:\\Windows\\System32\\bcryptPrimitives.dll",
+    "C:\\Windows\\system32\\uxtheme.dll",
+    "C:\\Windows\\System32\\combase.dll",
+    "C:\\Windows\\system32\\mswsock.dll",
+    "C:\\Windows\\System32\\kernel.appcore.dll",
+    "C:\\Windows\\system32\\napinsp.dll",
+    "C:\\Windows\\system32\\pnrpnsp.dll",
+    "C:\\Windows\\system32\\NLAapi.dll",
+    "C:\\Windows\\SYSTEM32\\DNSAPI.dll",
+    "C:\\Windows\\System32\\NSI.dll",
+    "C:\\Windows\\System32\\winrnr.dll",
+    "C:\\Windows\\System32\\wshbth.dll",
+    "C:\\Windows\\SYSTEM32\\dhcpcsvc6.DLL",
+    "C:\\Windows\\SYSTEM32\\dhcpcsvc.DLL"
+  ]
+}

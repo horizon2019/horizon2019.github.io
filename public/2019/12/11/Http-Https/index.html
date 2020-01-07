@@ -267,7 +267,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count word-count">786</span>Reading time: <span class="post-count reading-time">2 min</span></span>
+                        <span>Word count: <span class="post-count word-count">1.1k</span>Reading time: <span class="post-count reading-time">3 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -396,10 +396,12 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h3 id="1-get和post请求方法的区别？"><a href="#1-get和post请求方法的区别？" class="headerlink" title="1.get和post请求方法的区别？"></a>1.get和post请求方法的区别？</h3><p>get在做后退按钮或者刷新的时候不会有什么影响，但是post数据就会被重新提交<br>get可以被收藏为书签，而post请求不可能被收藏为书签<br>安全性而言，get比post相比较而言要差一些，get请求的数据会显示在url中，而post则不会，对于一些比较敏感的信息一般会采用post请求；</p>
-<p>HTTPS在HTTP的基础上加入了SSL协议，SSL依靠证书来验证服务器的身份，并为浏览器和服务器之间的通信加密。<br>https的工作原理：客户端使用https的url与服务器建立ssl连接，服务器发给客户端一些证书信息，其中包含公钥，客户端与浏览器开始协商ssl连接的等级，也就是信息加密的等级，然后客户端的浏览器建立会话密钥，利用网站的公钥将密钥解密，传送给网站。web服务器利用自己的私钥解密出会话密钥，完成通信。</p>
-<h3 id="2-HTTPS的优点"><a href="#2-HTTPS的优点" class="headerlink" title="2.HTTPS的优点"></a>2.HTTPS的优点</h3><p>　　尽管HTTPS并非绝对安全，掌握根证书的机构、掌握加密算法的组织同样可以进行中间人形式的攻击，但HTTPS仍是现行架构下最安全的解决方案，主要有以下几个好处：<br>　　（1）使用HTTPS协议可认证用户和服务器，确保数据发送到正确的客户机和服务器；<br>　　（2）HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，要比http协议安全，可防止数据在传输过程中不被窃取、改变，确保数据的完整性。<br>　　（3）HTTPS是现行架构下最安全的解决方案，虽然不是绝对安全，但它大幅增加了中间人攻击的成本。<br>　　（4）谷歌曾在2014年8月份调整搜索引擎算法，并称“比起同等HTTP网站，采用HTTPS加密的网站在搜索结果中的排名将会更高”。</p>
-<h3 id="3-HTTPS的缺点"><a href="#3-HTTPS的缺点" class="headerlink" title="3.HTTPS的缺点"></a>3.HTTPS的缺点</h3><p>　　虽然说HTTPS有很大的优势，但其相对来说，还是存在不足之处的：<br>　　（1）HTTPS协议握手阶段比较费时，会使页面的加载时间延长近50%，增加10%到20%的耗电；<br>　　（2）HTTPS连接缓存不如HTTP高效，会增加数据开销和功耗，甚至已有的安全措施也会因此而受到影响；<br>　　（3）SSL证书需要钱，功能越强大的证书费用越高，个人网站、小网站没有必要一般不会用。<br>　   （4）SSL证书通常需要绑定IP，不能在同一IP上绑定多个域名，IPv4资源不可能支撑这个消耗。<br>　　（5）HTTPS协议的加密范围也比较有限，在黑客攻击、拒绝服务攻击、服务器劫持等方面几乎起不到什么作用。最关键的，SSL证书的信用链体系并不安全，特别是在某些国家可以控制CA根证书的情况下，中间人攻击一样可行。</p>
+        <h3 id="1-get-和-post-请求方法的区别？"><a href="#1-get-和-post-请求方法的区别？" class="headerlink" title="1.get 和 post 请求方法的区别？"></a>1.get 和 post 请求方法的区别？</h3><p>get 在做后退按钮或者刷新的时候不会有什么影响，但是 post 数据就会被重新提交<br>get 可以被收藏为书签，而 post 请求不可能被收藏为书签<br>安全性而言，get 比 post 相比较而言要差一些，get 请求的数据会显示在 url 中，而 post 则不会，对于一些比较敏感的信息一般会采用 post 请求；</p>
+<p>HTTPS 在 HTTP 的基础上加入了 SSL 协议，SSL 依靠证书来验证服务器的身份，并为浏览器和服务器之间的通信加密。<br>https 的工作原理：客户端使用 https 的 url 与服务器建立 ssl 连接，服务器发给客户端一些证书信息，其中包含公钥，客户端与浏览器开始协商 ssl 连接的等级，也就是信息加密的等级，然后客户端的浏览器建立会话密钥，利用网站的公钥将密钥解密，传送给网站。web 服务器利用自己的私钥解密出会话密钥，完成通信。</p>
+<h3 id="2-HTTPS-的优点"><a href="#2-HTTPS-的优点" class="headerlink" title="2.HTTPS 的优点"></a>2.HTTPS 的优点</h3><p>尽管 HTTPS 并非绝对安全，掌握根证书的机构、掌握加密算法的组织同样可以进行中间人形式的攻击，但 HTTPS 仍是现行架构下最安全的解决方案，主要有以下几个好处：<br>　　（1）使用 HTTPS 协议可认证用户和服务器，确保数据发送到正确的客户机和服务器；<br>　　（2）HTTPS 协议是由 SSL+HTTP 协议构建的可进行加密传输、身份认证的网络协议，要比 http 协议安全，可防止数据在传输过程中不被窃取、改变，确保数据的完整性。<br>　　（3）HTTPS 是现行架构下最安全的解决方案，虽然不是绝对安全，但它大幅增加了中间人攻击的成本。<br>　　（4）谷歌曾在 2014 年 8 月份调整搜索引擎算法，并称“比起同等 HTTP 网站，采用 HTTPS 加密的网站在搜索结果中的排名将会更高”。</p>
+<h3 id="3-HTTPS-的缺点"><a href="#3-HTTPS-的缺点" class="headerlink" title="3.HTTPS 的缺点"></a>3.HTTPS 的缺点</h3><p>虽然说 HTTPS 有很大的优势，但其相对来说，还是存在不足之处的：<br>　　（1）HTTPS 协议握手阶段比较费时，会使页面的加载时间延长近 50%，增加 10%到 20%的耗电；<br>　　（2）HTTPS 连接缓存不如 HTTP 高效，会增加数据开销和功耗，甚至已有的安全措施也会因此而受到影响；<br>　　（3）SSL 证书需要钱，功能越强大的证书费用越高，个人网站、小网站没有必要一般不会用。<br>　 （4）SSL 证书通常需要绑定 IP，不能在同一 IP 上绑定多个域名，IPv4 资源不可能支撑这个消耗。<br>　　（5）HTTPS 协议的加密范围也比较有限，在黑客攻击、拒绝服务攻击、服务器劫持等方面几乎起不到什么作用。最关键的，SSL 证书的信用链体系并不安全，特别是在某些国家可以控制 CA 根证书的情况下，中间人攻击一样可行。</p>
+<h3 id="4-关于-ssl-证书"><a href="#4-关于-ssl-证书" class="headerlink" title="4.关于 ssl 证书"></a>4.关于 ssl 证书</h3><p>SSL 证书就是遵守 SSL 协议，由受信任的数字证书颁发机构 CA，在验证服务器身份后颁发，具有服务器身份验证和数据传输加密功能。<br>SSL 证书依据功能和品牌不同分类有所不同，但 SSL 证书作为国际通用的产品，最为重要的便是产品兼容性（即证书根预埋技术），因为他解决了网民登录网站的信任问题，网民可以通过 SSL 证书轻松识别网站的真实身份。SSL 证书分为如下种类：<br>扩展验证型(EV)SSL 证书<br>组织验证型(OV)SSL 证书<br>域名验证型(DV)SSL 证书</p>
+<p>SSL 证书又分为单域名版，多域名版，和通配符版。腾讯阿里这些云服务提供商都有免费的单域名 SSL 证书可以申请。<br>关于如何配置 SSL 证书，可以参考我的另一篇文章：<br><a href="https://www.blog.starmoon.tech/2019/12/27/nginx%E9%85%8D%E7%BD%AEhttps%E8%AE%BF%E9%97%AE%E5%9F%9F%E5%90%8D/" target="_blank" rel="noopener">https://www.blog.starmoon.tech/2019/12/27/nginx%E9%85%8D%E7%BD%AEhttps%E8%AE%BF%E9%97%AE%E5%9F%9F%E5%90%8D/</a></p>
 
     </article>
     <!-- license  -->
@@ -408,7 +410,7 @@ height:50vh;
             <p>Author：<a href="http://www.starmoon.tech">Horizon</a>
             <p>原文链接：<a href="http://www.starmoon.tech/2019/12/11/Http-Https/">http://www.starmoon.tech/2019/12/11/Http-Https/</a>
             <p>发表日期：<a href="http://www.starmoon.tech/2019/12/11/Http-Https/">December 11th 2019, 11:11:46 pm</a>
-            <p>更新日期：<a href="http://www.starmoon.tech/2019/12/11/Http-Https/">December 18th 2019, 10:02:47 pm</a>
+            <p>更新日期：<a href="http://www.starmoon.tech/2019/12/11/Http-Https/">December 30th 2019, 10:05:37 pm</a>
             <p>版权声明：本文采用<a rel="license noopener" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -549,7 +551,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-get和post请求方法的区别？"><span class="toc-number">1.</span> <span class="toc-text">1.get和post请求方法的区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-HTTPS的优点"><span class="toc-number">2.</span> <span class="toc-text">2.HTTPS的优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-HTTPS的缺点"><span class="toc-number">3.</span> <span class="toc-text">3.HTTPS的缺点</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-get-和-post-请求方法的区别？"><span class="toc-number">1.</span> <span class="toc-text">1.get 和 post 请求方法的区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-HTTPS-的优点"><span class="toc-number">2.</span> <span class="toc-text">2.HTTPS 的优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-HTTPS-的缺点"><span class="toc-number">3.</span> <span class="toc-text">3.HTTPS 的缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-关于-ssl-证书"><span class="toc-number">4.</span> <span class="toc-text">4.关于 ssl 证书</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -629,9 +631,31 @@ top:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 7
+        Total : 9
         </div>
         <!-- search  -->
         
@@ -642,12 +666,36 @@ top:50vh;
     
     
     
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/07</span><a class="archive-post-title" href= "/2020/01/07/windows%E6%90%AD%E5%BB%BAdjango%E6%A1%86%E6%9E%B6%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83/" >windows搭建django框架本地环境</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/18</span><a class="archive-post-title" href= "/2019/12/18/repponse%E7%8A%B6%E6%80%81%E7%A0%81/" >repponse状态码</a>
+            <span class="archive-post-date">12/27</span><a class="archive-post-title" href= "/2019/12/27/nginx%E9%85%8D%E7%BD%AEhttps%E8%AE%BF%E9%97%AE%E5%9F%9F%E5%90%8D/" >nginx配置https访问域名</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/24</span><a class="archive-post-title" href= "/2019/12/24/jquery-datatable-%E8%A1%A8%E6%A0%BC%E7%BB%84%E4%BB%B6%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/" >jquery datatable 表格组件使用方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/18</span><a class="archive-post-title" href= "/2019/12/18/response%E7%8A%B6%E6%80%81%E7%A0%81/" >response 状态码</a>
         </li>
     
     
@@ -672,12 +720,7 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/10</span><a class="archive-post-title" href= "/2019/11/10/hexo-build/" >Hexo 搭建全记录</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/hello-world/" >Hello World</a>
+            <span class="archive-post-date">09/11</span><a class="archive-post-title" href= "/2019/09/11/hexo-build/" >Hexo 搭建全记录</a>
         </li>
     
     </div>
@@ -691,7 +734,11 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="hexo windows"><span class="iconfont-archer">&#xe606;</span>hexo windows</span>
     
+        <span class="sidebar-tag-name" data-tags="datatables"><span class="iconfont-archer">&#xe606;</span>datatables</span>
+    
         <span class="sidebar-tag-name" data-tags="orm模型"><span class="iconfont-archer">&#xe606;</span>orm模型</span>
+    
+        <span class="sidebar-tag-name" data-tags="nginx"><span class="iconfont-archer">&#xe606;</span>nginx</span>
     
         <span class="sidebar-tag-name" data-tags="base"><span class="iconfont-archer">&#xe606;</span>base</span>
     
@@ -732,9 +779,9 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="Git"><span class="iconfont-archer">&#xe60a;</span>Git</span>
     
-        <span class="sidebar-category-name" data-categories="test"><span class="iconfont-archer">&#xe60a;</span>test</span>
-    
         <span class="sidebar-category-name" data-categories="blog"><span class="iconfont-archer">&#xe60a;</span>blog</span>
+    
+        <span class="sidebar-category-name" data-categories="jquery"><span class="iconfont-archer">&#xe60a;</span>jquery</span>
     
         <span class="sidebar-category-name" data-categories="laravel"><span class="iconfont-archer">&#xe60a;</span>laravel</span>
     
