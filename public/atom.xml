@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.starmoon.tech/"/>
-  <updated>2020-01-07T14:40:07.478Z</updated>
+  <updated>2020-01-16T15:04:16.684Z</updated>
   <id>http://www.starmoon.tech/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://www.starmoon.tech/2020/01/07/windows%E6%90%AD%E5%BB%BAdjango%E6%A1%86%E6%9E%B6%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83/"/>
     <id>http://www.starmoon.tech/2020/01/07/windows%E6%90%AD%E5%BB%BAdjango%E6%A1%86%E6%9E%B6%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83/</id>
     <published>2020-01-07T14:39:41.000Z</published>
-    <updated>2020-01-07T14:40:07.478Z</updated>
+    <updated>2020-01-16T15:04:16.684Z</updated>
     
-    <content type="html"><![CDATA[<p>这是我最终搭建好的环境<br>python 3.8.0<br>django 3.0.2</p><p>1.在安装django框架之前，得确保本地环境有python和pip,pip是一个包依赖管理工具。<br>中间解决了pip更新问题，按照提示安装与python匹配的pip版本；</p><p>这是python安装参考教程：<br><a href="https://baijiahao.baidu.com/s?id=1606573927720991570&amp;wfr=spider&amp;for=pc" target="_blank" rel="noopener">https://baijiahao.baidu.com/s?id=1606573927720991570&amp;wfr=spider&amp;for=pc</a></p><p>中间出现过这个问题：<br>WARNING: You are using pip version 19.2.3, however version 19.3.1 is available.<br>当直接输入python -m pip install –upgrade pip更新还报错的时候，<br>输入命令：python -m pip install -U pip</p><p>2.pip install Django==3.0.2<br>在pip安装过程中(python pip安装第三方库超时问题（raise ReadTimeoutErrorself._pool, None, ‘Read timed out.’)<br>方案一：pip下载超时处理<br>pip –default-timeout=100 install 第三方库名<br>但是发现依然下载太慢解决不了问题<br>方案二：更换安装源<br>不用改pip的配置文件<br>安装python的库函数只要<br>python -m pip install -i <a href="https://pypi.tuna.tsinghua.edu.cn/simple" target="_blank" rel="noopener">https://pypi.tuna.tsinghua.edu.cn/simple</a> pack_name</p><p>3.直到在命令行窗口输出可以看到版本信息，证明安装成功</p><p>4.创建django项目<br>django-admin startproject 项目名称<br>例：django-admin startproject mytest</p><p>4.创建django应用<br>项目创建完成后需要有具体的应用，一个项目下可以有多个应用。<br>进入命令行窗口：<br>python manage.py startapp 应用名称<br>例：python manage.py startapp myapp</p><p>5.在项目设置添加应用<br>打开mytest/settings.py,INSTALLED_APPS下添加：</p><p>6.在终端启动django自带的测试用服务器：<br>python manage.py runserver ip:port<br>例：python manage.py runserver</p><p>说明：ip和port可以分别设置服务器的ip和端口；省略不写默认ip为127.0.0.1；端口：8000；</p><p>7.打开浏览器输入<a href="http://127.0.0.1:8000，得到网页：" target="_blank" rel="noopener">http://127.0.0.1:8000，得到网页：</a></p>]]></content>
+    <content type="html"><![CDATA[<p>这是我最终搭建好的环境<br>python 3.8.0<br>django 3.0.2</p><p>1.在安装django框架之前，得确保本地环境有python和pip,pip是一个包依赖管理工具。<br>中间解决了pip更新问题，按照提示安装与python匹配的pip版本；</p><p>这是python安装参考教程：<br><a href="https://baijiahao.baidu.com/s?id=1606573927720991570&amp;wfr=spider&amp;for=pc" target="_blank" rel="noopener">https://baijiahao.baidu.com/s?id=1606573927720991570&amp;wfr=spider&amp;for=pc</a></p><p>中间出现过这个问题：<br>WARNING: You are using pip version 19.2.3, however version 19.3.1 is available.<br>当直接输入python -m pip install –upgrade pip更新还报错的时候，<br>输入命令：python -m pip install -U pip</p><p>2.pip install Django==3.0.2<br>在pip安装过程中(python pip安装第三方库超时问题（raise ReadTimeoutErrorself._pool, None, ‘Read timed out.’)<br>方案一：pip下载超时处理<br>pip –default-timeout=100 install 第三方库名<br>但是发现依然下载太慢解决不了问题<br>方案二：更换安装源<br>不用改pip的配置文件<br>安装python的库函数只要<br>python -m pip install -i <a href="https://pypi.tuna.tsinghua.edu.cn/simple" target="_blank" rel="noopener">https://pypi.tuna.tsinghua.edu.cn/simple</a> pack_name</p><p>3.直到在命令行窗口输出可以看到版本信息，证明安装成功</p><p>4.创建django项目<br>django-admin startproject 项目名称<br>例：django-admin startproject mytest</p><p>4.创建django应用<br>项目创建完成后需要有具体的应用，一个项目下可以有多个应用。<br>进入命令行窗口：<br>python manage.py startapp 应用名称<br>例：python manage.py startapp myapp</p><p>5.在项目设置添加应用<br>打开mytest/settings.py,INSTALLED_APPS下添加：</p><p>6.在终端启动django自带的测试用服务器：<br>python manage.py runserver ip:port<br>例：python manage.py runserver</p><p>说明：ip和port可以分别设置服务器的ip和端口；省略不写默认ip为127.0.0.1；端口：8000；</p><p>7.打开浏览器输入”<a href="http://127.0.0.1:8000&quot;，得到网页：" target="_blank" rel="noopener">http://127.0.0.1:8000&quot;，得到网页：</a></p>]]></content>
     
     <summary type="html">
     
