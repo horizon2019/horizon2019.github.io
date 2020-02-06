@@ -1,5 +1,5 @@
 ---
-title: rabc权限控制系统总结
+title: rbac权限控制系统总结
 date: 2020-02-06 16:20:57
 tags:
 ---
