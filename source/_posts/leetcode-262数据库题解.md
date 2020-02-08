@@ -1,11 +1,10 @@
 ---
-title: Leetcode题解合集(持续更新)
+title: leetcode262数据库题解
 date: 2020-02-07 23:09:46
 category: leetcode
 tags:
 ---
 
-### leetcode 262 题解
 #### 此处撰写解题思路 ：
 1.读题： 取消率的计算方式如下：(被司机或乘客取消的非禁止用户生成的订单数量) / (非禁止用户生成的订单总数) 
 2.涉及知识点： sum ,group by,round的使用
