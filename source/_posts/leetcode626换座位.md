@@ -2,6 +2,7 @@
 title: leetcode626换座位
 date: 2020-02-10 17:01:28
 tags:
+category: leetcode
 ---
 
 1读题：这里需要如果counts数是偶数，则两两交换正好，如果counts数为奇数，那么除了最后一个不需要变动之外，其他都可以与偶数列替换。

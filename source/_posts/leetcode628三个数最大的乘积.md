@@ -2,6 +2,7 @@
 title: leetcode628三个数最大的乘积
 date: 2020-02-10 17:30:52
 tags:
+category: leetcode
 ---
 
 整型数组包括正整数和负整数
