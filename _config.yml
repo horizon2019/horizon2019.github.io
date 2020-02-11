@@ -15,14 +15,19 @@ timezone:
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: https://www.blog.starmoon.tech
 root: /
-permalink: abbrlink/
-abbrlink:
-  alg: crc32  # 算法：crc16(default) and crc32
-  rep: hex    # 进制：dec(default) and hex
+permalink: :year/:month/:day/:title/
+# abbrlink:
+#   alg: crc32  # 算法：crc16(default) and crc32
+#   rep: hex    # 进制：dec(default) and hex
 permalink_defaults:
 pretty_urls:
   trailing_index: true # Set to false to remove trailing index.html from permalinks
-
+#algolia
+algolia:
+  applicationID: '0YHQS8CE4Q'
+  apiKey: 'bd28b837e1100e10fb4f4f275008b9d9'
+  indexName: 'hexo blog'
+  chunkSize: 5000
 # Directory
 source_dir: source
 public_dir: public
