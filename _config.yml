@@ -8,12 +8,12 @@ subtitle:
 description:
 keywords:
 author: Horizon
-language: en
+language: zh_CN
 timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://www.starmoon.tech
+url: https://www.blog.starmoon.tech
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
