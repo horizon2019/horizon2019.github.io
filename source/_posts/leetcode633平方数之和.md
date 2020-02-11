@@ -2,6 +2,7 @@
 title: leetcode633平方数之和
 date: 2020-02-11 14:36:16ca
 category: leetcode
+language: zh-Hans
 tags:
 ---
 

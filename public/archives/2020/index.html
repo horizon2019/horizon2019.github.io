@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hans">
     <!-- title -->
 
 
@@ -347,9 +347,159 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2020/02/06/rabc%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93/" >
+        <a class="abstract-title" href = "/abbrlink/" >
             
-                <span>rabc权限控制系统总结</span>
+                <span>leetcode601体育馆的流量</span>
+        </a>
+        <div class="abstract-content">
+            1.and (里面可以加上or条件)2.临时表我们要取出t1,t1的顺序只可能是以下情况t1&gt;t2&gt;t3t2&gt;t1&gt;t3t2&gt;t3&gt;t1
+1234567891011121314# Write your MySQL query statement belowselect distinct t1.*from stadium t1, stadium t2, stadium t3where t1.people &gt;= 100 and t2.people &gt;= 100 and t3.people &gt;= 100and(    (t1.id - t2...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/11</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/abbrlink/" >
+            
+                <span>leetcode633平方数之和</span>
+        </a>
+        <div class="abstract-content">
+            给定一个非负整数 c ，你要判断是否存在两个整数 a 和 b，使得 a2 + b2 = c。读题：非负整数包含0;
+思路：我们可以首先枚举 a，（a的范围应该是小于c的），并保证 c - a^2 &gt;= 0，随后我们通过二分查找的方法找出是否存在 b，满足 b^2 = c - a^2。二分查找的范围为 [0, c - a^2]。
+复习一下php的二分查找：二分查找的数组必须是排好序的，顺序查找没要求，php查找数组元素有内置的函数array_search和in_array
+1234567891011121314151617181920//二分查找法（非递归方法）public func...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/11</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/abbrlink/" >
+            
+                <span>leetcode628三个数最大的乘积</span>
+        </a>
+        <div class="abstract-content">
+            整型数组包括正整数和负整数
+读题：一种情形是三个最大的数相乘,二是两个最小的数相乘再乘以最大的数；两者比较谁大取谁;
+1234567891011121314151617181920212223public function maximumProduct($nums) &#123;  //先冒泡排序     $len = count($nums);     for ($i = 0; $i &lt; $len - 1; $i++) &#123;         for ($j = 0; $j &lt; $len - 1 - $i; $j++) &#123;             if ($...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/10</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/abbrlink/" >
+            
+                <span>leetcode626换座位</span>
+        </a>
+        <div class="abstract-content">
+            1读题：这里需要如果counts数是偶数，则两两交换正好，如果counts数为奇数，那么除了最后一个不需要变动之外，其他都可以与偶数列替换。这里需要考虑的情况可分为：1.为奇数列（是不是最后一列）2.偶数列
+2.如何判断是不是奇偶数case      when mod(座位号, 2) != 0  then  ‘奇数’      when mod(座位号, 2)  = 0  then  ‘偶数’end
+3.MYSQL中使用带有简单 CASE 函数的 SELECT 语句使用
+123456789SELECT  CASE parent_id WHEN 0 THEN   &apos;00&apos...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/10</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/abbrlink/" >
+            
+                <span>leetcode179算法题解</span>
+        </a>
+        <div class="abstract-content">
+            1.如果s1.s2&gt;s2.s1那么s1就应该排在s2前面。实际为一道排序题，排序规则如此。2.可以采用冒泡排序
+123456789101112131415161718192021222324252627282930class Solution &#123;    /**     * @param Integer[] $nums     * @return String     */    function largestNumber($nums) &#123;         for($i=0;$i&lt;count($nums)-1;$i++)&#123;        for(...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/08</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/abbrlink/" >
+            
+                <span>leetcode262数据库题解</span>
+        </a>
+        <div class="abstract-content">
+            此处撰写解题思路 ：1.读题： 取消率的计算方式如下：(被司机或乘客取消的非禁止用户生成的订单数量) / (非禁止用户生成的订单总数)2.涉及知识点： sum ,group by,round的使用
+知识点归纳：1.数据库表的连接(Left join , Right Join, Inner Join)用法详解Left Join, Inner Join 的相关内容，非常实用，对于理解原理和具体应用都很有帮助！left join 是left outer join的简写，left join默认是outer属性的。
+Inner JoinInner Join 逻辑运算符返回满足第一个（顶端）输入与第...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/07</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/abbrlink/" >
+            
+                <span>rbac权限控制系统总结</span>
         </a>
         <div class="abstract-content">
             rbac 权限控制是一个非常成熟的权限控制系统，其原理是给每个用户一个或多个角色 而每个角色对系统相应模块有访问权限。RBAC（Role-Based Access Control）模型RBAC认为权限授权的过程可以抽象地概括为：Who是否可以对What进行How的访问操作，在RBAC模型里面，有3个基础组成部分，分别是：用户、角色和权限。RBAC 模型可以分为：RBAC0、RBAC1、RBAC2、RBAC3 四种。其中 RBAC0 是基础，其它三种都是在 RBAC0 基础上的变种。大部分情况下，使用 RBAC0 模型就可以满足常规的权限管理系统设计了。不过一定不要拘泥于模型，要以业务需要...
@@ -370,7 +520,7 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2020/02/05/%E5%89%8D%E7%AB%AF%E8%87%AA%E9%80%82%E5%BA%94%E7%BD%91%E9%A1%B5%E5%B8%83%E5%B1%80%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93/" >
+        <a class="abstract-title" href = "/abbrlink/" >
             
                 <span>前端自适应网页布局技术总结</span>
         </a>
@@ -395,7 +545,7 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2020/01/07/windows%E6%90%AD%E5%BB%BAdjango%E6%A1%86%E6%9E%B6%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83/" >
+        <a class="abstract-title" href = "/abbrlink/" >
             
                 <span>windows搭建django框架本地环境</span>
         </a>
@@ -633,9 +783,83 @@
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 11
+        Total : 17
         </div>
         <!-- search  -->
         
@@ -651,17 +875,47 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">02/06</span><a class="archive-post-title" href= "/2020/02/06/rabc%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93/" >rabc权限控制系统总结</a>
+            <span class="archive-post-date">02/11</span><a class="archive-post-title" href= "/abbrlink/" >leetcode633平方数之和</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">02/05</span><a class="archive-post-title" href= "/2020/02/05/%E5%89%8D%E7%AB%AF%E8%87%AA%E9%80%82%E5%BA%94%E7%BD%91%E9%A1%B5%E5%B8%83%E5%B1%80%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93/" >前端自适应网页布局技术总结</a>
+            <span class="archive-post-date">02/11</span><a class="archive-post-title" href= "/abbrlink/" >leetcode601体育馆的流量</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">01/07</span><a class="archive-post-title" href= "/2020/01/07/windows%E6%90%AD%E5%BB%BAdjango%E6%A1%86%E6%9E%B6%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83/" >windows搭建django框架本地环境</a>
+            <span class="archive-post-date">02/10</span><a class="archive-post-title" href= "/abbrlink/" >leetcode628三个数最大的乘积</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/10</span><a class="archive-post-title" href= "/abbrlink/" >leetcode626换座位</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/08</span><a class="archive-post-title" href= "/abbrlink/" >leetcode179算法题解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/07</span><a class="archive-post-title" href= "/abbrlink/" >leetcode262数据库题解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/06</span><a class="archive-post-title" href= "/abbrlink/" >rbac权限控制系统总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/05</span><a class="archive-post-title" href= "/abbrlink/" >前端自适应网页布局技术总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/07</span><a class="archive-post-title" href= "/abbrlink/" >windows搭建django框架本地环境</a>
         </li>
     
     
@@ -675,42 +929,42 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/27</span><a class="archive-post-title" href= "/2019/12/27/nginx%E9%85%8D%E7%BD%AEhttps%E8%AE%BF%E9%97%AE%E5%9F%9F%E5%90%8D/" >nginx配置https访问域名</a>
+            <span class="archive-post-date">12/27</span><a class="archive-post-title" href= "/abbrlink/" >nginx配置https访问域名</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/24</span><a class="archive-post-title" href= "/2019/12/24/jquery-datatable-%E8%A1%A8%E6%A0%BC%E7%BB%84%E4%BB%B6%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/" >jquery datatable 表格组件使用方法</a>
+            <span class="archive-post-date">12/24</span><a class="archive-post-title" href= "/abbrlink/" >jquery datatable 表格组件使用方法</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/18</span><a class="archive-post-title" href= "/2019/12/18/response%E7%8A%B6%E6%80%81%E7%A0%81/" >response 状态码</a>
+            <span class="archive-post-date">12/18</span><a class="archive-post-title" href= "/abbrlink/" >response 状态码</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/17</span><a class="archive-post-title" href= "/2019/12/17/git-clone-error-RPC-failed/" >git clone error: RPC failed;</a>
+            <span class="archive-post-date">12/17</span><a class="archive-post-title" href= "/abbrlink/" >git clone error: RPC failed;</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/15</span><a class="archive-post-title" href= "/2019/12/15/laravel-orm-%E4%BC%98%E5%8C%96%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" >laravel orm 优化实用技巧</a>
+            <span class="archive-post-date">12/15</span><a class="archive-post-title" href= "/abbrlink/" >laravel orm 优化实用技巧</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/11</span><a class="archive-post-title" href= "/2019/12/11/Http-Https/" >Http/Https的区别</a>
+            <span class="archive-post-date">12/11</span><a class="archive-post-title" href= "/abbrlink/" >Http/Https的区别</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/30</span><a class="archive-post-title" href= "/2019/11/30/hexo-windows%E7%8E%AF%E5%A2%83%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/" >hexo-windows本地环境部署教程</a>
+            <span class="archive-post-date">11/30</span><a class="archive-post-title" href= "/abbrlink/" >hexo-windows本地环境部署教程</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/11</span><a class="archive-post-title" href= "/2019/09/11/hexo-build/" >Hexo 搭建全记录</a>
+            <span class="archive-post-date">09/11</span><a class="archive-post-title" href= "/abbrlink/" >Hexo 搭建全记录</a>
         </li>
     
     </div>
@@ -728,9 +982,9 @@
     
         <span class="sidebar-tag-name" data-tags="orm模型"><span class="iconfont-archer">&#xe606;</span>orm模型</span>
     
-        <span class="sidebar-tag-name" data-tags="nginx"><span class="iconfont-archer">&#xe606;</span>nginx</span>
-    
         <span class="sidebar-tag-name" data-tags="base"><span class="iconfont-archer">&#xe606;</span>base</span>
+    
+        <span class="sidebar-tag-name" data-tags="nginx"><span class="iconfont-archer">&#xe606;</span>nginx</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -765,15 +1019,17 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
+        <span class="sidebar-category-name" data-categories="base"><span class="iconfont-archer">&#xe60a;</span>base</span>
+    
         <span class="sidebar-category-name" data-categories="Git"><span class="iconfont-archer">&#xe60a;</span>Git</span>
     
         <span class="sidebar-category-name" data-categories="blog"><span class="iconfont-archer">&#xe60a;</span>blog</span>
     
-        <span class="sidebar-category-name" data-categories="base"><span class="iconfont-archer">&#xe60a;</span>base</span>
-    
         <span class="sidebar-category-name" data-categories="jquery"><span class="iconfont-archer">&#xe60a;</span>jquery</span>
     
         <span class="sidebar-category-name" data-categories="laravel"><span class="iconfont-archer">&#xe60a;</span>laravel</span>
+    
+        <span class="sidebar-category-name" data-categories="leetcode"><span class="iconfont-archer">&#xe60a;</span>leetcode</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>

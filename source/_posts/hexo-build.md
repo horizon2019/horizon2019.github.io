@@ -159,3 +159,21 @@ added 8 packages from 25 contributors, updated 1 package and audited 4872 packag
 5.更新代码之后发现图片显示不出来，但是插件都已经成功安装，最后检查是 git 提交时自动忽略了 public 文件夹下面的东西，所有图片并没有更新在服务器，修改.gitignore 文件，重新 push 图片显示成功
 
 `这个操作是错误的，因为hexo clean命令会删除数据库以及public文件夹下面的内容，所以还是建议图片存在其他文件夹下面`
+
+
+6.hexo 下设置了language,中文标题链接出现乱码问题
+1.将_config.yml文件修改language为zh-Hans;
+2.之前的permalink是这样的permalink: :year/:month/:day/:title/，命名方式太多层了，爬虫不好爬，而且中文命名方式如果要引用自己的链接的话就很麻烦，（因为会重新编码成好长一串），并且中文链接在百度Google权重很低
+
+于是这里我们使用hexo-abbrlink：
+```
+npm install hexo-abbrlink --save
+```
+然后在_config.yml配置即可使用
+```
+permalink: :abbrlink/
+abbrlink:
+  alg: crc32  # 算法：crc16(default) and crc32
+  rep: hex    # 进制：dec(default) and hex
+permalink_defaults:
+```
