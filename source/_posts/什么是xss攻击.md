@@ -1,7 +1,8 @@
 ---
 title: 什么是xss攻击?
 date: 2020-02-12 22:44:44
-tags:
+tags: xss攻击
+category: web安全
 ---
 
 **XSS跨站脚本攻击:**Cross-site scripting,黑客想尽一切方法 将一段脚本内容放到目标网站的目标浏览器上解释执行

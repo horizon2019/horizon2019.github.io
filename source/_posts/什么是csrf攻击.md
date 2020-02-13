@@ -1,5 +1,5 @@
 ---
-title: 什么是csrf攻击，xss攻击，sql注入攻击(一)
+title: 什么是csrf攻击?
 date: 2020-02-12 22:22:20
 tags: csrf攻击
 category: web安全
@@ -17,9 +17,9 @@ CSRF，全名：Cross site Request Forgery（跨站域请求伪造）。一般�
 
 
 **解决方法：**
-1.验证 HTTP Referer 字段
+`1.验证 HTTP Referer 字段`
 Referer 的值是由浏览器提供的，虽然 HTTP 协议上有明确的要求，但是每个浏览器对于 Referer 的具体实现可能有差别，并不能保证浏览器自身没有安全漏洞。使用验证 Referer 值的方法，就是把安全性都依赖于第三方（即浏览器）来保障，从理论上来讲，这样并不安全。事实上，对于某些浏览器，比如 IE6 或 FF2，目前已经有一些方法可以篡改 。Referer 值。
-2.Cookie Hashing(所有表单都包含同一个伪随机值)：
+`2.Cookie Hashing(所有表单都包含同一个伪随机值)：`
 ```
   //首先服务器给用户颁发具有唯一用户标识的cookie信息，
 　　<?php
@@ -60,10 +60,10 @@ Referer 的值是由浏览器提供的，虽然 HTTP 协议上有明确的要求
 
 
 
-4.在请求地址中添加 token 并验证
+`3.在请求地址中添加 token 并验证`
 抵御 CSRF，关键在于在请求中放入黑客所不能伪造的信息，并且该信息不存在于 cookie 之中。可以在 HTTP 请求中以参数的形式加入一个随机产生的 token，并在服务器端建立一个拦截器来验证这个 token，如果请求中没有 token 或者 token 内容不正确，则认为可能是 CSRF 攻击而拒绝该请求。
 
-1).先是令牌生成函数(gen_token())：
+3.1).先是令牌生成函数(gen_token())：
 
 ```
      <?php
@@ -74,7 +74,7 @@ Referer 的值是由浏览器提供的，虽然 HTTP 协议上有明确的要求
           return $token;
      }
 ```
-2).然后是Session令牌生成函数(gen_stoken())：
+3.2).然后是Session令牌生成函数(gen_stoken())：
 
 ```
      <?php
@@ -90,7 +90,7 @@ Referer 的值是由浏览器提供的，虽然 HTTP 协议上有明确的要求
      　　}
      ?>
 ```
-3).WEB表单生成隐藏输入域的函数：　　
+3.3).WEB表单生成隐藏输入域的函数：　　
 
 ```
      <?php
@@ -101,7 +101,7 @@ Referer 的值是由浏览器提供的，虽然 HTTP 协议上有明确的要求
      　　}
      ?>
 ```
-4).WEB表单结构：
+3.4).WEB表单结构：
 
 ```
      <?php
@@ -115,11 +115,11 @@ Referer 的值是由浏览器提供的，虽然 HTTP 协议上有明确的要求
           <input type=”submit” name=”submit” value=”Submit”>
      </FORM>
 ```
-5).服务端核对令牌
+3.5).服务端核对令牌
 
-这种方法要比检查 Referer 要安全一些，token 可以在用户`登陆后`产生并放于 session 之中，然后在每次请求时把 token 从 session 中拿出，与请求中的 token 进行比对，但这种方法的难点在于如何把 token 以参数的形式加入请求。对于 GET 请求，token 将附在请求地址之后，这样 URL 就变成 http://url?csrftoken=tokenvalue。 而对于 POST 请求来说，要在 form 的最后加上 `<input type=”hidden” name=”csrftoken” value=”tokenvalue”/>`，这样就把 token 以参数的形式加入请求了。但是，在一个网站中，可以接受请求的地方非常多，要对于每一个请求都加上 token 是很麻烦的，并且很容易漏掉，通常使用的方法就是在每次页面加载时，使用 javascript 遍历整个 dom 树，对于 dom 中所有的 a 和 form 标签后加入 token。这样可以解决大部分的请求，但是对于在页面加载之后动态生成的 html 代码，这种方法就没有作用，还需要程序员在编码时手动添加 token。
+这种方法要比检查 Referer 要安全一些，token 可以在用户`登陆后`产生并放于 session 之中，然后在每次请求时把 token 从 session 中拿出，与请求中的 token 进行比对，但这种方法的难点在于如何把 token 以参数的形式加入请求。对于 GET 请求，token 将附在请求地址之后，这样 URL 就变成` http://url?csrftoken=tokenvalue。 `而对于 POST 请求来说，要在 form 的最后加上 `<input type=”hidden” name=”csrftoken” value=”tokenvalue”/>`，这样就把 token 以参数的形式加入请求了。但是，在一个网站中，可以接受请求的地方非常多，要对于每一个请求都加上 token 是很麻烦的，并且很容易漏掉，通常使用的方法就是在每次页面加载时，使用 javascript 遍历整个 dom 树，对于 dom 中所有的 a 和 form 标签后加入 token。这样可以解决大部分的请求，但是对于在页面加载之后动态生成的 html 代码，这种方法就没有作用，还需要程序员在编码时手动添加 token。
 该方法还有一个缺点是难以保证 token 本身的安全。特别是在一些论坛之类支持用户自己发表内容的网站，黑客可以在上面发布自己个人网站的地址。由于系统也会在这个地址后面加上 token，黑客可以在自己的网站上得到这个 token，并马上就可以发动 CSRF 攻击。为了避免这一点，系统可以在添加 token 的时候增加一个判断，如果这个链接是链到自己本站的，就在后面添加 token，如果是通向外网则不加。不过，即使这个 csrftoken 不以参数的形式附加在请求之中，黑客的网站也同样可以通过 Referer 来得到这个 token 值以发动 CSRF 攻击。这也是一些用户喜欢手动关闭浏览器 Referer 功能的原因
 
 
-5.验证码
+`4.验证码`
 这个方案的思路是：每次的用户提交都需要用户在表单中填写一个图片上的随机字符串，厄....这个方案可以完全解决CSRF，但个人觉得在易用性方面似乎不是太好，还有听闻是验证码图片的使用涉及了一个被称为MHTML的Bug，可能在某些版本的微软IE中受影响。
