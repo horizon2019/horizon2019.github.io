@@ -2,7 +2,7 @@
 title: Hexo 搭建全记录
 header_img: /img/hexobuild.jpg
 tags: hexo build
-date: 2019-09-11 23:11:46
+date: 2018-09-11 23:11:46
 categories: blog
 ---
 
