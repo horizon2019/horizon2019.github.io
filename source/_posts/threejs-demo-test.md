@@ -1,12 +1,12 @@
 ---
 title: threejs demo test
-date: 2020-02-16 20:29:41
+date: 2019-08-16 20:29:41
 tags:
 ---
 
 以下demo展示的内容为：A cube rotating on it's Y axis-a sphere rotating around the cube
 
-threejs里面使用的是右手坐标系
+threejs里面使用的是右手坐标系：
 
 ![](https://www.blog.starmoon.tech/img/threejs.png)
 
