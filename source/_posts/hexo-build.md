@@ -2,7 +2,7 @@
 title: Hexo 搭建全记录
 header_img: /img/hexobuild.jpg
 tags: hexo build
-date: 2018-09-11 23:11:46
+date: 2018-05-13 23:11:46
 categories: blog
 ---
 
@@ -126,7 +126,6 @@ post_asset_folder: true
 
 bug4.`hexo博客文章里面插入图片后封面图片就不能正常显示`
 
-![](http://localhost:4000/img/pic_bug.jpg)
 尚未解决
 
 此前使用的主题或许存在缺陷，后面选用了https://github.com/fi3ework/hexo-theme-archer主题
