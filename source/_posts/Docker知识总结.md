@@ -31,14 +31,14 @@ Docker提供了很多命令来管理镜像、容器和仓库。包括：
 
 ![](https://www.blog.starmoon.tech/img/docker.png)
 
-`对容器的操作：`
+**对容器的操作：**
 docker exec -i -t webapp /bin/bash
 docker start <ID>/<name>
 docker stop <ID>/<name>
 docker restart <ID>/<name>
 docker rm <ID>/<name>
 docker ps 查看正在运行的容器
-`镜像的操作：`
+**镜像的操作：**
 docker rmi <ID>/<name>删除镜像
 docker run <imagename>运行镜像
 docker pull <imagename>下载镜像 
