@@ -1,7 +1,8 @@
 ---
-title: Redis乐观锁与悲观锁的区别
+title: redis乐观锁与悲观锁的区别
 date: 2019-12-18 20:23:47
 tags:
+category: redis
 ---
 
 ## 悲观锁
