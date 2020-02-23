@@ -72,17 +72,17 @@ codis
 ## 哨兵模式
 Sentinel（哨兵）是Redis的高可用性解决方案：由一个或多个Sentinel实例组成的Sentinel系统可以监视任意多个主服务器以及这些主服务器下的所有从服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器。
 
-![](https://www.blog.starmoon.tech/img/redis1.png)
+![](https://www.blog.starmoon.tech/img/redis1.jpg)
 
-![](https://www.blog.starmoon.tech/img/redis2.png)
+![](https://www.blog.starmoon.tech/img/redis2.jpg)
 
-![](https://www.blog.starmoon.tech/img/redis3.png)
+![](https://www.blog.starmoon.tech/img/redis3.jpg)
 
 
 ## 官方cluser方案
 从redis 3.0版本开始支持redis-cluster集群，redis-cluster采用无中心结构，每个节点保存数据和整个集群状态，每个节点都和其他节点连接。redis-cluster是一种服务端分片技术。
 
-![](https://www.blog.starmoon.tech/img/redis-cluster.png)
+![](https://www.blog.starmoon.tech/img/redis-cluster.jpg)
 
 redis-cluster特点：
 1.每个节点都和n-1个节点通信，这被称为集群总线（cluster bus）。它们使用特殊的端口号，即对外服务端口号加10000。所以要维护好这个集群的每个节点信息，不然会导致整个集群不可用，其内部采用特殊的二进制协议优化传输速度和带宽。
