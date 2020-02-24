@@ -5,8 +5,6 @@ tags:
 category: mysql
 ---
 
-
-
 现有表app_login，包含3个字段（uid、day、isguest),各uid在每一天可能有任意条记录,文后包含测试用例；
 现求9月份（1至30日）中
 1.每个uid在每天各有多少条记录
