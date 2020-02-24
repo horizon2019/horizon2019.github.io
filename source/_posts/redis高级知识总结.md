@@ -1,5 +1,5 @@
 ---
-title: redis高级知识总结
+title: redis持久化、集群、缓存穿透等知识总结
 date: 2020-02-06 21:09:06
 tags:
 ---
