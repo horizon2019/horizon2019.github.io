@@ -3,7 +3,7 @@ title: leetcode633平方数之和
 date: 2019-12-11 19:36:16
 category: leetcode
 language: zh-Hans
-tags:
+tags: 二分查找
 ---
 
 给定一个非负整数 c ，你要判断是否存在两个整数 a 和 b，使得 a2 + b2 = c。
