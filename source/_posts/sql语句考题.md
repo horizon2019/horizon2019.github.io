@@ -41,9 +41,14 @@ order by uid,month;
 GROUP_CONCAT函数返回一个字符串结果，该结果由分组中的值连接组合而成。
 substring_index:（“待截取有用部分的字符串”，“截取数据依据的字符”，截取字符的位置N）
 这里的group_concat(day)先将day连接起来，再substring_index(group_concat(day),',',7)意思是取第七个逗号前面的字符串，也就是取前七天；substring_index(group_concat(day),',',-7)意思就是取倒数第七个后面的字符串
+1.“每个uid” —— group by id
+2.“在9月份” —— where left(day,7)='2019-09' （left()函数和substring()函数效果一样）
+3.“前七次是哪几天” —— substring_index(group_concat(day),',',7) before_day
+4.“后7次是哪几天” —— substring_index(group_concat(day),',',-7) after_day
+5.“前”和“后” —— order by day
 
 ```
-select uid,substring_index(group_concat(day),',',7) before_day,substring_index(group_concat(day),',',-7) after_day
+select uid,substring_index(group_concat(day order by day),',',7) before_day,substring_index(group_concat(day order by day),',',-7) after_day
 from app_login
 where left(day,7)='2019-09'
 group by uid
