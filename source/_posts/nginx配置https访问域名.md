@@ -1,6 +1,6 @@
 ---
 title: nginx配置https访问域名
-date: 2019-12-27 23:27:22
+date: 2018-12-27 23:27:22
 tags: nginx
 SEO_title: 斯塔木恩testnginx配置https访问域名
 SEO_keywords: 斯塔木恩testnginx配置https访问域名
@@ -23,7 +23,7 @@ main_title: 斯塔木恩testnginx配置https访问域名
 按照腾讯云给的文档在 nginx 下面安装：
 https://cloud.tencent.com/developer/article/1170977
 
-`特别说明：`
+特别说明：
 
 ```server {
     listen 80 default_server;
@@ -34,7 +34,7 @@ https://cloud.tencent.com/developer/article/1170977
 }
 ```
 
-​ 这样访问 http 时会跳转到 https;
+​这样访问 http 时会跳转到 https;
 
 关于防火墙我使用的是 ufw, sudo ufw status（这里跟文中不太一样）
 
