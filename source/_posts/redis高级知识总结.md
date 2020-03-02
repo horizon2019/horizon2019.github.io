@@ -1,6 +1,6 @@
 ---
 title: Redis持久化、集群、缓存穿透等知识总结
-date: 2020-02-06 21:09:06
+date: 2019-08-06 21:09:06
 tags:
 category: redis
 ---
@@ -56,8 +56,8 @@ diskstore方式是作者放弃了虚拟内存方式后选择的一种新的实�
 Google Group上有热心网友迅速完成了压力测试，当内存用完之后，set每秒处理速度从25k下降到10k再到后来几乎卡住。 虽然通过增加cache-flush-delay可以提高相同key重复写入性能；通过增加cache-max-memory可以应对临时峰值写入。但是diskstore写入瓶颈最终还是在IO。
 3) rdb 和新 diskstore 格式关系
 rdb是传统Redis内存方式的存储格式，diskstore是另外一种格式，那两者关系如何？
-·  通过BGSAVE可以随时将diskstore格式另存为rdb格式，而且rdb格式还用于Redis复制以及不同存储方式之间的中间格式。
-·  通过工具可以将rdb格式转换成diskstore格式。
+1.通过BGSAVE可以随时将diskstore格式另存为rdb格式，而且rdb格式还用于Redis复制以及不同存储方式之间的中间格式。
+2.通过工具可以将rdb格式转换成diskstore格式。
 当然，diskstore原理很美好，但是目前还处于alpha版本，也只是一个简单demo，diskstore.c加上注释只有300行，实现的方法就是将每个value作为一个独立文件保存，文件名是key的hash值。因此diskstore需要将来有一个更高效稳定的实现才能用于生产环境。但由于有清晰的接口设计，diskstore.c也很容易换成一种B-Tree的实现。很多开发者也在积极探讨使用bdb或者innodb来替换默认diskstore.c的可行性。
 
 
