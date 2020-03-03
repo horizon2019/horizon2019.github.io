@@ -51,8 +51,8 @@ A 系统处理完了直接返回成功了，人都以为你这个请求就成功
 所以消息队列实际是一种非常复杂的架构，你引入它有很多好处，但是也得针对它带来的坏处做各种额外的技术方案和架构来规避掉，做好之后，你会发现，系统复杂度提升了一个数量级，也许是复杂了 10 倍。但是关键时刻还是得用的。
 Kafka、ActiveMQ、RabbitMQ、RocketMQ 有什么优缺点？
 
-![](https://www.blog.starmoon.tech/img/MQ6.png)
-![](https://www.blog.starmoon.tech/img/MQ7.png)
+![](https://www.blog.starmoon.tech/img/MQ6.jpg)
+
 
 
 综上，各种对比之后，有如下建议：

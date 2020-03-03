@@ -1,6 +1,6 @@
 ---
 title: redis集群原理与搭建
-date: 2020-03-02 15:06:51
+date: 2019-08-02 15:06:51
 tags:
 category: redis
 ---
@@ -9,10 +9,22 @@ category: redis
 ## 前言
 Redis 是我们目前大规模使用的缓存中间件，由于它强大高效而又便捷的功能，得到了广泛的使用。单节点的Redis已经就达到了很高的性能，为了提高可用性我们可以使用Redis集群。本文参考了Rdis的官方文档和使用Redis官方提供的Redis Cluster工具搭建Rdis集群。
 
+Redis为什么这么快？
+
+正常情况下，Redis执行命令的速度非常快，官方给出的数字是读写性能可以达到10万/秒，当然这也取决于机器的性能，但这里先不讨论机器性能上的差异，只分析一下是什么造就了Redis除此之快的速度，可以大致归纳为以下五点：
+Redis是用C语言实现的，一般来说C语言实现的程序“距离”操作系统更近，执行速度相对会更快。
+完全基于内存，绝大部分请求是纯粹的内存操作，非常快速。数据存在内存中，类似于HashMap，HashMap的优势就是查找和操作的时间复杂度都是O(1)；正因为 Redis 是单线程，所以要小心使用 Redis 指令，对于那些时间复杂度为 O(n) 级别的指令，一定要谨慎使用，一不小心就可能会导致 Redis 卡顿。
+数据结构简单，对数据操作也简单，Redis中的数据结构是专门进行设计的；采用单线程，避免了不必要的上下文切换和竞争条件，也不存在多进程或者多线程导致的切换而消耗 CPU，不用去考虑各种锁的问题，不存在加锁释放锁操作，没有因为可能出现死锁而导致的性能消耗。
+使用多路I/O复用模型，非阻塞IO，Redis 单线程处理大量的并发客户端连接的模型。使用底层模型不同，它们之间底层实现方式以及与客户端之间通信的应用协议不一样，Redis直接自己构建了VM 机制 ，因为一般的系统调用系统函数的话，会浪费一定的时间去移动和请求；
+作者对于Redis源代码可以说是精打细磨，曾经有人评价Redis是少有的集性能和优雅于一身的开源代码。
+
 Redis 集群提供了以下两个好处：
 
 将数据自动切分（split）到多个节点的能力。
 当集群中的一部分节点失效或者无法进行通讯时， 仍然可以继续处理命令请求的能力。
+
+
+
 
 ## 主从复制模型
 为了使得集群在一部分节点下线或者无法与集群的大多数（majority）节点进行通讯的情况下， 仍然可以正常运作， Redis 集群对节点使用了主从复制功能： 集群中的每个节点都有 1 个至 N 个复制品（replica）， 其中一个复制品为主节点（master）， 而其余的 N-1 个复制品为从节点（slave）。
@@ -24,4 +36,59 @@ Redis 集群提供了以下两个好处：
 不过如果节点 B 和 B1 都下线的话， Redis 集群还是会停止运作。
 
 
-## 读写分离
+## 主从复制简单配置
+1.首先安装redis
+```
+sudo apt-get install redis-server
+
+sudo systemctl enable redis-server.service
+```
+
+中间遇到redis.conf权限问题，就chmod开一下权限
+
+执行redis-cli 报错,
+
+```
+27368:M 02 Mar 16:59:25.815 # Creating Server TCP listening socket ::1:6379: bind: Cannot assign requested address
+
+```
+修改redis.conf文件中的bind配置为 bind 127.0.0.1 
+
+重启一下redis就ok了
+
+首先cp 一份redis.conf文件为redis-slave.conf ,注意修改redis-slave.conf以下几处地方：
+```
+1.log文件存放地址 logfile /var/log/redis/redis-server-slave1.log
+
+2.dbfilename dump-slave1.rdb
+
+3.port 6380
+```
+在redis从服务器下执行slaveof 127.0.0.1 6379重启redis，info replication可以查看到以下信息：
+
+
+```
+127.0.0.1:6380> info replication
+# Replication
+role:slave
+master_host:127.0.0.1
+master_port:6379
+master_link_status:up
+master_last_io_seconds_ago:7
+master_sync_in_progress:0
+slave_repl_offset:14
+slave_priority:100
+slave_read_only:1
+connected_slaves:0
+master_replid:6bf38f89f5bd68a8d5d0e2b7af58e93a975aecd4
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:14
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:14
+```
+
+
+这样就完成了主从复制，读写分离，主服务器负责写入，从节点负责读取；
