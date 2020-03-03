@@ -56,7 +56,7 @@ sudo systemctl enable redis-server.service
 
 重启一下redis就ok了
 
-首先cp 一份redis.conf文件为redis-slave.conf ,注意修改redis-slave.conf以下几处地方：
+首先cp 一份redis.conf文件为redis-slave.conf (一主多从看情况cp多个配置文件),注意修改redis-slave.conf以下几处地方：
 ```
 1.log文件存放地址 logfile /var/log/redis/redis-server-slave1.log
 
@@ -92,3 +92,61 @@ repl_backlog_histlen:14
 
 
 这样就完成了主从复制，读写分离，主服务器负责写入，从节点负责读取；
+
+
+## 基准测试
+
+基准的测试命令：
+redis-benchmark -q -n 100000
+
+```
+PING_INLINE: 50890.59 requests per second
+PING_BULK: 50226.02 requests per second
+SET: 28153.15 requests per second
+GET: 49751.24 requests per second
+INCR: 27862.91 requests per second
+LPUSH: 27270.25 requests per second
+RPUSH: 28785.26 requests per second
+LPOP: 27233.12 requests per second
+RPOP: 27886.22 requests per second
+SADD: 50632.91 requests per second
+HSET: 27816.41 requests per second
+SPOP: 52576.24 requests per second
+LPUSH (needed to benchmark LRANGE): 25873.22 requests per second
+LRANGE_100 (first 100 elements): 28113.58 requests per second
+LRANGE_300 (first 300 elements): 11961.72 requests per second
+LRANGE_500 (first 450 elements): 8402.66 requests per second
+LRANGE_600 (first 600 elements): 6618.57 requests per second
+MSET (10 keys): 31655.59 requests per second
+```
+
+这里可以看出，在我的服务器上单机版的redis每秒可以处理5w个请求，而redis的性能最快的配置可以达到12w/s
+```
+PING_INLINE: 48780.49 requests per second
+PING_BULK: 47619.05 requests per second
+SET: 48076.93 requests per second
+GET: 48192.77 requests per second
+INCR: 48780.49 requests per second
+LPUSH: 47961.63 requests per second
+RPUSH: 47303.69 requests per second
+LPOP: 46728.97 requests per second
+RPOP: 48661.80 requests per second
+SADD: 47778.31 requests per second
+HSET: 49261.09 requests per second
+SPOP: 47619.05 requests per second
+LPUSH (needed to benchmark LRANGE): 48216.01 requests per second
+LRANGE_100 (first 100 elements): 27770.06 requests per second
+LRANGE_300 (first 300 elements): 12561.24 requests per second
+LRANGE_500 (first 450 elements): 8650.52 requests per second
+LRANGE_600 (first 600 elements): 6771.86 requests per second
+MSET (10 keys): 49358.34 requests per second
+```
+
+
+## 流水线测试
+使用流水线
+默认情况下，每个客户端都是在一个请求完成之后才发送下一个请求（基准会模拟50个客户端除非使用-c指定特别的数量），这意味着服务器几乎是按顺序读取每个客户端的命令。RTT也加入了其中。
+真实世界会更复杂，Redis支持/topics/pipelining，使得可以一次性执行多条命令成为可能。Redis流水线可以提高服务器的TPS
+redis-benchmark -n 1000000 -t set,get -P 16 -q 加入-P选项使用管道技术，一次执行多条命令
+
+每秒处理get/sret请求达到了60/50W
