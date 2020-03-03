@@ -2,6 +2,7 @@
 title: redis几种加锁机制的实现
 date: 2019-10-03 21:25:45
 tags:
+category: redis
 ---
 
 ## redis加锁分类
