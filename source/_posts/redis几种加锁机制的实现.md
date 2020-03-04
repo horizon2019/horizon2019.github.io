@@ -23,7 +23,7 @@ $redis->expire($key, $ttl); //设置生成时间为1秒
 
 ## 第二种锁SETNX
 这种加锁的思路是，如果 key 不存在，将 key 设置为 value
-如果 key 已存在，则 SETNX 不做任何动作
+如果 key 已存在，则 SETNX 不做任何动作,思路很简单，主要用到的redis函数是setnx()，首先是将某一任务标识名（这里用Lock:order作为标识名的例子）作为键存到redis里，并为其设个过期时间。
 1、 客户端A请求服务器设置key的值，如果设置成功就表示加锁成功  
 2、 客户端B也去请求服务器设置key的值，如果返回失败，那么就代表加锁失败  
 3、 客户端A执行代码完成，删除锁  
@@ -94,3 +94,5 @@ $lock = $redLock->lock('my_resource_name', 1000);
 $redLock->unlock($lock)
 
 ```
+
+详细参考：https://juejin.im/post/5bf3f15851882526a643e207
