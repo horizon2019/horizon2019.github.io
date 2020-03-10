@@ -39,5 +39,7 @@ InnoDB 主键使用的是聚簇索引，二级索引是非聚簇索引。MyISAM 
 
 
 
+
+
 深度阅读：https://www.jianshu.com/p/54c6d5db4fe6
 参考文章：https://juejin.im/post/5cdd701ee51d453a36384939
