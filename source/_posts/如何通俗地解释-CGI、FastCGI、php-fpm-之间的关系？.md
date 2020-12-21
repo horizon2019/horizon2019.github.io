@@ -2,6 +2,7 @@
 title: 如何解释 CGI、FastCGI、php-fpm 之间的关系？
 date: 2018-08-17 19:26:52
 tags:
+category: 计算机网络
 ---
 
 

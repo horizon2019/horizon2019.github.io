@@ -1,7 +1,8 @@
 ---
 title: 如何使用explain分析sql语句
 date: 2019-03-16 21:43:32
-tags:
+tags: sql优化
+categories: mysql
 ---
 
 ## 关于慢日志查询工具

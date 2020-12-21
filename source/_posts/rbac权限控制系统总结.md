@@ -2,6 +2,7 @@
 title: rbac权限控制系统总结
 date: 2020-02-06 16:20:57
 tags:
+category: 业务实现
 ---
 
 rbac 权限控制是一个非常成熟的权限控制系统，其原理是给每个用户一个或多个角色 而每个角色对系统相应模块有访问权限。RBAC（Role-Based Access Control）模型

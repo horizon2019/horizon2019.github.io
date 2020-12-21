@@ -1,7 +1,8 @@
 ---
 title: Mysql聚簇索引和非聚簇索引
 date: 2020-02-21 11:00:15
-tags: mysql
+tags: mysql索引
+category: mysql
 ---
 
 

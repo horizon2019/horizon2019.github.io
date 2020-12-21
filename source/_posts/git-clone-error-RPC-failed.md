@@ -1,8 +1,8 @@
 ---
 title: "git clone error: RPC failed;"
 date: 2019-12-17 21:30:43
-tags: git clone
-categories: Git
+tags: 
+categories: git
 ---
 
 ### git clone 时发现项目一直反复克隆不下来，并且报错

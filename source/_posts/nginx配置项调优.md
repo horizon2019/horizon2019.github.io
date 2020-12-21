@@ -2,6 +2,7 @@
 title: nginx配置项调优
 date: 2019-03-17 09:50:48
 tags:
+category: 计算机网络
 ---
 
 ### 优化 Nginx worker 进程数

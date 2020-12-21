@@ -2,6 +2,7 @@
 title: js或jquery如何获取父级、子级、兄弟元素
 date: 2018-05-17 20:39:34
 tags:
+category: jquery
 ---
 
 

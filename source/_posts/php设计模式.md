@@ -2,6 +2,7 @@
 title: php设计模式
 date: 2018-11-14 14:59:51
 tags:
+category: 设计模式
 ---
 
 

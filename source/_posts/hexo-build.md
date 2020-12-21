@@ -1,9 +1,9 @@
 ---
 title: Hexo 搭建全记录
 header_img: /img/hexobuild.jpg
-tags: hexo build
+tags: hexo 部署
 date: 2018-05-13 23:11:46
-categories: blog
+categories: hexo
 ---
 
 ## Hexo 搭建全记录

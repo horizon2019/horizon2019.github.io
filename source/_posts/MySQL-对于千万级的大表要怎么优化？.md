@@ -1,7 +1,7 @@
 ---
 title: MySQL 对于千万级的大表要怎么优化？
 date: 2020-02-13 17:29:53
-tags:
+tags: sql优化
 category: mysql
 ---
 # MySQL优化三大方向

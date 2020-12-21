@@ -2,6 +2,7 @@
 title: nginx负载均衡策略
 date: 2019-04-23 18:27:40
 tags:
+category: 计算机网络
 ---
 
 

@@ -3,7 +3,6 @@ title: jquery datatable 表格组件使用方法
 date: 2018-12-24 22:26:12
 tags: datatables
 category: jquery
-SEO_title: jquery datatable 表格组件使用方法
 ---
 
 `1.php后台自定义逻辑部分：`

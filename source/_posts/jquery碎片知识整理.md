@@ -2,6 +2,7 @@
 title: jquery碎片知识整理
 date: 2018-08-16 20:51:27
 tags:
+category: jquery
 ---
 
 一：根据id遍历

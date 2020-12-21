@@ -1,8 +1,8 @@
 ---
 title: hexo-windows本地环境部署教程
 date: 2018-05-14 23:35:15
-tags: hexo windows
-categories: blog
+tags: hexo部署
+categories: hexo
 ---
 
 参考文章：https://www.cnblogs.com/xingyunblog/p/8675681.html
