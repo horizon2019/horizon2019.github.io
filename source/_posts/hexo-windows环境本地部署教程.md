@@ -11,7 +11,7 @@ categories: hexo
 我是安装在 D 盘这个位置 D:\Program Files\nodejs
 
 1.首先在 node.js 的安装目录新建两个文件夹 node_global 和 node_cache
-![](https://www.blog.starmoon.tech/img/hexo_windows1.png)
+![](http://119.29.18.20/img/hexo_windows1.png)
 
 2.cmd 窗口输入以下两行命令：
 
@@ -20,13 +20,13 @@ npm config set prefix "D:\Program Files\nodejs\node_global"
 npm config set cache "D:\Program Files\nodejs\node_cache"
 
 3.在环境变量中新建系统变量：
-![](https://www.blog.starmoon.tech/img/hexo_windows2.png)
+![](http://119.29.18.20/img/hexo_windows2.png)
 
 4.修改【用户变量】中的 path 变量，将 C:\Users\hua\AppData\Roaming\npm 修改为 D:\install\nodejs\node_global
 
-![](https://www.blog.starmoon.tech/img/hexo_windows3.png)
+![](http://119.29.18.20/img/hexo_windows3.png)
 5.npm install -g hexo-cli
-![](https://www.blog.starmoon.tech/img/hexo_windows4.png)
+![](http://119.29.18.20/img/hexo_windows4.png)
 
 发现运行很慢，解决办法就是修改 npm 的安装源，这里选择淘宝 NPM 镜像，这是一个完整 npmjs.org 镜像，你可以用此代替官方版本(只读)，同步频率目前为 10 分钟 一次以保证尽量与官方服务同步。执行 npm config set registry https://registry.npm.taobao.org
 

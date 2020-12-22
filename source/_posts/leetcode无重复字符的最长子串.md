@@ -45,7 +45,7 @@ category: leetcode
 }
 
 ```
-![](https://www.blog.starmoon.tech/img/draft.png)
+![](http://119.29.18.20/img/draft.png)
 **思路：**
 比较它的子字符串最大的长度，子字符串中要求没有重复元素，用双层循环找出它的子字符串。
 **array_unique以及array_pop的用法:**

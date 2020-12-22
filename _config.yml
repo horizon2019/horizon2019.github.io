@@ -7,13 +7,13 @@ title: Hexo
 subtitle:
 description:
 keywords:
-author: Horizon
+author: 杯倾川与溪
 language: zh-CN
 timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://www.blog.starmoon.tech
+url: http://119.29.18.20
 root: /
 permalink: :year/:month/:day/:title/
 # abbrlink:
