@@ -48,7 +48,7 @@ B+Tree相对B-Tree的基础有两大变化：
 数据是存在叶子节点上的  
 数据节点之间是有指针指向的
 
-![](https://www.blog.starmoon.tech/img/bplustree.png)
+![](/bplustree.png)
 
 
 聚集索引  

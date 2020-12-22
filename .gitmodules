@@ -1,6 +1,3 @@
-[submodule "/var/www/starmoon.tech.com/blog/themes/hexo-theme-Claudia"]
-	path = /var/www/starmoon.tech.com/blog/themes/hexo-theme-Claudia
-	url = git@github.com:horizon2019/hexo-theme-Claudia.git
 [submodule "themes/new_theme"]
 	path = themes/new_theme
 	url = git@github.com:horizon2019/hexo-theme-Claudia.git

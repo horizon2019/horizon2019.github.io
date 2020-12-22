@@ -30,7 +30,7 @@ Docker提供了很多命令来管理镜像、容器和仓库。包括：
 镜像的保存和导入命令save和load，容器的导出导入命令export和import
 
 
-![](https://www.blog.starmoon.tech/img/docker.png)
+![](http://119.29.18.20/img/docker.png)
 
 **对容器的操作：**
 docker exec -i -t webapp /bin/bash

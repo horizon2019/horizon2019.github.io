@@ -28,7 +28,7 @@ type_id ,
 type_name
 FROM  tdb_goods_types。
 ```
-![](https://www.blog.starmoon.tech/img/leetcode626.png)
+![](http://119.29.18.20/img/leetcode626.png)
 
 4.
  ```

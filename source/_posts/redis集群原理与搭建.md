@@ -1,7 +1,7 @@
 ---
 title: redis集群原理与搭建
 date: 2019-08-02 15:06:51
-tags:
+tags: redis集群
 category: redis
 ---
 
@@ -22,7 +22,7 @@ Redis为什么这么快？
 流程架构
 
 redis的整体核心在服务端的处理,流程图如下：
-![](https://www.blog.starmoon.tech/img/rediscluster.png)
+![](http://119.29.18.20/img/rediscluster.png)
 
 
 epoll：多路复用模型的基础  

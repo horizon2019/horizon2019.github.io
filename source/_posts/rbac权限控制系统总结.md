@@ -11,12 +11,12 @@ RBAC 模型可以分为：RBAC0、RBAC1、RBAC2、RBAC3 四种。其中 RBAC0 �
 RBAC的优缺点
 优点：简化了用户和权限的关系，易扩展、易维护
 缺点：RBAC模型没有提供操作顺序的控制机制，这一缺陷使得RBAC模型很难适应哪些对操作次序有严格要求的系统
-![](https://www.blog.starmoon.tech/img/rbac1.png)
+![](http://119.29.18.20/img/rbac1.png)
 
 
 总共5张表，user,role,user_role,permission,role_permission，用户和角色是多对多关系，角色和权限也是多对多关系。当用户访问某个action的时候，检查user对应的role包含的permission中是否含有这个action。对于laravel框架而言现在也有很多laravel rbac的权限拓展包，laravel/permission等等可以实现
 
-![](https://www.blog.starmoon.tech/img/rbac2.png)
+![](http://119.29.18.20/img/rbac2.png)
 这里以yii框架为例：
 1.写一个BaseadminController放在component文件夹下面，BaseadminController继承自Controller，其他的controller又继承BaseadminController.
 BaseadminController要做的工作有：
