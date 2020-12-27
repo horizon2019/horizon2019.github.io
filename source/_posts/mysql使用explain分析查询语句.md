@@ -15,21 +15,24 @@ category: mysql
 实际开发中推荐使用复合索引，并且单表创建的索引个数建议不要超过五个
 
 
-explain 分析sql语句
+**explain 分析sql语句** 
+
 使用explain关键字可以模拟优化器执行sql查询语句，从而得知MySQL 是如何处理sql语句。
 
 +----+-------------+-------+------------+------+---------------+-----+---------+------+------+----------+-------+
 id | select_type| table | partitions | type | possible_keys | key | key_len | ref  | rows | filtered | Extra|
 +----+-------------+-------+------------+------+---------------+-----+---------+------+------+----------+-------+
 
-id
+id 
+
 select 查询的序列号，包含一组可以重复的数字，表示查询中执行sql语句的顺序。一般有三种情况：
 第一种：id全部相同，sql的执行顺序是由上至下；
 第二种：id全部不同，sql的执行顺序是根据id大的优先执行；
 第三种：id既存在相同，又存在不同的。先根据id大的优先执行，再根据相同id从上至下的执行。
 
 
-select_type
+select_type 
+
 select 查询的类型，主要是用于区别普通查询，联合查询，子查询
 simple：简单的select 查询，查询中不包含子查询或者union
 primary：查询中若包含任何复杂的子查询，最外层查询则被标记为primary
@@ -40,7 +43,8 @@ union result：从union表获取结果的select
 partitions: 表所使用的分区，如果要统计十年公司订单的金额，可以把数据分为十个区，每一年代表一个区。这样可以大大的提高查询效率。
 
 
-type
+type 
+
 这是一个非常重要的参数，连接类型，常见的有：all , index , range , ref , eq_ref , const , system , null 八个级别。
 性能从最优到最差的排序：system > const > eq_ref > ref > range > index > all
 对java程序员来说，若保证查询至少达到range级别或者最好能达到ref则算是一个优秀而又负责的程序员。
@@ -58,19 +62,29 @@ ref：显示索引的哪一列或常量被用于查找索引列上的值。
 rows：根据表统计信息及索引选用情况，大致估算出找到所需的记录所需要读取的行数，值越大越不好。
 
 
-extra
+extra 
+
 Using filesort： 说明MySQL会对数据使用一个外部的索引排序，而不是按照表内的索引顺序进行读取。MySQL中无法利用索引完成的排序操作称为“文件排序” 。出现这个就要立刻优化sql。
+
 Using temporary： 使用了临时表保存中间结果，MySQL在对查询结果排序时使用临时表。常见于排序 order by 和 分组查询 group by。 出现这个更要立刻优化sql。
+
 Using index： 表示相应的select 操作中使用了覆盖索引（Covering index），避免访问了表的数据行，效果不错！如果同时出现Using where，表明索引被用来执行索引键值的查找。如果没有同时出现Using where，表示索引用来读取数据而非执行查找动作。
+
 覆盖索引（Covering Index） ：也叫索引覆盖，就是select 的数据列只用从索引中就能够取得，不必读取数据行，MySQL可以利用索引返回select 列表中的字段，而不必根据索引再次读取数据文件。
+
 Using index condition： 在5.6版本后加入的新特性，优化器会在索引存在的情况下，通过符合RANGE范围的条数 和 总数的比例来选择是使用索引还是进行全表遍历。
+
 Using where： 表明使用了where 过滤
+
 Using join buffer： 表明使用了连接缓存
+
 impossible where： where 语句的值总是false，不可用，不能用来获取任何元素
+
 distinct： 优化distinct操作，在找到第一匹配的元组后即停止找同样值的动作。
 
 
-filtered
+filtered 
+
 一个百分比的值，和rows 列的值一起使用，可以估计出查询执行计划(QEP)中的前一个表的结果集，从而确定join操作的循环次数。小表驱动大表，减轻连接的次数。
 通过explain的参数介绍，我们可以得知:
 表的读取顺序(id)
