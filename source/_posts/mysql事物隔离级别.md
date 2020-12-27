@@ -1,5 +1,5 @@
 ---
-title: Mysql事物隔离级别
+title: mysql事物隔离级别
 date: 2020-02-14 17:51:40
 tags: mysql事务
 category: mysql
