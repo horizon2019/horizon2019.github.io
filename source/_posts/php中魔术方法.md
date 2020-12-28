@@ -2,7 +2,7 @@
 title: php中魔术方法
 date: 2018-05-14 20:04:00
 tags:
-category: php
+category: php基础
 ---
 
 魔术方法：
