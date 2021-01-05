@@ -5,4 +5,4 @@ tags:
 category: mysql
 ---
 
-![](http://119.29.18.20/img/mysql_struct.png)
+![](https://www.starmoon.cloud/img/mysql_struct.png)

@@ -22,7 +22,7 @@ Redis为什么这么快？
 流程架构
 
 redis的整体核心在服务端的处理,流程图如下：
-![](http://119.29.18.20/img/rediscluster.png)
+![](https://www.starmoon.cloud/img/rediscluster.png)
 
 
 epoll：多路复用模型的基础  

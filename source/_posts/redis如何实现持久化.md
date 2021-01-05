@@ -99,17 +99,17 @@ codis
 **哨兵模式**  
 Sentinel（哨兵）是Redis的高可用性解决方案：由一个或多个Sentinel实例组成的Sentinel系统可以监视任意多个主服务器以及这些主服务器下的所有从服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器。
 
-![](http://119.29.18.20/img/redis1.jpg)
+![](https://www.starmoon.cloud/img/redis1.jpg)
 
-![](http://119.29.18.20/img/redis2.jpg)
+![](https://www.starmoon.cloud/img/redis2.jpg)
 
-![](http://119.29.18.20/img/redis3.jpg)
+![](https://www.starmoon.cloud/img/redis3.jpg)
 
 **官方cluser方案**    
 从redis 3.0版本开始支持redis-cluster集群，redis-cluster采用无中心结构，每个节点保存数据和整个集群状态，每个节点都和其他节点连接。redis-cluster是一种服务端分片技术。  
 
 
-![](http://119.29.18.20/img/redis-cluster.jpg)
+![](https://www.starmoon.cloud/img/redis-cluster.jpg)
 
 redis-cluster特点：  
 1.每个节点都和n-1个节点通信，这被称为集群总线（cluster bus）。它们使用特殊的端口号，即对外服务端口号加10000。所以要维护好这个集群的每个节点信息，不然会导致整个集群不可用，其内部采用特殊的二进制协议优化传输速度和带宽。  
@@ -128,7 +128,7 @@ redis-cluster特点：
 2.数据库有数据，缓存也有数据，数据不相等；  
 3.数据库没有数据，缓存有数据。  
 
-![](http://119.29.18.20/img/redis-cache.png)
+![](https://www.starmoon.cloud/img/redis-cache.png)
 读取缓存步骤一般没有什么问题，但是一旦涉及到数据更新：数据库和缓存更新，就容易出现缓存(Redis)和数据库（MySQL）间的数据一致性问题。不管是先写MySQL数据库，再删除Redis缓存；还是先删除缓存，再写库，都有可能出现数据不一致的情况。举一个例子：1.如果删除了缓存Redis，还没有来得及写库MySQL，另一个线程就来读取，发现缓存为空，则去数据库中读取数据写入缓存，此时缓存中为脏数据。2.如果先写了库，在删除缓存前，写库的线程宕机了，没有删除掉缓存，则也会出现数据不一致情况。因为写和读是并发的，没法保证顺序,就会出现缓存和数据库的数据不一致的问题。  
 
 1.第一种方案：采用延时双删策略  
@@ -156,7 +156,7 @@ public void write( String key, Object data )
 
 注意，我们的更新是先更新数据库，成功后，让缓存失效。那么，这种方式是否可以没有文章前面提到过的那个问题呢？我们可以脑补一下。
 
-![](http://119.29.18.20/img/redis-cache2.png)
+![](https://www.starmoon.cloud/img/redis-cache2.png)
 
 Cache Aside Pattern  
 一个是查询操作，一个是更新操作的并发，首先，没有了删除cache数据的操作了，而是先更新了数据库中的数据，此时，缓存依然有效，所以，并发的查询操作拿的是没有更新的数据，但是，更新操作马上让缓存的失效了，后续的查询操作再把数据从数据库中拉出来。而不会像文章开头的那个逻辑产生的问题，后续的查询操作一直都在取老的数据。  

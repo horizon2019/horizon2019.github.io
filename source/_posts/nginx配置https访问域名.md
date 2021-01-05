@@ -7,15 +7,15 @@ category: 计算机网络
 
 在腾讯云搜索 ssl 证书，申请免费证书：
 
-![](http://119.29.18.20/img/clipboard.png)
+![](https://www.starmoon.cloud/img/clipboard.png)
 
 这里建议选择手动 DNS 验证设置，之前我选择的是文件验证，创建了文件之后，等待颁发的时间已经超过了 3 天，而手动 DNS 验证的时间在 10 分钟到 24h 以内。如果手动验证 DNS 不行，请再选择文件验证。
-![](http://119.29.18.20/img/clipboard2.png)
+![](https://www.starmoon.cloud/img/clipboard2.png)
 
 参考详细说明，添加解析记录，因为我的域名是在阿里云买的，所以按照说明在阿里云添加了相应的记录。
 打开阿里云后台按照腾讯云的文档添加 DNS 解析配置
 
-![](http://119.29.18.20/img/clipboard3.png)
+![](https://www.starmoon.cloud/img/clipboard3.png)
 
 解析添加完成之后，等待证书颁发，下载证书文件。
 按照腾讯云给的文档在 nginx 下面安装：
@@ -36,7 +36,7 @@ https://cloud.tencent.com/developer/article/1170977
 
 关于防火墙我使用的是 ufw, sudo ufw status（这里跟文中不太一样）
 
-![](http://119.29.18.20/img/clipboard4.png)
+![](https://www.starmoon.cloud/img/clipboard4.png)
 
 请确保防火墙打开了`443端口`:sudo ufw allow 443
 nginx 重启：`sudo systemctl restart nginx`

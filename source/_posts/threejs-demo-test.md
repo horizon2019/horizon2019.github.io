@@ -8,7 +8,7 @@ tags:
 
 threejs里面使用的是右手坐标系：
 
-![](http://119.29.18.20/img/threejs.png)
+![](https://www.starmoon.cloud/img/threejs.png)
 
 ```
 var arWorldRoot = smoothedRoot

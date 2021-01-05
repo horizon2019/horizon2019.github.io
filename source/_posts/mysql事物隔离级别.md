@@ -8,7 +8,7 @@ category: mysql
 
 我们将事务隔离级别设置为read uncommitted，即便是事务没有commit，但是我们仍然能读到未提交的数据，这是所有隔离级别中最低的一种。
 
-![](http://119.29.18.20/img/mysqltransac.png)
+![](https://www.starmoon.cloud/img/mysqltransac.png)
 
 `未提交读(Read Uncommitted)`：允许脏读，也就是可能读取到其他会话中未提交事务修改的数据,这是所有隔离级别中最低的一种。
 
