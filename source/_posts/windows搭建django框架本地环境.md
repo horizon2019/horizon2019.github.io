@@ -39,22 +39,22 @@ django-admin startproject 项目名称
 例：django-admin startproject mytest
 
 
-4.创建django应用
+5.创建django应用
 项目创建完成后需要有具体的应用，一个项目下可以有多个应用。
 进入命令行窗口：
 python manage.py startapp 应用名称
 例：python manage.py startapp myapp
 
 
-5.在项目设置添加应用
+6.在项目设置添加应用
 打开mytest/settings.py,INSTALLED_APPS下添加：
 
-6.在终端启动django自带的测试用服务器：
+7.在终端启动django自带的测试用服务器：
 python manage.py runserver ip:port
 例：python manage.py runserver
 
 说明：ip和port可以分别设置服务器的ip和端口；省略不写默认ip为127.0.0.1；端口：8000；
 
 
-7.打开浏览器输入"127.0.0.1:8000"，即可得到网页
+8.打开浏览器输入"127.0.0.1:8000"，即可得到网页
 
