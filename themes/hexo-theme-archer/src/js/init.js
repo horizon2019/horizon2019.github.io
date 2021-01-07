@@ -19,7 +19,7 @@ let init = function() {
     // setTimeout(function () {
     introPlaceholder.remove()
     // }, 100)
-    console.info('PLACEHOLDER REMOVED')
+    // console.info('PLACEHOLDER REMOVED')
   }
   img.src = bgURL
 
