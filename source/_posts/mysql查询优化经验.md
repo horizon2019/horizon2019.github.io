@@ -1,6 +1,6 @@
 ---
 title: mysql查询优化经验
-date: 2020-12-27 15:44:41
+date: 2019-12-27 15:44:41
 tags:
 category: mysql
 ---
@@ -87,9 +87,9 @@ select o.id from orders o left join user u on o.user_id = u.id where u.level = '
 
 通常在查询条件列运算会导致索引失效，如下所示：
 查询当日订单
-select id from order where date_format(create_time，'%Y-%m-%d') = '2019-07-01';
+select id from order where date_format(create_time，'%Y-%m-%d') = '2018-07-01';
 date_format函数会导致这个查询无法使用索引，改写后：
-select id from order where create_time between '2019-07-01 00:00:00' and '2019-07-01 23:59:59';
+select id from order where create_time between '2018-07-01 00:00:00' and '2018-07-01 23:59:59';
 
 避免Select all
 如果不查询表中所有的列，避免使用SELECT *，它会进行全表扫描，不能有效利用索引。

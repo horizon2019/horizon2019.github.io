@@ -1,6 +1,6 @@
 ---
 title: 如何使用Git LFS提交大文件？
-date: 2018-08-17 18:18:23
+date: 2017-08-17 18:18:23
 tags:
 categories: git
 ---

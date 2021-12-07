@@ -4,8 +4,8 @@
     "reportVersion": 1,
     "event": "Allocation failed - JavaScript heap out of memory",
     "trigger": "FatalError",
-    "filename": "report.20191230.221348.12904.0.001.json",
-    "dumpEventTime": "2019-12-30T22:13:48Z",
+    "filename": "report.20181230.221348.12904.0.001.json",
+    "dumpEventTime": "2018-12-30T22:13:48Z",
     "dumpEventTimeStamp": "1577715228833",
     "processId": 12904,
     "cwd": "E:\\www\\work\\Personal-blog",
@@ -33,7 +33,7 @@
       "openssl": "1.1.1d",
       "cldr": "35.1",
       "icu": "64.2",
-      "tz": "2019c",
+      "tz": "2018c",
       "unicode": "12.1"
     },
     "release": {

@@ -1,6 +1,6 @@
 ---
 title: hexo-windows本地环境部署教程
-date: 2018-05-14 23:35:15
+date: 2017-05-14 23:35:15
 tags: hexo部署
 categories: hexo
 ---

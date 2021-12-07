@@ -1,6 +1,6 @@
 ---
 title: redis集群原理与搭建
-date: 2019-08-02 15:06:51
+date: 2018-08-02 15:06:51
 tags: redis集群
 category: redis
 ---

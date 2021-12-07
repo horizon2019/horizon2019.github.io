@@ -8,7 +8,7 @@ signature: witness me
 # SNS (you can custom the order)
 social:
   email:
-  github: //github.com/horizon2019
+  github: //github.com/horizon2018
   # wechat and qq should be a path of qr-code image
   wechat: /assets/example_qr.png
   qq:
