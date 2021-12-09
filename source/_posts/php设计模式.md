@@ -276,5 +276,3 @@ class Event extends EventGenerator
 }
 ```
 
-参考文章：http://larabase.com/collection/5/post/143
-https://segmentfault.com/a/1190000007473294

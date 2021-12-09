@@ -25,6 +25,3 @@ pip 安装Twisted成功
 ```
 
 
-参考文章：https://blog.csdn.net/lwx356481/article/details/81224667
-https://scrapy-chs.readthedocs.io/zh_CN/latest/intro/tutorial.html
-https://blog.csdn.net/ngy321/article/details/88972255
