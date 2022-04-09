@@ -1,5 +1,5 @@
 ---
-title: laravel orm 优化实用技巧
+title: 关于laravel orm模型的优化实用技巧
 date: 2019-12-15 14:36:35
 tags: orm模型
 category: laravel
