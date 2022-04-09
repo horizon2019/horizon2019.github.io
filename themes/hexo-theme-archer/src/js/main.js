@@ -12,7 +12,7 @@ import fancybox from './fancybox'
 
 let logStyle =
   'color: #fff; background: #f75357; padding: 1px; border-radius: 5px;'
-console.info('%c 📦 https://github.com/horizon2019?tab=repositories ', logStyle)
+console.info('%c 📦 https://github.com/horizon2018?tab=repositories ', logStyle)
 
 // remove background placeholder
 init()

@@ -1,6 +1,6 @@
 ---
 title: php中魔术方法
-date: 2018-05-14 20:04:00
+date: 2017-05-14 20:04:00
 tags:
 category: php基础
 ---

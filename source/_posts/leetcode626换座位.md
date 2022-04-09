@@ -1,6 +1,6 @@
 ---
 title: leetcode626换座位
-date: 2019-12-10 17:01:28
+date: 2018-12-10 17:01:28
 tags:
 category: leetcode
 ---

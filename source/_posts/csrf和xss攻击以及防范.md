@@ -1,6 +1,6 @@
 ---
 title: csrf和xss攻击以及防范
-date: 2019-09-12 22:22:20
+date: 2018-09-12 22:22:20
 tags: csrf攻击
 category: web安全
 ---
@@ -193,4 +193,4 @@ XSS攻击的预防
 主动检测和发现 可使用 XSS 攻击字符串和自动扫描工具寻找潜在的 XSS 漏洞。
 
 
-参考文章：https://tech.meituan.com/2018/09/27/fe-security.html
+

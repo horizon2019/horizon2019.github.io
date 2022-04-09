@@ -1,6 +1,6 @@
 ---
 title: leetcode628三个数最大的乘积
-date: 2019-12-10 19:30:52
+date: 2018-12-10 19:30:52
 tags: 冒泡排序
 category: leetcode
 ---

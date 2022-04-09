@@ -2,7 +2,7 @@
 title: Hexo 搭建全记录
 header_img: /img/hexobuild.jpg
 tags: hexo 部署
-date: 2018-05-13 23:11:46
+date: 2017-05-13 23:11:46
 categories: hexo
 ---
 
@@ -49,7 +49,6 @@ Hexo 是一款基于 node 的静态博客网站生成器，使用 Markdown 语�
 
 关于主题安装可以先去 hexo 的主题网站里面挑选比较喜欢的主题，在 github 找到源代码，然后这里我用了 git 子模块来管理主题。
 
-参考文章：https://blog.csdn.net/guotianqing/article/details/82391665
 
 简单解释下博文里面这条命令：
 `git submodule add <url> <path>`
@@ -122,7 +121,7 @@ post_asset_folder: true
 
 3.这里以防插件 bug，建议替换一下这个位置的文件/node_modules/hexo-asset-image/index.js
 
-参考博文：https://blog.csdn.net/xjm850552586/article/details/84101345
+
 
 bug4.`hexo博客文章里面插入图片后封面图片就不能正常显示`
 

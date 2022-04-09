@@ -1,11 +1,11 @@
 ---
 title: hexo-windows本地环境部署教程
-date: 2018-05-14 23:35:15
+date: 2017-05-14 23:35:15
 tags: hexo部署
 categories: hexo
 ---
 
-参考文章：https://www.cnblogs.com/xingyunblog/p/8675681.html
+
 当在 cmd 模式下 npm --version 发现 nodejs 和 npm 安装失败时，需要配置 nodejs 和 npm 的环境变量
 
 我是安装在 D 盘这个位置 D:\Program Files\nodejs
@@ -35,5 +35,4 @@ bash: hexo command not found 问题解决，那么请先配置环境变量，在
 
 7.在项目文件夹下，git bash 中执行 hexo-server,直接访问http://localhost:4000/
 
-参考文章：
-https://www.jianshu.com/p/957f5631faa9
+

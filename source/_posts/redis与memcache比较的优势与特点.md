@@ -1,6 +1,6 @@
 ---
 title: redis与memcache比较的优势与特点
-date: 2020-12-27 21:10:59
+date: 2019-12-27 21:10:59
 tags:
 category: redis
 ---

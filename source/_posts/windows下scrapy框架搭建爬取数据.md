@@ -1,6 +1,6 @@
 ---
 title: windows下scrapy框架搭建爬取数据
-date: 2020-01-22 20:08:30
+date: 2019-01-22 20:08:30
 tags:
 ---
 
@@ -25,6 +25,3 @@ pip 安装Twisted成功
 ```
 
 
-参考文章：https://blog.csdn.net/lwx356481/article/details/81224667
-https://scrapy-chs.readthedocs.io/zh_CN/latest/intro/tutorial.html
-https://blog.csdn.net/ngy321/article/details/88972255

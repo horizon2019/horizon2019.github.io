@@ -1,6 +1,11 @@
 ---
+<<<<<<< HEAD:source/_posts/关于laravel orm模型的优化实用技巧.md
 title: 关于laravel orm模型的优化实用技巧
 date: 2019-12-15 14:36:35
+=======
+title: laravel orm 优化实用技巧
+date: 2018-12-15 14:36:35
+>>>>>>> f425fe099f2175e43cc0104e0c90a9d6ca472170:source/_posts/laravel-orm-优化实用技巧.md
 tags: orm模型
 category: laravel
 ---

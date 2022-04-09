@@ -1,6 +1,6 @@
 ---
 title: nginx配置https访问域名
-date: 2018-12-27 23:27:22
+date: 2017-12-27 23:27:22
 tags: nginx
 category: 计算机网络
 ---

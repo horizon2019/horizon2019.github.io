@@ -7,30 +7,30 @@ author: 杯倾川与溪
 signature: witness me
 # SNS (you can custom the order)
 social:
-  email: 
-  github: //github.com/horizon2019
+  email:
+  github: //github.com/horizon2018
   # wechat and qq should be a path of qr-code image
   wechat: /assets/example_qr.png
-  qq: 
-  telegram: 
-  weibo: 
-  zhihu: 
-  douban: 
-  facebook: 
-  twitter: 
-  instagram: 
-  stack-overflow: 
-  segmentFault: 
-  juejin: 
-  v2ex: 
-  bilibili: 
-  linkedin: 
-  steam: 
-  others: 
-  rss: 
-# friends
-#friends:
- # friendA: //www.baidu.com
+  qq:
+  telegram:
+  weibo:
+  zhihu:
+  douban:
+  facebook:
+  twitter:
+  instagram:
+  stack-overflow:
+  segmentFault:
+  juejin:
+  v2ex:
+  bilibili:
+  linkedin:
+  steam:
+  others:
+  rss:
+  # friends
+  #friends:
+  # friendA: //www.baidu.com
   #friendB: //www.google.com
   #friendC: 
 about:
@@ -45,6 +45,7 @@ SEO_keywords:
   - hexo
   - 'hexo-theme'
   - 'hexo-blog'
+  - 杯倾川与溪
 # main title shown in header image
 main_title: 杯倾川与溪's Studio.
 # subtitle
@@ -70,20 +71,20 @@ algolia_search:
 # If you want to add other comment plugin, edit in "custom.ejs"
 comment:
   # Livere  site: https://livere.com/
-  livere_uid: 
+  livere_uid:
   # Disqus  site: https://disqus.com/
-  disqus_shortname: 
+  disqus_shortname:
   # Gitment  site: https://github.com/imsun/gitment
-  gitment_owner: 
-  gitment_repo: 
-  gitment_client_id: 
-  gitment_client_secret: 
+  gitment_owner:
+  gitment_repo:
+  gitment_client_id:
+  gitment_client_secret:
   # Youyan  site: http://www.uyan.cc/
-  youyan_uid: 
+  youyan_uid:
   # Valine  site: https://valine.js.org/
   valine_appId: ggfIo6QwWhG5V1AjOl9D0Gaw-gzGzoHsz
   valine_appKey: 5b0tty7x3FySPePCrdFqgjwL
-  valine_placeHolder: 
+  valine_placeHolder:
 
 # ========== Analytics ========== #
 # enable Busuanzi analytics
@@ -93,27 +94,27 @@ busuanzi_pv_or_uv: 'pv'
 # custom analytic slogan, '${count}' is the analytic number, DO NOT modify it.
 busuanzi_slug: 'PV: ${count} :)'
 # Baidu analytics
-baidu_analytics: 
+baidu_analytics:
 # Google analytics
-google_analytics: 
+google_analytics:
 # CNZZ analytics
-CNZZ_analytics: 
+CNZZ_analytics:
 
 # ========== Others ========== #
 # favicon
 favicon: /assets/favicon.ico
 # truncate length of abstracts in index page (the default is 300, there will be no abstruct if you input 0)
-truncate_length: 
+truncate_length:
 # enable toc
 toc: true
 # word count & reading time
-reading_info: true
+reading_info: false
 # intro height (the default is 50 percents of the screen, you can input other number)
 index_intro_height: 30
-post_intro_height: 50
+post_intro_height: 30
 about_intro_height: 30
 # copyright
 copyright:
-  enable: true
+  enable: false
   # https://creativecommons.org/
   license: '本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可'

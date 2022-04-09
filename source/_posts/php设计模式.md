@@ -1,6 +1,6 @@
 ---
 title: php设计模式
-date: 2018-11-14 14:59:51
+date: 2017-11-14 14:59:51
 tags:
 category: 设计模式
 ---
@@ -276,5 +276,3 @@ class Event extends EventGenerator
 }
 ```
 
-参考文章：http://larabase.com/collection/5/post/143
-https://segmentfault.com/a/1190000007473294

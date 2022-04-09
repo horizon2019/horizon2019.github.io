@@ -1,6 +1,6 @@
 ---
 title: mysql常用的四种引擎
-date: 2020-12-28 16:03:04
+date: 2019-12-28 16:03:04
 tags:
 category: mysql
 ---
@@ -36,4 +36,3 @@ Memory类型的存储引擎主要用于哪些内容变化不频繁的代码表�
 (4) MERGE存储引擎  
 Merge存储引擎是一组MyISAM表的组合，这些MyISAM表必须结构完全相同，merge表本身并没有数据，对merge类型的表可以进行查询，更新，删除操作，这些操作实际上是对内部的MyISAM表进行的。  
 
-https://blog.csdn.net/Marvel__Dead/article/details/70209641

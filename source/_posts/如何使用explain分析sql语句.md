@@ -1,6 +1,6 @@
 ---
 title: 如何使用explain分析sql语句
-date: 2019-03-16 21:43:32
+date: 2018-03-16 21:43:32
 tags: sql优化
 categories: mysql
 ---

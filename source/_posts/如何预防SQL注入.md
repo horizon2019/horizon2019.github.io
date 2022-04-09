@@ -1,6 +1,6 @@
 ---
 title: 如何预防SQL注入？
-date: 2019-09-12 22:32:22
+date: 2018-09-12 22:32:22
 tags: sql注入
 category: mysql
 ---
