@@ -1,5 +1,5 @@
 ---
-title: Docker基础知识总结
+title: docker基础知识点
 date: 2018-04-21 16:11:18
 tags: 
 category: docker
@@ -19,8 +19,7 @@ Docker是一种新的容器化技术，为应用开发和部署提供“一站�
 * Images：只读的 Docker 容器模板，简言之就是系统镜像文件。
 * DockerFile：进行镜像创建的指令文件。
 
-
-**Docker基础命令**
+**Docker基础命令:**
 Docker提供了很多命令来管理镜像、容器和仓库。包括：
 从Docker Hub仓库中查找search、上传push、下载pull镜像。
 查看本地已有镜像、容器信息的images、inspect和ps命令。
@@ -33,20 +32,24 @@ Docker提供了很多命令来管理镜像、容器和仓库。包括：
 ![](https://www.starmoon.cloud/img/docker.png)
 
 **对容器的操作：**
+```
 docker exec -i -t webapp /bin/bash
 docker start <ID>/<name>
 docker stop <ID>/<name>
 docker restart <ID>/<name>
 docker rm <ID>/<name>
 docker ps 查看正在运行的容器
+```
 **镜像的操作：**
+```
 docker rmi <ID>/<name>删除镜像
 docker run <imagename>运行镜像
 docker pull <imagename>下载镜像 
 docker images查看本地镜像 
 docker info检查安装 
-
+```
 **什么是Dockerfile?**
+
 Dockerfile实际上是由一行行命令组成的,让*用户可以方便的创建自定义镜像*。
 Dockerfile大体由四部分组成：
 指明基础镜像指令FROM
