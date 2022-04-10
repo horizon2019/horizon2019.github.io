@@ -5,6 +5,7 @@ tags: TCP/IP
 category: 计算机网络
 ---
 
+
 ![](https://www.starmoon.cloud/img/TCP.jpg)
 
 不难看出，TCP/IP 与 OSI 在分层模块上稍有区别。OSI 参考模型注重“通信协议必要的功能是什么”，而 TCP/IP 则更强调“在计算机上实现协议应该开发哪种程序”。
