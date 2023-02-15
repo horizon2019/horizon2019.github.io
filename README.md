@@ -34,5 +34,5 @@ change theme into hexo-theme-archer
 #### clone theme
 ```
 cd themes\hexo-theme-archer 
-git clone https://github.com/horizon2018/hexo-theme-archer.git
+git clone https://github.com/horizon2019/hexo-theme-archer.git
 ```
