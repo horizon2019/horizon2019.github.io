@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" >
+    <meta name="author" content="杯倾川与溪">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="杯倾川与溪">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog,杯倾川与溪">
+    
+    <meta name="description" content="">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>mq消息中间件最全面分析 · 杯倾川与溪&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= "/css/style.css?v=20170824" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="stylesheet" href= "/css/mobile.css?v=20170824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href= "/assets/favicon.ico" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script" />
+    <link rel="preload" href="/scripts/main.js" as="script" />
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+        <!-- algolia -->
+        <script>
+            
+            var hits = JSON.parse('{"per_page":10}')
+            var labels = JSON.parse('{"input_placeholder":"Search for Posts","hits_empty":"We did not find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}')
+
+            var algolia = {
+                applicationID: '0YHQS8CE4Q',
+                apiKey: 'bd28b837e1100e10fb4f4f275008b9d9',
+                indexName: 'hexo blog',
+                hits: hits,
+                labels: labels
+            }
+        </script>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >杯倾川与溪&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">mq消息中间件最全面分析</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>杯倾川与溪's Studio.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:30vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            mq消息中间件最全面分析
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/01/15</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  // console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    // console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p><strong>问题</strong><br>为什么使用消息队列？消息队列有什么优点和缺点？Kafka、ActiveMQ、RabbitMQ、RocketMQ 都有什么区别，以及适合哪些场景？<br><strong>为什么使用消息队列?</strong><br>先说一下消息队列常见的使用场景吧，其实场景有很多，但是比较核心的有 3 个：解耦、异步、削峰</p>
+<p><strong>解耦</strong><br>看以下场景：A 系统发送数据到 BCD 三个系统，通过接口调用发送。如果 E 系统也要这个数据呢？那如果 C 系统现在不需要了呢？A 系统负责人几乎崩溃……</p>
+<p><img src="https://www.starmoon.cloud/img/MQ1.png" alt></p>
+<p>在这个场景中，A 系统跟其它各种乱七八糟的系统严重耦合，A 系统产生一条比较关键的数据，很多系统都需要 A 系统将这个数据发送过来。A 系统要时时刻刻考虑 BCDE 四个系统如果挂了该咋办？要不要重发，要不要把消息存起来？<br>如果使用 MQ，A 系统产生一条数据，发送到 MQ 里面去，哪个系统需要数据自己去 MQ 里面消费。如果新系统需要数据，直接从 MQ 里消费即可；如果某个系统不需要这条数据了，就取消对 MQ 消息的消费即可。这样下来，A 系统压根儿不需要去考虑要给谁发送数据，不需要维护这个代码，也不需要考虑人家是否调用成功、失败超时等情况。</p>
+<p><img src="https://www.starmoon.cloud/img/MQ2.png" alt></p>
+<p>总结：通过一个 MQ，Pub/Sub 发布订阅消息这么一个模型，A 系统就跟其它系统彻底解耦了。</p>
+<p><strong>异步</strong><br>你需要去考虑一下你负责的系统中是否有类似的场景，就是一个系统或者一个模块，调用了多个系统或者模块，互相之间的调用很复杂，维护起来很麻烦。但是其实这个调用是不需要直接同步调用接口的，如果用 MQ 给它异步化解耦，也是可以的，你就需要去考虑在你的项目里，是不是可以运用这个 MQ 去进行系统的解耦。<br>再来看一个场景，A 系统接收一个请求，需要在自己本地写库，还需要在 BCD 三个系统写库，自己本地写库要 3ms，BCD 三个系统分别写库要 300ms、450ms、200ms。最终请求总延时是 3 + 300 + 450 + 200 = 953ms，接近 1s，用户通过浏览器发起请求，等待个 1s，这几乎是不可接受的。  </p>
+<p><img src="https://www.starmoon.cloud/img/MQ3.png" alt></p>
+<p>一般互联网类的企业，对于用户直接的操作，一般要求是每个请求都必须在 200 ms 以内完成，对用户几乎是无感知的。<br>如果使用 MQ，那么 A 系统连续发送 3 条消息到 MQ 队列中，假如耗时 5ms，A 系统从接受一个请求到返回响应给用户，总时长是 3 + 5 = 8ms，对于用户而言，其实感觉上就是点个按钮，8ms 以后就直接返回了。<br><img src="https://www.starmoon.cloud/img/MQ4.png" alt></p>
+<p><strong>削峰</strong></p>
+<p>每天 0:00 到 12:00，A 系统风平浪静，每秒并发请求数量就 50 个。结果每次一到 12:00 ~ 13:00 ，每秒并发请求数量突然会暴增到 5k+ 条。但是系统是直接基于 MySQL 的，大量的请求涌入 MySQL，每秒钟对 MySQL 执行约 5k 条 SQL。<br>一般的 MySQL，扛到每秒 2k 个请求就差不多了，如果每秒请求到 5k 的话，可能就直接把 MySQL 给打死了，导致系统崩溃，用户也就没法再使用系统了。<br>但是高峰期一过，到了下午的时候，就成了低峰期，可能也就 1w 的用户同时在网站上操作，每秒中的请求数量可能也就 50 个请求，对整个系统几乎没有任何的压力。</p>
+<p>如果使用 MQ，每秒 5k 个请求写入 MQ，A 系统每秒钟最多处理 2k 个请求，因为 MySQL 每秒钟最多处理 2k 个。A 系统从 MQ 中慢慢拉取请求，每秒钟就拉取 2k 个请求，不要超过自己每秒能处理的最大请求数量就 ok，这样下来，哪怕是高峰期的时候，A 系统也绝对不会挂掉。而 MQ 每秒钟 5k 个请求进来，就 2k 个请求出去，结果就导致在中午高峰期（1 个小时），可能有几十万甚至几百万的请求积压在 MQ 中。</p>
+<p><img src="https://www.starmoon.cloud/img/MQ5.png" alt></p>
+<p>这个短暂的高峰期积压是 ok 的，因为高峰期过了之后，每秒钟就 50 个请求进 MQ，但是 A 系统依然会按照每秒 2k 个请求的速度在处理。所以说，只要高峰期一过，A 系统就会快速将积压的消息给解决掉。<br>优点上面已经说了，就是在特殊场景下有其对应的好处，解耦、异步、削峰。<br><strong>缺点有以下几个：</strong></p>
+<p>系统可用性降低<br>系统引入的外部依赖越多，越容易挂掉。本来就是 A 系统调用 BCD 三个系统的接口就好了，ABCD 四个系统好好的一旦加个 MQ 进来，万一 MQ 挂了，整套系统会崩溃的，所以还得考虑如何保证消息队列的高可用。</p>
+<p>系统复杂度提高<br>硬生生加个 MQ 进来，你怎么保证消息没有重复消费？怎么处理消息丢失的情况？怎么保证消息传递的顺序性？头大头大，问题一大堆，痛苦不已。</p>
+<p><strong>一致性问题</strong></p>
+<p>A 系统处理完了直接返回成功了，人都以为你这个请求就成功了；但是问题是，要是 BCD 三个系统那里，BD 两个系统写库成功了，结果 C 系统写库失败了，咋整？你这数据就不一致了。<br>所以消息队列实际是一种非常复杂的架构，你引入它有很多好处，但是也得针对它带来的坏处做各种额外的技术方案和架构来规避掉，做好之后，你会发现，系统复杂度提升了一个数量级，也许是复杂了 10 倍。但是关键时刻还是得用的。<br>Kafka、ActiveMQ、RabbitMQ、RocketMQ 有什么优缺点？</p>
+<p><img src="https://www.starmoon.cloud/img/MQ6.jpg" alt></p>
+<p>综上，各种对比之后，有如下建议：<br>一般的业务系统要引入 MQ，最早大家都用 ActiveMQ，但是现在确实大家用的不多了，没经过大规模吞吐量场景的验证，社区也不是很活跃，所以不推荐用这个了；<br>后来大家开始用 RabbitMQ，但是确实 erlang 语言阻止了大量的 Java 工程师去深入研究和掌控它，对公司而言，几乎处于不可控的状态，但是确实人家是开源的，比较稳定的支持，活跃度也高；<br>不过现在确实越来越多的公司会去用 RocketMQ，确实很不错，毕竟是阿里出品，但社区可能有突然黄掉的风险（目前 RocketMQ 已捐给 Apache，但 GitHub 上的活跃度其实不算高）对自己公司技术实力有绝对自信的，推荐用 RocketMQ，或者使用用 RabbitMQ ，它有活跃的开源社区。<br>所以中小型公司，技术实力较为一般，技术挑战不是特别高，用 RabbitMQ 是不错的选择；大型公司，基础架构研发实力较强，用 RocketMQ 是很好的选择。<br>如果是大数据领域的实时计算、日志采集等场景，用 Kafka 是业内标准的，绝对没问题，社区活跃度很高，几乎是全世界这个领域的事实性规范。</p>
+
+    </article>
+    <!-- license  -->
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+            <div class="nextSlogan">Next Post</div>
+            <a href="/2019/01/22/windows%E4%B8%8Bscrapy%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E7%88%AC%E5%8F%96%E6%95%B0%E6%8D%AE/" title="windows下scrapy框架搭建爬取数据">
+                <div class="nextTitle">windows下scrapy框架搭建爬取数据</div>
+            </a>
+            
+        </li>
+        <li class="previous">
+            
+            <div class="prevSlogan">Previous Post</div>
+            <a href="/2019/01/07/windows%E6%90%AD%E5%BB%BAdjango%E6%A1%86%E6%9E%B6%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83/" title="windows搭建django框架本地环境">
+                <div class="prevTitle">windows搭建django框架本地环境</div>
+            </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+    <div id="comment"></div>
+    <script>
+    new Valine({
+        el: '#comment' ,
+        notify:false, 
+        verify:false, 
+        appId: "ggfIo6QwWhG5V1AjOl9D0Gaw-gzGzoHsz",
+        appKey: "5b0tty7x3FySPePCrdFqgjwL",
+        placeholder: "",
+        path:window.location.pathname, 
+        avatar:'mm' 
+    });
+    </script>
+
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+    
+        
+            
+                <a href="//github.com/horizon2018" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/example_qr.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <!-- <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div> -->
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    <span id="busuanzi_container_site_pv">粤ICP备20039576号</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:30vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+            Total : 58
+        </div>
+        <!-- search  -->
+        
+        <div class="site-search popup-trigger">
+            <span class="iconfont-archer search-icon">&#xe627;</span>
+        </div>
+        
+    </div>
+    
+    <div class="post-archive">
+        
+        
+        
+        
+        <div class="archive-year"> 2019 </div>
+        <ul class="year-list">
+            
+            
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/28</span><a class="archive-post-title"
+                    href="/2019/12/28/mysql%E5%B8%B8%E7%94%A8%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BC%95%E6%93%8E/">mysql常用的四种引擎</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/28</span><a class="archive-post-title"
+                    href="/2019/12/28/mysql%E5%B8%B8%E8%A7%81%E9%94%81%E6%9C%BA%E5%88%B6/">mysql常见锁机制</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/28</span><a class="archive-post-title"
+                    href="/2019/12/28/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E3%80%81%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/">缓存穿透、缓存击穿、缓存雪崩</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/27</span><a class="archive-post-title"
+                    href="/2019/12/27/redis%E4%B8%8Ememcache%E6%AF%94%E8%BE%83%E7%9A%84%E4%BC%98%E5%8A%BF%E4%B8%8E%E7%89%B9%E7%82%B9/">redis与memcache比较的优势与特点</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/27</span><a class="archive-post-title"
+                    href="/2019/12/27/mysql%E7%B4%A2%E5%BC%95%E5%BB%BA%E7%AB%8B%E5%8E%9F%E5%88%99/">mysql索引建立原则</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/27</span><a class="archive-post-title"
+                    href="/2019/12/27/mysql%E4%BD%BF%E7%94%A8explain%E5%88%86%E6%9E%90%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5/">mysql使用explain分析查询语句</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/27</span><a class="archive-post-title"
+                    href="/2019/12/27/mysql%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96%E7%BB%8F%E9%AA%8C/">mysql查询优化经验</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/22</span><a class="archive-post-title"
+                    href="/2019/12/22/mysql%E7%9F%A5%E8%AF%86%E7%82%B9%E7%BB%93%E6%9E%84%E5%9B%BE/">mysql知识点结构图</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/21</span><a class="archive-post-title"
+                    href="/2019/12/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8/">数据库为什么要分库分表</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/23</span><a class="archive-post-title"
+                    href="/2019/02/23/leetcode%E5%9B%9E%E6%96%87%E6%95%B0%E7%AE%97%E6%B3%95%E9%A2%98/">leetcode回文数算法题</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/21</span><a class="archive-post-title"
+                    href="/2019/02/21/Mysql%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E5%92%8C%E9%9D%9E%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95/">mysql索引数据结构（B+树与B树）</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/21</span><a class="archive-post-title"
+                    href="/2019/02/21/mysql%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E5%92%8C%E9%9D%9E%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95/">mysql索引数据结构（B+树与B树）</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/14</span><a class="archive-post-title"
+                    href="/2019/02/14/mysql%E4%BA%8B%E7%89%A9%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">mysql事物隔离级别</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/06</span><a class="archive-post-title"
+                    href="/2019/02/06/%E5%85%B3%E4%BA%8E%E7%A7%92%E6%9D%80%E4%B8%9A%E5%8A%A1%E7%9A%84%E5%A4%84%E7%90%86/">关于秒杀业务的处理</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/06</span><a class="archive-post-title"
+                    href="/2019/02/06/rbac%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93/">rbac权限控制系统总结</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/05</span><a class="archive-post-title"
+                    href="/2019/02/05/%E5%89%8D%E7%AB%AF%E8%87%AA%E9%80%82%E5%BA%94%E7%BD%91%E9%A1%B5%E5%B8%83%E5%B1%80%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93/">前端自适应网页布局技术总结</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">01/22</span><a class="archive-post-title"
+                    href="/2019/01/22/windows%E4%B8%8Bscrapy%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E7%88%AC%E5%8F%96%E6%95%B0%E6%8D%AE/">windows下scrapy框架搭建爬取数据</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">01/15</span><a class="archive-post-title"
+                    href="/2019/01/15/mq%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%B2%97%E7%95%A5%E5%88%86%E6%9E%90/">mq消息中间件最全面分析</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">01/07</span><a class="archive-post-title"
+                    href="/2019/01/07/windows%E6%90%AD%E5%BB%BAdjango%E6%A1%86%E6%9E%B6%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83/">windows搭建django框架本地环境</a>
+            </li>
+            
+        
+        
+        
+        
+        </ul>
+        
+        <div class="archive-year"> 2018 </div>
+        <ul class="year-list">
+            
+            
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/18</span><a class="archive-post-title"
+                    href="/2018/12/18/Redis%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81%E7%9A%84%E5%8C%BA%E5%88%AB/">redis乐观锁与悲观锁的区别</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/18</span><a class="archive-post-title"
+                    href="/2018/12/18/redis%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81%E7%9A%84%E5%8C%BA%E5%88%AB/">redis乐观锁与悲观锁的区别</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/17</span><a class="archive-post-title"
+                    href="/2018/12/17/git%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/">git clone error: RPC failed;</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/11</span><a class="archive-post-title"
+                    href="/2018/12/11/leetcode%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/">leetcode无重复字符的最长子串</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/11</span><a class="archive-post-title"
+                    href="/2018/12/11/leetcode601%E4%BD%93%E8%82%B2%E9%A6%86%E7%9A%84%E6%B5%81%E9%87%8F/">leetcode601体育馆的流量</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/11</span><a class="archive-post-title"
+                    href="/2018/12/11/leetcode633%E5%B9%B3%E6%96%B9%E6%95%B0%E4%B9%8B%E5%92%8C/">leetcode633平方数之和</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/10</span><a class="archive-post-title"
+                    href="/2018/12/10/leetcode628%E4%B8%89%E4%B8%AA%E6%95%B0%E6%9C%80%E5%A4%A7%E7%9A%84%E4%B9%98%E7%A7%AF/">leetcode628三个数最大的乘积</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/10</span><a class="archive-post-title"
+                    href="/2018/12/10/leetcode626%E6%8D%A2%E5%BA%A7%E4%BD%8D/">leetcode626换座位</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/08</span><a class="archive-post-title"
+                    href="/2018/12/08/leetcode-179%E7%AE%97%E6%B3%95%E9%A2%98%E8%A7%A3/">leetcode179算法题解</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/07</span><a class="archive-post-title"
+                    href="/2018/12/07/leetcode-262%E6%95%B0%E6%8D%AE%E5%BA%93%E9%A2%98%E8%A7%A3/">leetcode262数据库题解</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">10/03</span><a class="archive-post-title"
+                    href="/2018/10/03/redis%E5%87%A0%E7%A7%8D%E5%8A%A0%E9%94%81%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0/">redis几种加锁机制的实现</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">09/17</span><a class="archive-post-title"
+                    href="/2018/09/17/protobuf%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86/">protobuf的优缺点</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">09/12</span><a class="archive-post-title"
+                    href="/2018/09/12/csrf%E5%92%8Cxss%E6%94%BB%E5%87%BB%E4%BB%A5%E5%8F%8A%E9%98%B2%E8%8C%83/">csrf和xss攻击以及防范</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">09/12</span><a class="archive-post-title"
+                    href="/2018/09/12/%E5%A6%82%E4%BD%95%E9%A2%84%E9%98%B2SQL%E6%B3%A8%E5%85%A5/">如何预防SQL注入？</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/17</span><a class="archive-post-title"
+                    href="/2018/08/17/cgi%E3%80%81fastcgi%E3%80%81php-fpm%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">cgi、fastcgi、php-fpm之间的关系</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/16</span><a class="archive-post-title"
+                    href="/2018/08/16/threejs-demo-test/">threejs demo test</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/06</span><a class="archive-post-title"
+                    href="/2018/08/06/redis%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E6%8C%81%E4%B9%85%E5%8C%96/">redis如何实现持久化</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/02</span><a class="archive-post-title"
+                    href="/2018/08/02/redis%E9%9B%86%E7%BE%A4%E5%8E%9F%E7%90%86%E4%B8%8E%E6%90%AD%E5%BB%BA/">redis集群原理与搭建</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">04/23</span><a class="archive-post-title"
+                    href="/2018/04/23/nginx%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5/">nginx负载均衡策略</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">04/21</span><a class="archive-post-title"
+                    href="/2018/04/21/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9/">docker基础知识点</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">04/09</span><a class="archive-post-title"
+                    href="/2018/04/09/mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">mysql数据库存储引擎底层实现</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">03/17</span><a class="archive-post-title"
+                    href="/2018/03/17/nginx%E9%85%8D%E7%BD%AE%E9%A1%B9%E8%B0%83%E4%BC%98/">nginx配置项调优</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">03/16</span><a class="archive-post-title"
+                    href="/2018/03/16/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8explain%E5%88%86%E6%9E%90sql%E8%AF%AD%E5%8F%A5/">如何使用explain分析sql语句</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">03/09</span><a class="archive-post-title"
+                    href="/2018/03/09/session%E4%B8%8Ecookie%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E8%81%94%E7%B3%BB/">session与cookie的区别和联系</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/28</span><a class="archive-post-title"
+                    href="/2018/02/28/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E9%80%92%E5%BD%92%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E9%9D%9E%E9%80%92%E5%BD%92%E6%96%B9%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/">快速排序递归方式以及非递归方式的实现</a>
+            </li>
+            
+        
+        
+        
+        
+        </ul>
+        
+        <div class="archive-year"> 2017 </div>
+        <ul class="year-list">
+            
+            
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/27</span><a class="archive-post-title"
+                    href="/2017/12/27/nginx%E9%85%8D%E7%BD%AEhttps%E8%AE%BF%E9%97%AE%E5%9F%9F%E5%90%8D/">nginx配置https访问域名</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/24</span><a class="archive-post-title"
+                    href="/2017/12/24/jquery-datatable-%E8%A1%A8%E6%A0%BC%E7%BB%84%E4%BB%B6%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/">jquery datatable 表格组件使用方法</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/24</span><a class="archive-post-title"
+                    href="/2017/12/24/TCP-IP%E5%8D%8F%E8%AE%AE/">TCP/IP协议</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/24</span><a class="archive-post-title"
+                    href="/2017/12/24/tcp-ip%E5%8D%8F%E8%AE%AE/">TCP/IP协议</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/11</span><a class="archive-post-title"
+                    href="/2017/12/11/http%E5%8F%8Ahttps%E4%B9%8B%E9%97%B4%E7%9A%84%E6%AF%94%E8%BE%83/">http与https详解</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">11/14</span><a class="archive-post-title"
+                    href="/2017/11/14/sql%E8%AF%AD%E5%8F%A5%E8%80%83%E9%A2%98/">sql语句考题</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">11/14</span><a class="archive-post-title"
+                    href="/2017/11/14/php%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">php设计模式</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/17</span><a class="archive-post-title"
+                    href="/2017/08/17/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Git-LFS%E6%8F%90%E4%BA%A4%E5%A4%A7%E6%96%87%E4%BB%B6%EF%BC%9F/">如何使用Git LFS提交大文件？</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/16</span><a class="archive-post-title"
+                    href="/2017/08/16/jquery%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/">jquery知识整理</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">06/03</span><a class="archive-post-title"
+                    href="/2017/06/03/%E5%87%A0%E7%A7%8Drestful-api%E5%AE%89%E5%85%A8%E8%AE%A4%E8%AF%81%E6%96%B9%E5%BC%8F%E7%9A%84%E5%AF%B9%E6%AF%94/">几种restful api安全认证方式的对比</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">05/17</span><a class="archive-post-title"
+                    href="/2017/05/17/jquery-js%E8%8E%B7%E5%8F%96%E5%85%83%E7%B4%A0/">js或jquery如何获取父级、子级、兄弟元素</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">05/14</span><a class="archive-post-title"
+                    href="/2017/05/14/hexo-windows%E7%8E%AF%E5%A2%83%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/">hexo-windows本地环境部署教程</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">05/14</span><a class="archive-post-title"
+                    href="/2017/05/14/php%E4%B8%AD%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95/">php中魔术方法</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">05/13</span><a class="archive-post-title"
+                    href="/2017/05/13/hexo-build/">Hexo 搭建全记录</a>
+            </li>
+            
+    </div>
+</div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="mysql索引"><span class="iconfont-archer">&#xe606;</span>mysql索引</span>
+    
+        <span class="sidebar-tag-name" data-tags="TCP/IP"><span class="iconfont-archer">&#xe606;</span>TCP/IP</span>
+    
+        <span class="sidebar-tag-name" data-tags="csrf攻击"><span class="iconfont-archer">&#xe606;</span>csrf攻击</span>
+    
+        <span class="sidebar-tag-name" data-tags="hexo 部署"><span class="iconfont-archer">&#xe606;</span>hexo 部署</span>
+    
+        <span class="sidebar-tag-name" data-tags="hexo部署"><span class="iconfont-archer">&#xe606;</span>hexo部署</span>
+    
+        <span class="sidebar-tag-name" data-tags="http协议"><span class="iconfont-archer">&#xe606;</span>http协议</span>
+    
+        <span class="sidebar-tag-name" data-tags="datatables"><span class="iconfont-archer">&#xe606;</span>datatables</span>
+    
+        <span class="sidebar-tag-name" data-tags="冒泡排序"><span class="iconfont-archer">&#xe606;</span>冒泡排序</span>
+    
+        <span class="sidebar-tag-name" data-tags="二分查找"><span class="iconfont-archer">&#xe606;</span>二分查找</span>
+    
+        <span class="sidebar-tag-name" data-tags="mysql事务"><span class="iconfont-archer">&#xe606;</span>mysql事务</span>
+    
+        <span class="sidebar-tag-name" data-tags="nginx"><span class="iconfont-archer">&#xe606;</span>nginx</span>
+    
+        <span class="sidebar-tag-name" data-tags="锁机制"><span class="iconfont-archer">&#xe606;</span>锁机制</span>
+    
+        <span class="sidebar-tag-name" data-tags="redis集群"><span class="iconfont-archer">&#xe606;</span>redis集群</span>
+    
+        <span class="sidebar-tag-name" data-tags="sql优化"><span class="iconfont-archer">&#xe606;</span>sql优化</span>
+    
+        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
+    
+        <span class="sidebar-tag-name" data-tags="分库分表"><span class="iconfont-archer">&#xe606;</span>分库分表</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
+    
+        <span class="sidebar-category-name" data-categories="redis"><span class="iconfont-archer">&#xe60a;</span>redis</span>
+    
+        <span class="sidebar-category-name" data-categories="计算机网络"><span class="iconfont-archer">&#xe60a;</span>计算机网络</span>
+    
+        <span class="sidebar-category-name" data-categories="web安全"><span class="iconfont-archer">&#xe60a;</span>web安全</span>
+    
+        <span class="sidebar-category-name" data-categories="docker"><span class="iconfont-archer">&#xe60a;</span>docker</span>
+    
+        <span class="sidebar-category-name" data-categories="git"><span class="iconfont-archer">&#xe60a;</span>git</span>
+    
+        <span class="sidebar-category-name" data-categories="hexo"><span class="iconfont-archer">&#xe60a;</span>hexo</span>
+    
+        <span class="sidebar-category-name" data-categories="jquery"><span class="iconfont-archer">&#xe60a;</span>jquery</span>
+    
+        <span class="sidebar-category-name" data-categories="leetcode"><span class="iconfont-archer">&#xe60a;</span>leetcode</span>
+    
+        <span class="sidebar-category-name" data-categories="消息队列"><span class="iconfont-archer">&#xe60a;</span>消息队列</span>
+    
+        <span class="sidebar-category-name" data-categories="php基础"><span class="iconfont-archer">&#xe60a;</span>php基础</span>
+    
+        <span class="sidebar-category-name" data-categories="设计模式"><span class="iconfont-archer">&#xe60a;</span>设计模式</span>
+    
+        <span class="sidebar-category-name" data-categories="业务实现"><span class="iconfont-archer">&#xe60a;</span>业务实现</span>
+    
+        <span class="sidebar-category-name" data-categories="高并发处理"><span class="iconfont-archer">&#xe60a;</span>高并发处理</span>
+    
+        <span class="sidebar-category-name" data-categories="计算机网络协议"><span class="iconfont-archer">&#xe60a;</span>计算机网络协议</span>
+    
+        <span class="sidebar-category-name" data-categories="前端"><span class="iconfont-archer">&#xe60a;</span>前端</span>
+    
+        <span class="sidebar-category-name" data-categories="算法"><span class="iconfont-archer">&#xe60a;</span>算法</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "杯倾川与溪"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+        <div class="site-search">
+  <div class="algolia-popup popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="iconfont-archer">&#xe609;</i>
+    </span>
+  </div>
+</div>
+        <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.8.0/dist/instantsearch.min.js" defer></script>
+        <script src="/scripts/search.js" defer></script>
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+

@@ -1,0 +1,1987 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" >
+    <meta name="author" content="杯倾川与溪">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="杯倾川与溪">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog,杯倾川与溪">
+    
+    <meta name="description" content="">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>php设计模式 · 杯倾川与溪&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= "/css/style.css?v=20170824" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="stylesheet" href= "/css/mobile.css?v=20170824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href= "/assets/favicon.ico" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script" />
+    <link rel="preload" href="/scripts/main.js" as="script" />
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+        <!-- algolia -->
+        <script>
+            
+            var hits = JSON.parse('{"per_page":10}')
+            var labels = JSON.parse('{"input_placeholder":"Search for Posts","hits_empty":"We did not find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}')
+
+            var algolia = {
+                applicationID: '0YHQS8CE4Q',
+                apiKey: 'bd28b837e1100e10fb4f4f275008b9d9',
+                indexName: 'hexo blog',
+                hits: hits,
+                labels: labels
+            }
+        </script>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >杯倾川与溪&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">php设计模式</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>杯倾川与溪's Studio.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:30vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            php设计模式
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2017/11/14</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  // console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    // console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>php设计模式可以分为三类：创建性模式，结构性模式，行为性模式</p>
+<p>创建性模式：单例模式、简单工厂模式、工厂方法模式、抽象工厂模式、对象池模式、原型模式</p>
+<p>结构性模式：适配器模式、桥接模式、组合模式、装饰器模式、依赖注入、门面模式、链式操作、代理模式、注册器模式</p>
+<p>行为性模式：观察者模式、责任链模式、模板方法、策略模式、访问者模式、遍历模式、空对象模式、状态模式、命令模式</p>
+<p>五种常见设计模式：<br>单例模式、工厂模式、注册器模式、适配器模式、观察者模式</p>
+<h3 id="单例模式-singleton"><a href="#单例模式-singleton" class="headerlink" title="单例模式(singleton)"></a>单例模式(singleton)</h3><p>有三个特点<br>1、一个类只能有一个实例<br>2、它必须自行创建这个实例<br>3、它必须自行向整个系统提供这个实例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class Singleton</span><br><span class="line">&#123;</span><br><span class="line">    private static $instance;</span><br><span class="line">    private function _construct()&#123;&#125;</span><br><span class="line">    private function _clone()&#123;&#125;</span><br><span class="line">    public static function getInstance()</span><br><span class="line">    &#123;</span><br><span class="line">        if(is_null(self::$instance)) &#123;</span><br><span class="line">            self::$instance &#x3D; new self();</span><br><span class="line">        &#125;</span><br><span class="line">        return self::$instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 客户端</span><br><span class="line"> *&#x2F;</span><br><span class="line">class Client &#123;</span><br><span class="line"> </span><br><span class="line">  &#x2F;**</span><br><span class="line">  * Main program.</span><br><span class="line">  *&#x2F;</span><br><span class="line"> public static function main() &#123;</span><br><span class="line">  $instance &#x3D; Singleton::getInstance();</span><br><span class="line">  $instance-&gt;test();</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">Client::main();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="工厂类模式："><a href="#工厂类模式：" class="headerlink" title="工厂类模式："></a>工厂类模式：</h3><p><strong>简单工厂模式（Simple Factory）</strong><br>本来我们要获取一个类的实例，需要用到new关键字。但是如果new 直接写到业务代码里，一个类在很多地方都实例化过，以后要是这个类出了什么问题，比如要改个名字(实际中，你更多的可能是修改构造函数方法)，那么就尴尬了，需要改很多地方。工厂模式，顾名思义，就是不用new来获得实例，而是把业务类放进一个工场类里，由工厂（类）『生产』出对应的实例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">namespace DesignPatterns\Creational\SimpleFactory;</span><br><span class="line">class SimpleFactory</span><br><span class="line">&#123;</span><br><span class="line">    public function createBicycle(): Bicycle</span><br><span class="line">    &#123;</span><br><span class="line">        return new Bicycle();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">namespace DesignPatterns\Creational\SimpleFactory;</span><br><span class="line">class Bicycle</span><br><span class="line">&#123;</span><br><span class="line">    public function driveTo(string $destination)</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$factory &#x3D; new SimpleFactory();</span><br><span class="line"> $bicycle &#x3D; $factory-&gt;createBicycle();</span><br><span class="line"> $bicycle-&gt;driveTo(&#39;Paris&#39;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>工厂方法模式 和 简单工厂模式非常接近，唯一不同的是，允许有多个工厂存在，相当于给工厂分组。</strong><br>1.每个工厂必须继承一个抽象类或接口类, 使之成为多态。<br>2.每个产品也必须继承一个抽象类或接口类,也使之成为多态。<br>3.每个工厂必须有一个工厂方法返回产品的实例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;* 工厂和产品接口 *&#x2F;</span><br><span class="line">interface CarFactory </span><br><span class="line">&#123;</span><br><span class="line">    public function makeCar();</span><br><span class="line">&#125;</span><br><span class="line">interface Car </span><br><span class="line">&#123;</span><br><span class="line">    public function getType();</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;* 工厂和产品实现 *&#x2F;</span><br><span class="line">&#x2F;*继承了接口就要实现里面的方法*&#x2F;</span><br><span class="line">class SedanFactory implements CarFactory </span><br><span class="line">&#123;</span><br><span class="line">    public function makeCar() </span><br><span class="line">    &#123;</span><br><span class="line">        return new Sedan();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Sedan implements Car </span><br><span class="line">&#123;</span><br><span class="line">    public function getType() </span><br><span class="line">    &#123;</span><br><span class="line">        return &#39;Sedan&#39;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;* 客户端 *&#x2F;</span><br><span class="line">$factory &#x3D; new SedanFactory();</span><br><span class="line">$car &#x3D; $factory-&gt;makeCar();</span><br><span class="line">print $car-&gt;getType();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="注册器模式"><a href="#注册器模式" class="headerlink" title="注册器模式"></a>注册器模式</h3><p>注册器模式是一种基础常见的设计模式，它的主要意思是把多个类的实例注册到一个注册器类中去，然后需要哪个类，由这个注册器类统一调取。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Register&#123;</span><br><span class="line"> protected static $objects;</span><br><span class="line"> public static function set($alias,$object)&#123;</span><br><span class="line">     if(!isset($objects[$alias]))&#123;</span><br><span class="line">         self::$objects[$alias]&#x3D;$object;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> public static function get($alias)&#123;</span><br><span class="line">  return self::$objects[$alias];</span><br><span class="line"> &#125;</span><br><span class="line"> public static function _unset($alias)&#123;</span><br><span class="line">  unset(self::$objects[$alias]);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Register::set(&#39;rand&#39;,stdClass::class);</span><br><span class="line">Register::get(&#39;rand&#39;);</span><br></pre></td></tr></table></figure>
+
+<p>就是把很多类的实例，起个别名，然后按照key，value的形式放在注册器类里，以便之后统一调用。<br>Laravel的Service Container，对，容器本质上也是种注册器，但laravel中的实现要比这个例子复杂得多.</p>
+<h3 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h3><p>正常接口的实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">interface Database&#123;</span><br><span class="line">    public function connect();</span><br><span class="line">    public function query();</span><br><span class="line">    public function close();</span><br><span class="line">&#125;</span><br><span class="line">class Mysql implements Database&#123;</span><br><span class="line">    public function connect()&#123;</span><br><span class="line">        &#x2F;&#x2F;mysql 的逻辑</span><br><span class="line">    &#125;;</span><br><span class="line">    public function query()&#123;</span><br><span class="line">        &#x2F;&#x2F;mysql 的逻辑</span><br><span class="line">    &#125;;</span><br><span class="line">    public function close()&#123;</span><br><span class="line">        &#x2F;&#x2F;mysql 的逻辑</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line">class Pdo implements Database&#123;</span><br><span class="line">    public function connect()&#123;</span><br><span class="line">        &#x2F;&#x2F;Pdo 的逻辑</span><br><span class="line">    &#125;;</span><br><span class="line">    public function query()&#123;</span><br><span class="line">        &#x2F;&#x2F;Pdo 的逻辑</span><br><span class="line">    &#125;;</span><br><span class="line">    public function close()&#123;</span><br><span class="line">        &#x2F;&#x2F;Pdo 的逻辑</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;使用</span><br><span class="line">$database &#x3D; new Mysql(); &#x2F;&#x2F;切换数据库只要改这一行就行了，因为后面的都是标准接口方法，不管哪个数据库都一样。</span><br><span class="line">$database-&gt;connect();</span><br><span class="line">$database-&gt;query();</span><br><span class="line">$database-&gt;close();</span><br></pre></td></tr></table></figure>
+<p>issue:有些第三方的 数据库类并没有按照我的接口来实现，而是有自己不同的方法，这个时候我们就需要有一个适配器类，来先处理一下这个异类。 作用有点像把110v电源转换成为220v（电源适配器）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;第三方数据库类</span><br><span class="line">class Oracle &#123;</span><br><span class="line">    public function oracleConnect()&#123;</span><br><span class="line">        &#x2F;&#x2F;Oracle 的逻辑</span><br><span class="line">    &#125;;</span><br><span class="line">    public function oracleQuery()&#123;</span><br><span class="line">        &#x2F;&#x2F;Oracle 的逻辑</span><br><span class="line">    &#125;;</span><br><span class="line">    public function oracleClose()&#123;</span><br><span class="line">        &#x2F;&#x2F;Oracle 的逻辑</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>solve:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class Adapter implements Database &#123;  </span><br><span class="line">    private $adaptee;  </span><br><span class="line">    function __construct($adaptee) &#123;  </span><br><span class="line">        $this-&gt;adaptee &#x3D; $adaptee;   </span><br><span class="line">    &#125; </span><br><span class="line">    &#x2F;&#x2F;这里把异类的方法转换成了 接口标准方法，下同</span><br><span class="line">    public function connect()&#123;</span><br><span class="line">        $this-&gt;adaptee-&gt;oracleConnect();</span><br><span class="line">    &#125;;</span><br><span class="line">    public function query()&#123;</span><br><span class="line">        $this-&gt;adaptee-&gt;oracleQuery();</span><br><span class="line">    &#125;;</span><br><span class="line">    public function close()&#123;</span><br><span class="line">        $this-&gt;adaptee-&gt;oracleClose();</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    $adaptee &#x3D; new Oracle();  </span><br><span class="line">    $adapter &#x3D; new Adapter($adaptee);&#x2F;&#x2F;只要改这个类就行了，后面的都可以不用改；</span><br><span class="line">    $database &#x3D; $adapter;</span><br><span class="line">    $database-&gt;connect();</span><br><span class="line">    $database-&gt;query();</span><br><span class="line">    $database-&gt;close();</span><br></pre></td></tr></table></figure>
+
+<h3 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h3><p>观察者是一种非常常用的模式，具体在 事件的设计上 体现最明显。<br>在laravel的事件设计中，我们知道有一个listener 和一个handler, 当listener侦听到一个事件发生时，可能有多个handler会与之对应自动处理各自的业务逻辑。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;声明一个抽象的事件发生者基类</span><br><span class="line">abstract class EventGenerator&#123;</span><br><span class="line">    private $observers &#x3D; array();</span><br><span class="line">    &#x2F;&#x2F;添加观察者方法</span><br><span class="line">    function addobserver(Observer $observer)</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;observers[] &#x3D; $observer;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F;对每个添加的观察者进行事件通知</span><br><span class="line">    function notify()</span><br><span class="line">    &#123;</span><br><span class="line">       &#x2F;&#x2F;对每个观察者逐个去更新</span><br><span class="line">       foreach($this-&gt;observers as $observer)</span><br><span class="line">       &#123;</span><br><span class="line">         $observer-&gt;update();</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;声明一个观察者接口</span><br><span class="line">interface observer</span><br><span class="line">&#123;</span><br><span class="line">   function update($event_info &#x3D; null);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;声明具体事件类，继承了主事件</span><br><span class="line">class Event extends EventGenerator</span><br><span class="line">&#123;</span><br><span class="line">   function trigger()</span><br><span class="line">   &#123;</span><br><span class="line">      echo &quot;Event&lt;br&#x2F;&gt;&quot;;</span><br><span class="line">      $this-&gt;notify();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </article>
+    <!-- license  -->
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+            <div class="nextSlogan">Next Post</div>
+            <a href="/2017/11/14/sql%E8%AF%AD%E5%8F%A5%E8%80%83%E9%A2%98/" title="sql语句考题">
+                <div class="nextTitle">sql语句考题</div>
+            </a>
+            
+        </li>
+        <li class="previous">
+            
+            <div class="prevSlogan">Previous Post</div>
+            <a href="/2017/08/17/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Git-LFS%E6%8F%90%E4%BA%A4%E5%A4%A7%E6%96%87%E4%BB%B6%EF%BC%9F/" title="如何使用Git LFS提交大文件？">
+                <div class="prevTitle">如何使用Git LFS提交大文件？</div>
+            </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+    <div id="comment"></div>
+    <script>
+    new Valine({
+        el: '#comment' ,
+        notify:false, 
+        verify:false, 
+        appId: "ggfIo6QwWhG5V1AjOl9D0Gaw-gzGzoHsz",
+        appKey: "5b0tty7x3FySPePCrdFqgjwL",
+        placeholder: "",
+        path:window.location.pathname, 
+        avatar:'mm' 
+    });
+    </script>
+
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+    
+        
+            
+                <a href="//github.com/horizon2018" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/example_qr.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <!-- <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div> -->
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    <span id="busuanzi_container_site_pv">粤ICP备20039576号</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:30vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F-singleton"><span class="toc-number">1.</span> <span class="toc-text">单例模式(singleton)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%8E%82%E7%B1%BB%E6%A8%A1%E5%BC%8F%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">工厂类模式：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">注册器模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">适配器模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-number">5.</span> <span class="toc-text">观察者模式</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+            Total : 58
+        </div>
+        <!-- search  -->
+        
+        <div class="site-search popup-trigger">
+            <span class="iconfont-archer search-icon">&#xe627;</span>
+        </div>
+        
+    </div>
+    
+    <div class="post-archive">
+        
+        
+        
+        
+        <div class="archive-year"> 2019 </div>
+        <ul class="year-list">
+            
+            
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/28</span><a class="archive-post-title"
+                    href="/2019/12/28/mysql%E5%B8%B8%E7%94%A8%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BC%95%E6%93%8E/">mysql常用的四种引擎</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/28</span><a class="archive-post-title"
+                    href="/2019/12/28/mysql%E5%B8%B8%E8%A7%81%E9%94%81%E6%9C%BA%E5%88%B6/">mysql常见锁机制</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/28</span><a class="archive-post-title"
+                    href="/2019/12/28/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E3%80%81%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/">缓存穿透、缓存击穿、缓存雪崩</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/27</span><a class="archive-post-title"
+                    href="/2019/12/27/redis%E4%B8%8Ememcache%E6%AF%94%E8%BE%83%E7%9A%84%E4%BC%98%E5%8A%BF%E4%B8%8E%E7%89%B9%E7%82%B9/">redis与memcache比较的优势与特点</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/27</span><a class="archive-post-title"
+                    href="/2019/12/27/mysql%E7%B4%A2%E5%BC%95%E5%BB%BA%E7%AB%8B%E5%8E%9F%E5%88%99/">mysql索引建立原则</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/27</span><a class="archive-post-title"
+                    href="/2019/12/27/mysql%E4%BD%BF%E7%94%A8explain%E5%88%86%E6%9E%90%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5/">mysql使用explain分析查询语句</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/27</span><a class="archive-post-title"
+                    href="/2019/12/27/mysql%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96%E7%BB%8F%E9%AA%8C/">mysql查询优化经验</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/22</span><a class="archive-post-title"
+                    href="/2019/12/22/mysql%E7%9F%A5%E8%AF%86%E7%82%B9%E7%BB%93%E6%9E%84%E5%9B%BE/">mysql知识点结构图</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/21</span><a class="archive-post-title"
+                    href="/2019/12/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8/">数据库为什么要分库分表</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/23</span><a class="archive-post-title"
+                    href="/2019/02/23/leetcode%E5%9B%9E%E6%96%87%E6%95%B0%E7%AE%97%E6%B3%95%E9%A2%98/">leetcode回文数算法题</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/21</span><a class="archive-post-title"
+                    href="/2019/02/21/Mysql%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E5%92%8C%E9%9D%9E%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95/">mysql索引数据结构（B+树与B树）</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/21</span><a class="archive-post-title"
+                    href="/2019/02/21/mysql%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E5%92%8C%E9%9D%9E%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95/">mysql索引数据结构（B+树与B树）</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/14</span><a class="archive-post-title"
+                    href="/2019/02/14/mysql%E4%BA%8B%E7%89%A9%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">mysql事物隔离级别</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/06</span><a class="archive-post-title"
+                    href="/2019/02/06/%E5%85%B3%E4%BA%8E%E7%A7%92%E6%9D%80%E4%B8%9A%E5%8A%A1%E7%9A%84%E5%A4%84%E7%90%86/">关于秒杀业务的处理</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/06</span><a class="archive-post-title"
+                    href="/2019/02/06/rbac%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93/">rbac权限控制系统总结</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/05</span><a class="archive-post-title"
+                    href="/2019/02/05/%E5%89%8D%E7%AB%AF%E8%87%AA%E9%80%82%E5%BA%94%E7%BD%91%E9%A1%B5%E5%B8%83%E5%B1%80%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93/">前端自适应网页布局技术总结</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">01/22</span><a class="archive-post-title"
+                    href="/2019/01/22/windows%E4%B8%8Bscrapy%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E7%88%AC%E5%8F%96%E6%95%B0%E6%8D%AE/">windows下scrapy框架搭建爬取数据</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">01/15</span><a class="archive-post-title"
+                    href="/2019/01/15/mq%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%B2%97%E7%95%A5%E5%88%86%E6%9E%90/">mq消息中间件最全面分析</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">01/07</span><a class="archive-post-title"
+                    href="/2019/01/07/windows%E6%90%AD%E5%BB%BAdjango%E6%A1%86%E6%9E%B6%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83/">windows搭建django框架本地环境</a>
+            </li>
+            
+        
+        
+        
+        
+        </ul>
+        
+        <div class="archive-year"> 2018 </div>
+        <ul class="year-list">
+            
+            
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/18</span><a class="archive-post-title"
+                    href="/2018/12/18/Redis%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81%E7%9A%84%E5%8C%BA%E5%88%AB/">redis乐观锁与悲观锁的区别</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/18</span><a class="archive-post-title"
+                    href="/2018/12/18/redis%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81%E7%9A%84%E5%8C%BA%E5%88%AB/">redis乐观锁与悲观锁的区别</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/17</span><a class="archive-post-title"
+                    href="/2018/12/17/git%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/">git clone error: RPC failed;</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/11</span><a class="archive-post-title"
+                    href="/2018/12/11/leetcode%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/">leetcode无重复字符的最长子串</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/11</span><a class="archive-post-title"
+                    href="/2018/12/11/leetcode601%E4%BD%93%E8%82%B2%E9%A6%86%E7%9A%84%E6%B5%81%E9%87%8F/">leetcode601体育馆的流量</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/11</span><a class="archive-post-title"
+                    href="/2018/12/11/leetcode633%E5%B9%B3%E6%96%B9%E6%95%B0%E4%B9%8B%E5%92%8C/">leetcode633平方数之和</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/10</span><a class="archive-post-title"
+                    href="/2018/12/10/leetcode628%E4%B8%89%E4%B8%AA%E6%95%B0%E6%9C%80%E5%A4%A7%E7%9A%84%E4%B9%98%E7%A7%AF/">leetcode628三个数最大的乘积</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/10</span><a class="archive-post-title"
+                    href="/2018/12/10/leetcode626%E6%8D%A2%E5%BA%A7%E4%BD%8D/">leetcode626换座位</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/08</span><a class="archive-post-title"
+                    href="/2018/12/08/leetcode-179%E7%AE%97%E6%B3%95%E9%A2%98%E8%A7%A3/">leetcode179算法题解</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/07</span><a class="archive-post-title"
+                    href="/2018/12/07/leetcode-262%E6%95%B0%E6%8D%AE%E5%BA%93%E9%A2%98%E8%A7%A3/">leetcode262数据库题解</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">10/03</span><a class="archive-post-title"
+                    href="/2018/10/03/redis%E5%87%A0%E7%A7%8D%E5%8A%A0%E9%94%81%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0/">redis几种加锁机制的实现</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">09/17</span><a class="archive-post-title"
+                    href="/2018/09/17/protobuf%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86/">protobuf的优缺点</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">09/12</span><a class="archive-post-title"
+                    href="/2018/09/12/csrf%E5%92%8Cxss%E6%94%BB%E5%87%BB%E4%BB%A5%E5%8F%8A%E9%98%B2%E8%8C%83/">csrf和xss攻击以及防范</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">09/12</span><a class="archive-post-title"
+                    href="/2018/09/12/%E5%A6%82%E4%BD%95%E9%A2%84%E9%98%B2SQL%E6%B3%A8%E5%85%A5/">如何预防SQL注入？</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/17</span><a class="archive-post-title"
+                    href="/2018/08/17/cgi%E3%80%81fastcgi%E3%80%81php-fpm%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">cgi、fastcgi、php-fpm之间的关系</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/16</span><a class="archive-post-title"
+                    href="/2018/08/16/threejs-demo-test/">threejs demo test</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/06</span><a class="archive-post-title"
+                    href="/2018/08/06/redis%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E6%8C%81%E4%B9%85%E5%8C%96/">redis如何实现持久化</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/02</span><a class="archive-post-title"
+                    href="/2018/08/02/redis%E9%9B%86%E7%BE%A4%E5%8E%9F%E7%90%86%E4%B8%8E%E6%90%AD%E5%BB%BA/">redis集群原理与搭建</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">04/23</span><a class="archive-post-title"
+                    href="/2018/04/23/nginx%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5/">nginx负载均衡策略</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">04/21</span><a class="archive-post-title"
+                    href="/2018/04/21/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9/">docker基础知识点</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">04/09</span><a class="archive-post-title"
+                    href="/2018/04/09/mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">mysql数据库存储引擎底层实现</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">03/17</span><a class="archive-post-title"
+                    href="/2018/03/17/nginx%E9%85%8D%E7%BD%AE%E9%A1%B9%E8%B0%83%E4%BC%98/">nginx配置项调优</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">03/16</span><a class="archive-post-title"
+                    href="/2018/03/16/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8explain%E5%88%86%E6%9E%90sql%E8%AF%AD%E5%8F%A5/">如何使用explain分析sql语句</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">03/09</span><a class="archive-post-title"
+                    href="/2018/03/09/session%E4%B8%8Ecookie%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E8%81%94%E7%B3%BB/">session与cookie的区别和联系</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/28</span><a class="archive-post-title"
+                    href="/2018/02/28/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E9%80%92%E5%BD%92%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E9%9D%9E%E9%80%92%E5%BD%92%E6%96%B9%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/">快速排序递归方式以及非递归方式的实现</a>
+            </li>
+            
+        
+        
+        
+        
+        </ul>
+        
+        <div class="archive-year"> 2017 </div>
+        <ul class="year-list">
+            
+            
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/27</span><a class="archive-post-title"
+                    href="/2017/12/27/nginx%E9%85%8D%E7%BD%AEhttps%E8%AE%BF%E9%97%AE%E5%9F%9F%E5%90%8D/">nginx配置https访问域名</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/24</span><a class="archive-post-title"
+                    href="/2017/12/24/jquery-datatable-%E8%A1%A8%E6%A0%BC%E7%BB%84%E4%BB%B6%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/">jquery datatable 表格组件使用方法</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/24</span><a class="archive-post-title"
+                    href="/2017/12/24/TCP-IP%E5%8D%8F%E8%AE%AE/">TCP/IP协议</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/24</span><a class="archive-post-title"
+                    href="/2017/12/24/tcp-ip%E5%8D%8F%E8%AE%AE/">TCP/IP协议</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/11</span><a class="archive-post-title"
+                    href="/2017/12/11/http%E5%8F%8Ahttps%E4%B9%8B%E9%97%B4%E7%9A%84%E6%AF%94%E8%BE%83/">http与https详解</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">11/14</span><a class="archive-post-title"
+                    href="/2017/11/14/sql%E8%AF%AD%E5%8F%A5%E8%80%83%E9%A2%98/">sql语句考题</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">11/14</span><a class="archive-post-title"
+                    href="/2017/11/14/php%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">php设计模式</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/17</span><a class="archive-post-title"
+                    href="/2017/08/17/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Git-LFS%E6%8F%90%E4%BA%A4%E5%A4%A7%E6%96%87%E4%BB%B6%EF%BC%9F/">如何使用Git LFS提交大文件？</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/16</span><a class="archive-post-title"
+                    href="/2017/08/16/jquery%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/">jquery知识整理</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">06/03</span><a class="archive-post-title"
+                    href="/2017/06/03/%E5%87%A0%E7%A7%8Drestful-api%E5%AE%89%E5%85%A8%E8%AE%A4%E8%AF%81%E6%96%B9%E5%BC%8F%E7%9A%84%E5%AF%B9%E6%AF%94/">几种restful api安全认证方式的对比</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">05/17</span><a class="archive-post-title"
+                    href="/2017/05/17/jquery-js%E8%8E%B7%E5%8F%96%E5%85%83%E7%B4%A0/">js或jquery如何获取父级、子级、兄弟元素</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">05/14</span><a class="archive-post-title"
+                    href="/2017/05/14/hexo-windows%E7%8E%AF%E5%A2%83%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/">hexo-windows本地环境部署教程</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">05/14</span><a class="archive-post-title"
+                    href="/2017/05/14/php%E4%B8%AD%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95/">php中魔术方法</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">05/13</span><a class="archive-post-title"
+                    href="/2017/05/13/hexo-build/">Hexo 搭建全记录</a>
+            </li>
+            
+    </div>
+</div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="mysql索引"><span class="iconfont-archer">&#xe606;</span>mysql索引</span>
+    
+        <span class="sidebar-tag-name" data-tags="TCP/IP"><span class="iconfont-archer">&#xe606;</span>TCP/IP</span>
+    
+        <span class="sidebar-tag-name" data-tags="csrf攻击"><span class="iconfont-archer">&#xe606;</span>csrf攻击</span>
+    
+        <span class="sidebar-tag-name" data-tags="hexo 部署"><span class="iconfont-archer">&#xe606;</span>hexo 部署</span>
+    
+        <span class="sidebar-tag-name" data-tags="hexo部署"><span class="iconfont-archer">&#xe606;</span>hexo部署</span>
+    
+        <span class="sidebar-tag-name" data-tags="http协议"><span class="iconfont-archer">&#xe606;</span>http协议</span>
+    
+        <span class="sidebar-tag-name" data-tags="datatables"><span class="iconfont-archer">&#xe606;</span>datatables</span>
+    
+        <span class="sidebar-tag-name" data-tags="冒泡排序"><span class="iconfont-archer">&#xe606;</span>冒泡排序</span>
+    
+        <span class="sidebar-tag-name" data-tags="二分查找"><span class="iconfont-archer">&#xe606;</span>二分查找</span>
+    
+        <span class="sidebar-tag-name" data-tags="mysql事务"><span class="iconfont-archer">&#xe606;</span>mysql事务</span>
+    
+        <span class="sidebar-tag-name" data-tags="nginx"><span class="iconfont-archer">&#xe606;</span>nginx</span>
+    
+        <span class="sidebar-tag-name" data-tags="锁机制"><span class="iconfont-archer">&#xe606;</span>锁机制</span>
+    
+        <span class="sidebar-tag-name" data-tags="redis集群"><span class="iconfont-archer">&#xe606;</span>redis集群</span>
+    
+        <span class="sidebar-tag-name" data-tags="sql优化"><span class="iconfont-archer">&#xe606;</span>sql优化</span>
+    
+        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
+    
+        <span class="sidebar-tag-name" data-tags="分库分表"><span class="iconfont-archer">&#xe606;</span>分库分表</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
+    
+        <span class="sidebar-category-name" data-categories="redis"><span class="iconfont-archer">&#xe60a;</span>redis</span>
+    
+        <span class="sidebar-category-name" data-categories="计算机网络"><span class="iconfont-archer">&#xe60a;</span>计算机网络</span>
+    
+        <span class="sidebar-category-name" data-categories="web安全"><span class="iconfont-archer">&#xe60a;</span>web安全</span>
+    
+        <span class="sidebar-category-name" data-categories="docker"><span class="iconfont-archer">&#xe60a;</span>docker</span>
+    
+        <span class="sidebar-category-name" data-categories="git"><span class="iconfont-archer">&#xe60a;</span>git</span>
+    
+        <span class="sidebar-category-name" data-categories="hexo"><span class="iconfont-archer">&#xe60a;</span>hexo</span>
+    
+        <span class="sidebar-category-name" data-categories="jquery"><span class="iconfont-archer">&#xe60a;</span>jquery</span>
+    
+        <span class="sidebar-category-name" data-categories="leetcode"><span class="iconfont-archer">&#xe60a;</span>leetcode</span>
+    
+        <span class="sidebar-category-name" data-categories="消息队列"><span class="iconfont-archer">&#xe60a;</span>消息队列</span>
+    
+        <span class="sidebar-category-name" data-categories="php基础"><span class="iconfont-archer">&#xe60a;</span>php基础</span>
+    
+        <span class="sidebar-category-name" data-categories="设计模式"><span class="iconfont-archer">&#xe60a;</span>设计模式</span>
+    
+        <span class="sidebar-category-name" data-categories="业务实现"><span class="iconfont-archer">&#xe60a;</span>业务实现</span>
+    
+        <span class="sidebar-category-name" data-categories="高并发处理"><span class="iconfont-archer">&#xe60a;</span>高并发处理</span>
+    
+        <span class="sidebar-category-name" data-categories="计算机网络协议"><span class="iconfont-archer">&#xe60a;</span>计算机网络协议</span>
+    
+        <span class="sidebar-category-name" data-categories="前端"><span class="iconfont-archer">&#xe60a;</span>前端</span>
+    
+        <span class="sidebar-category-name" data-categories="算法"><span class="iconfont-archer">&#xe60a;</span>算法</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "杯倾川与溪"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+        <div class="site-search">
+  <div class="algolia-popup popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="iconfont-archer">&#xe609;</i>
+    </span>
+  </div>
+</div>
+        <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.8.0/dist/instantsearch.min.js" defer></script>
+        <script src="/scripts/search.js" defer></script>
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+

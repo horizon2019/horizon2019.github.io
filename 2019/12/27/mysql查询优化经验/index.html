@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" >
+    <meta name="author" content="杯倾川与溪">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="杯倾川与溪">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog,杯倾川与溪">
+    
+    <meta name="description" content="">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>mysql查询优化经验 · 杯倾川与溪&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= "/css/style.css?v=20170824" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="stylesheet" href= "/css/mobile.css?v=20170824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href= "/assets/favicon.ico" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script" />
+    <link rel="preload" href="/scripts/main.js" as="script" />
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+        <!-- algolia -->
+        <script>
+            
+            var hits = JSON.parse('{"per_page":10}')
+            var labels = JSON.parse('{"input_placeholder":"Search for Posts","hits_empty":"We did not find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}')
+
+            var algolia = {
+                applicationID: '0YHQS8CE4Q',
+                apiKey: 'bd28b837e1100e10fb4f4f275008b9d9',
+                indexName: 'hexo blog',
+                hits: hits,
+                labels: labels
+            }
+        </script>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >杯倾川与溪&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">mysql查询优化经验</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>杯倾川与溪's Studio.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:30vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            mysql查询优化经验
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/12/27</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  // console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    // console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>《阿里巴巴Java开发手册》提出单表行数超过500万行或者单表容量超过2GB，才推荐分库分表。性能由综合因素决定，抛开业务复杂度，影响程度依次是硬件配置、MySQL配置、数据表设计、索引优化。500万这个值仅供参考，并非铁律。</p>
+<p><strong>性能下降的原因</strong></p>
+<p>从程序员的角度<br>查询语句写的不好<br>没建索引，索引建的不合理或索引失效<br>关联查询有太多的join<br>从服务器的角度<br>服务器磁盘空间不足<br>服务器调优配置参数设置不合理</p>
+<p>最大并发数<br>并发数是指同一时刻数据库能处理多少个请求，由max_connections和max_user_connections决定。max_connections是指MySQL实例的最大连接数，上限值是16384，max_user_connections是指每个数据库用户的最大连接数。<br>MySQL会为每个连接提供缓冲区，意味着消耗更多的内存。如果连接数设置太高硬件吃不消，太低又不能充分利用硬件。一般要求两者比值超过10%，计算方法如下：<br>max_used_connections / max_connections * 100% = 3/100 *100% ≈ 3%</p>
+<p>查询耗时0.5秒<br>建议将单次查询耗时控制在0.5秒以内，0.5秒是个经验值，源于用户体验的3秒原则。如果用户的操作3秒内没有响应，将会厌烦甚至退出。响应时间=客户端UI渲染耗时+网络请求耗时+应用程序处理耗时+查询数据库耗时，0.5秒就是留给数据库1/6的处理时间。</p>
+<p>充分利用但不滥用索引，须知索引也消耗磁盘和CPU。<br>不推荐使用数据库函数格式化数据，交给应用程序处理。<br>不推荐使用外键约束，用应用程序保证数据准确性。<br>写多读少的场景，不推荐使用唯一索引，用应用程序保证唯一性。<br>适当冗余字段，尝试创建中间表，用应用程序计算中间结果，用空间换时间。<br>不允许执行极度耗时的事务，配合应用程序拆分成更小的事务。<br>预估重要数据表（比如订单表）的负载和数据增长态势，提前优化。</p>
+<p><strong>数据表设计优化</strong></p>
+<p>数据类型<br>数据类型的选择原则：更简单或者占用空间更小。<br>如果长度能够满足，整型尽量使用tinyint、smallint、medium_int而非int。<br>如果字符串长度确定，采用char类型。<br>如果varchar能够满足，不采用text类型。<br>精度要求较高的使用decimal类型，也可以使用BIGINT，比如精确两位小数就乘以100后保存。<br>尽量采用timestamp而非datetime。<br>避免空值<br>MySQL中字段为NULL时依然占用空间，会使索引、索引统计更加复杂。从NULL值更新到非NULL无法做到原地更新，容易发生索引分裂影响性能。尽可能将NULL值用有意义的值代替，也能避免SQL语句里面包含is not null的判断。</p>
+<p>text类型优化<br>由于text字段储存大量数据，表容量会很早涨上去，影响其他字段的查询性能。建议抽取出来放在子表里，用业务主键关联。</p>
+<p><strong>索引优化</strong></p>
+<p>索引分类<br>普通索引：最基本的索引。<br>组合索引：多个字段上建立的索引，能够加速复合查询条件的检索。<br>唯一索引：与普通索引类似，但索引列的值必须唯一，允许有空值。<br>组合唯一索引：列值的组合必须唯一。<br>主键索引：特殊的唯一索引，用于唯一标识数据表中的某一条记录，不允许有空值，一般用primary key约束。<br>全文索引：用于海量文本的查询，MySQL5.6之后的InnoDB和MyISAM均支持全文索引。由于查询精度以及扩展性不佳，更多的企业选择Elasticsearch。<br>索引优化<br>分页查询很重要，如果查询数据量超过30%，MYSQL不会使用索引。<br>单表索引数不超过5个、单个索引字段数不超过5个。<br>字符串可使用前缀索引，前缀长度控制在5-8个字符。<br>字段唯一性太低，增加索引没有意义，如：是否删除、性别。</p>
+<p><strong>OR优化</strong><br>在Innodb引擎下or无法使用组合索引，比如：<br>select id，product_name from orders where mobile_no = ‘13421800407’ or user_id = 100;</p>
+<p>OR无法命中mobile_no + user_id的组合索引，可采用union，如下所示：<br>(select id，product_name from orders where mobile_no = ‘13421800407’)<br> union<br>(select id，product_name from orders where user_id = 100);</p>
+<p><strong>IN优化</strong><br>IN适合主表大子表小，EXIST适合主表小子表大。由于查询优化器的不断升级，很多场景这两者性能差不多一样了。<br>尝试改为join查询，举例如下：<br>select id from orders where user_id in (select id from user where level = ‘VIP’);</p>
+<p>采用JOIN如下所示：<br>select o.id from orders o left join user u on o.user_id = u.id where u.level = ‘VIP’;</p>
+<p>不做列运算</p>
+<p>通常在查询条件列运算会导致索引失效，如下所示：<br>查询当日订单<br>select id from order where date_format(create_time，’%Y-%m-%d’) = ‘2018-07-01’;<br>date_format函数会导致这个查询无法使用索引，改写后：<br>select id from order where create_time between ‘2018-07-01 00:00:00’ and ‘2018-07-01 23:59:59’;</p>
+<p>避免Select all<br>如果不查询表中所有的列，避免使用SELECT *，它会进行全表扫描，不能有效利用索引。</p>
+<p>Join优化</p>
+<p>join的实现是采用Nested Loop Join算法，就是通过驱动表的结果集作为基础数据，通过该结数据作为过滤条件到下一个表中循环查询数据，然后合并结果。如果有多个join，则将前面的结果集作为循环数据，再次到后一个表中查询数据。<br>驱动表和被驱动表尽可能增加查询条件，满足ON的条件而少用Where，用小结果集驱动大结果集。<br>被驱动表的join字段上加上索引，无法建立索引的时候，设置足够的Join Buffer Size。<br>禁止join连接三个以上的表，尝试增加冗余字段。</p>
+<p>Limit优化 </p>
+<p>limit用于分页查询时越往后翻性能越差，解决的原则：缩小扫描范围，如下所示：<br>select * from orders order by id desc limit 100000,10<br>耗时0.4秒<br>select * from orders order by id desc limit 1000000,10<br>耗时5.2秒<br>先筛选出ID缩小查询范围，写法如下：<br>select * from orders where id &gt; (select id from orders order by id desc  limit 1000000, 1) order by id desc limit 0,10<br>耗时0.5秒<br>如果查询条件仅有主键ID，写法如下：<br>select id from orders where id between 1000000 and 1000010 order by id desc<br>耗时0.3秒<br>如果以上方案依然很慢呢？只好用游标了，感兴趣的朋友阅读JDBC使用游标实现分页查询的方法</p>
+<p><strong>总结</strong></p>
+<p>索引是排好序且快速查找的数据结构。其目的是为了提高查询的效率。<br>创建索引后，查询数据变快，但更新数据变慢。<br>性能下降的原因很可能是索引失效导致。<br>索引创建的原则，经常查询的字段适合创建索引，频繁需要更新的数据不适合创建索引。<br>索引字段频繁更新，或者表数据物理删除容易造成索引失效。<br>擅用 explain 分析sql语句<br>除了优化sql语句外，还可以优化表的设计。如尽量做成单表查询，减少表之间的关联。设计归档表等。</p>
+
+    </article>
+    <!-- license  -->
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+            <div class="nextSlogan">Next Post</div>
+            <a href="/2019/12/27/mysql%E4%BD%BF%E7%94%A8explain%E5%88%86%E6%9E%90%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5/" title="mysql使用explain分析查询语句">
+                <div class="nextTitle">mysql使用explain分析查询语句</div>
+            </a>
+            
+        </li>
+        <li class="previous">
+            
+            <div class="prevSlogan">Previous Post</div>
+            <a href="/2019/12/22/mysql%E7%9F%A5%E8%AF%86%E7%82%B9%E7%BB%93%E6%9E%84%E5%9B%BE/" title="mysql知识点结构图">
+                <div class="prevTitle">mysql知识点结构图</div>
+            </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+    <div id="comment"></div>
+    <script>
+    new Valine({
+        el: '#comment' ,
+        notify:false, 
+        verify:false, 
+        appId: "ggfIo6QwWhG5V1AjOl9D0Gaw-gzGzoHsz",
+        appKey: "5b0tty7x3FySPePCrdFqgjwL",
+        placeholder: "",
+        path:window.location.pathname, 
+        avatar:'mm' 
+    });
+    </script>
+
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+    
+        
+            
+                <a href="//github.com/horizon2018" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/example_qr.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <!-- <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div> -->
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    <span id="busuanzi_container_site_pv">粤ICP备20039576号</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:30vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+            Total : 58
+        </div>
+        <!-- search  -->
+        
+        <div class="site-search popup-trigger">
+            <span class="iconfont-archer search-icon">&#xe627;</span>
+        </div>
+        
+    </div>
+    
+    <div class="post-archive">
+        
+        
+        
+        
+        <div class="archive-year"> 2019 </div>
+        <ul class="year-list">
+            
+            
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/28</span><a class="archive-post-title"
+                    href="/2019/12/28/mysql%E5%B8%B8%E7%94%A8%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BC%95%E6%93%8E/">mysql常用的四种引擎</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/28</span><a class="archive-post-title"
+                    href="/2019/12/28/mysql%E5%B8%B8%E8%A7%81%E9%94%81%E6%9C%BA%E5%88%B6/">mysql常见锁机制</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/28</span><a class="archive-post-title"
+                    href="/2019/12/28/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E3%80%81%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/">缓存穿透、缓存击穿、缓存雪崩</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/27</span><a class="archive-post-title"
+                    href="/2019/12/27/redis%E4%B8%8Ememcache%E6%AF%94%E8%BE%83%E7%9A%84%E4%BC%98%E5%8A%BF%E4%B8%8E%E7%89%B9%E7%82%B9/">redis与memcache比较的优势与特点</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/27</span><a class="archive-post-title"
+                    href="/2019/12/27/mysql%E7%B4%A2%E5%BC%95%E5%BB%BA%E7%AB%8B%E5%8E%9F%E5%88%99/">mysql索引建立原则</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/27</span><a class="archive-post-title"
+                    href="/2019/12/27/mysql%E4%BD%BF%E7%94%A8explain%E5%88%86%E6%9E%90%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5/">mysql使用explain分析查询语句</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/27</span><a class="archive-post-title"
+                    href="/2019/12/27/mysql%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96%E7%BB%8F%E9%AA%8C/">mysql查询优化经验</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/22</span><a class="archive-post-title"
+                    href="/2019/12/22/mysql%E7%9F%A5%E8%AF%86%E7%82%B9%E7%BB%93%E6%9E%84%E5%9B%BE/">mysql知识点结构图</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/21</span><a class="archive-post-title"
+                    href="/2019/12/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8/">数据库为什么要分库分表</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/23</span><a class="archive-post-title"
+                    href="/2019/02/23/leetcode%E5%9B%9E%E6%96%87%E6%95%B0%E7%AE%97%E6%B3%95%E9%A2%98/">leetcode回文数算法题</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/21</span><a class="archive-post-title"
+                    href="/2019/02/21/Mysql%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E5%92%8C%E9%9D%9E%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95/">mysql索引数据结构（B+树与B树）</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/21</span><a class="archive-post-title"
+                    href="/2019/02/21/mysql%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E5%92%8C%E9%9D%9E%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95/">mysql索引数据结构（B+树与B树）</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/14</span><a class="archive-post-title"
+                    href="/2019/02/14/mysql%E4%BA%8B%E7%89%A9%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">mysql事物隔离级别</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/06</span><a class="archive-post-title"
+                    href="/2019/02/06/%E5%85%B3%E4%BA%8E%E7%A7%92%E6%9D%80%E4%B8%9A%E5%8A%A1%E7%9A%84%E5%A4%84%E7%90%86/">关于秒杀业务的处理</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/06</span><a class="archive-post-title"
+                    href="/2019/02/06/rbac%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93/">rbac权限控制系统总结</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/05</span><a class="archive-post-title"
+                    href="/2019/02/05/%E5%89%8D%E7%AB%AF%E8%87%AA%E9%80%82%E5%BA%94%E7%BD%91%E9%A1%B5%E5%B8%83%E5%B1%80%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93/">前端自适应网页布局技术总结</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">01/22</span><a class="archive-post-title"
+                    href="/2019/01/22/windows%E4%B8%8Bscrapy%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E7%88%AC%E5%8F%96%E6%95%B0%E6%8D%AE/">windows下scrapy框架搭建爬取数据</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">01/15</span><a class="archive-post-title"
+                    href="/2019/01/15/mq%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%B2%97%E7%95%A5%E5%88%86%E6%9E%90/">mq消息中间件最全面分析</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">01/07</span><a class="archive-post-title"
+                    href="/2019/01/07/windows%E6%90%AD%E5%BB%BAdjango%E6%A1%86%E6%9E%B6%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83/">windows搭建django框架本地环境</a>
+            </li>
+            
+        
+        
+        
+        
+        </ul>
+        
+        <div class="archive-year"> 2018 </div>
+        <ul class="year-list">
+            
+            
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/18</span><a class="archive-post-title"
+                    href="/2018/12/18/Redis%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81%E7%9A%84%E5%8C%BA%E5%88%AB/">redis乐观锁与悲观锁的区别</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/18</span><a class="archive-post-title"
+                    href="/2018/12/18/redis%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81%E7%9A%84%E5%8C%BA%E5%88%AB/">redis乐观锁与悲观锁的区别</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/17</span><a class="archive-post-title"
+                    href="/2018/12/17/git%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/">git clone error: RPC failed;</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/11</span><a class="archive-post-title"
+                    href="/2018/12/11/leetcode%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/">leetcode无重复字符的最长子串</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/11</span><a class="archive-post-title"
+                    href="/2018/12/11/leetcode601%E4%BD%93%E8%82%B2%E9%A6%86%E7%9A%84%E6%B5%81%E9%87%8F/">leetcode601体育馆的流量</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/11</span><a class="archive-post-title"
+                    href="/2018/12/11/leetcode633%E5%B9%B3%E6%96%B9%E6%95%B0%E4%B9%8B%E5%92%8C/">leetcode633平方数之和</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/10</span><a class="archive-post-title"
+                    href="/2018/12/10/leetcode628%E4%B8%89%E4%B8%AA%E6%95%B0%E6%9C%80%E5%A4%A7%E7%9A%84%E4%B9%98%E7%A7%AF/">leetcode628三个数最大的乘积</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/10</span><a class="archive-post-title"
+                    href="/2018/12/10/leetcode626%E6%8D%A2%E5%BA%A7%E4%BD%8D/">leetcode626换座位</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/08</span><a class="archive-post-title"
+                    href="/2018/12/08/leetcode-179%E7%AE%97%E6%B3%95%E9%A2%98%E8%A7%A3/">leetcode179算法题解</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/07</span><a class="archive-post-title"
+                    href="/2018/12/07/leetcode-262%E6%95%B0%E6%8D%AE%E5%BA%93%E9%A2%98%E8%A7%A3/">leetcode262数据库题解</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">10/03</span><a class="archive-post-title"
+                    href="/2018/10/03/redis%E5%87%A0%E7%A7%8D%E5%8A%A0%E9%94%81%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0/">redis几种加锁机制的实现</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">09/17</span><a class="archive-post-title"
+                    href="/2018/09/17/protobuf%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86/">protobuf的优缺点</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">09/12</span><a class="archive-post-title"
+                    href="/2018/09/12/csrf%E5%92%8Cxss%E6%94%BB%E5%87%BB%E4%BB%A5%E5%8F%8A%E9%98%B2%E8%8C%83/">csrf和xss攻击以及防范</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">09/12</span><a class="archive-post-title"
+                    href="/2018/09/12/%E5%A6%82%E4%BD%95%E9%A2%84%E9%98%B2SQL%E6%B3%A8%E5%85%A5/">如何预防SQL注入？</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/17</span><a class="archive-post-title"
+                    href="/2018/08/17/cgi%E3%80%81fastcgi%E3%80%81php-fpm%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">cgi、fastcgi、php-fpm之间的关系</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/16</span><a class="archive-post-title"
+                    href="/2018/08/16/threejs-demo-test/">threejs demo test</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/06</span><a class="archive-post-title"
+                    href="/2018/08/06/redis%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E6%8C%81%E4%B9%85%E5%8C%96/">redis如何实现持久化</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/02</span><a class="archive-post-title"
+                    href="/2018/08/02/redis%E9%9B%86%E7%BE%A4%E5%8E%9F%E7%90%86%E4%B8%8E%E6%90%AD%E5%BB%BA/">redis集群原理与搭建</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">04/23</span><a class="archive-post-title"
+                    href="/2018/04/23/nginx%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5/">nginx负载均衡策略</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">04/21</span><a class="archive-post-title"
+                    href="/2018/04/21/docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9/">docker基础知识点</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">04/09</span><a class="archive-post-title"
+                    href="/2018/04/09/mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">mysql数据库存储引擎底层实现</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">03/17</span><a class="archive-post-title"
+                    href="/2018/03/17/nginx%E9%85%8D%E7%BD%AE%E9%A1%B9%E8%B0%83%E4%BC%98/">nginx配置项调优</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">03/16</span><a class="archive-post-title"
+                    href="/2018/03/16/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8explain%E5%88%86%E6%9E%90sql%E8%AF%AD%E5%8F%A5/">如何使用explain分析sql语句</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">03/09</span><a class="archive-post-title"
+                    href="/2018/03/09/session%E4%B8%8Ecookie%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E8%81%94%E7%B3%BB/">session与cookie的区别和联系</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">02/28</span><a class="archive-post-title"
+                    href="/2018/02/28/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E9%80%92%E5%BD%92%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E9%9D%9E%E9%80%92%E5%BD%92%E6%96%B9%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/">快速排序递归方式以及非递归方式的实现</a>
+            </li>
+            
+        
+        
+        
+        
+        </ul>
+        
+        <div class="archive-year"> 2017 </div>
+        <ul class="year-list">
+            
+            
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/27</span><a class="archive-post-title"
+                    href="/2017/12/27/nginx%E9%85%8D%E7%BD%AEhttps%E8%AE%BF%E9%97%AE%E5%9F%9F%E5%90%8D/">nginx配置https访问域名</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/24</span><a class="archive-post-title"
+                    href="/2017/12/24/jquery-datatable-%E8%A1%A8%E6%A0%BC%E7%BB%84%E4%BB%B6%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/">jquery datatable 表格组件使用方法</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/24</span><a class="archive-post-title"
+                    href="/2017/12/24/TCP-IP%E5%8D%8F%E8%AE%AE/">TCP/IP协议</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/24</span><a class="archive-post-title"
+                    href="/2017/12/24/tcp-ip%E5%8D%8F%E8%AE%AE/">TCP/IP协议</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">12/11</span><a class="archive-post-title"
+                    href="/2017/12/11/http%E5%8F%8Ahttps%E4%B9%8B%E9%97%B4%E7%9A%84%E6%AF%94%E8%BE%83/">http与https详解</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">11/14</span><a class="archive-post-title"
+                    href="/2017/11/14/sql%E8%AF%AD%E5%8F%A5%E8%80%83%E9%A2%98/">sql语句考题</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">11/14</span><a class="archive-post-title"
+                    href="/2017/11/14/php%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">php设计模式</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/17</span><a class="archive-post-title"
+                    href="/2017/08/17/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Git-LFS%E6%8F%90%E4%BA%A4%E5%A4%A7%E6%96%87%E4%BB%B6%EF%BC%9F/">如何使用Git LFS提交大文件？</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">08/16</span><a class="archive-post-title"
+                    href="/2017/08/16/jquery%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/">jquery知识整理</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">06/03</span><a class="archive-post-title"
+                    href="/2017/06/03/%E5%87%A0%E7%A7%8Drestful-api%E5%AE%89%E5%85%A8%E8%AE%A4%E8%AF%81%E6%96%B9%E5%BC%8F%E7%9A%84%E5%AF%B9%E6%AF%94/">几种restful api安全认证方式的对比</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">05/17</span><a class="archive-post-title"
+                    href="/2017/05/17/jquery-js%E8%8E%B7%E5%8F%96%E5%85%83%E7%B4%A0/">js或jquery如何获取父级、子级、兄弟元素</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">05/14</span><a class="archive-post-title"
+                    href="/2017/05/14/hexo-windows%E7%8E%AF%E5%A2%83%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/">hexo-windows本地环境部署教程</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">05/14</span><a class="archive-post-title"
+                    href="/2017/05/14/php%E4%B8%AD%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95/">php中魔术方法</a>
+            </li>
+            
+        
+            <li class="archive-post-item">
+                <span class="archive-post-date">05/13</span><a class="archive-post-title"
+                    href="/2017/05/13/hexo-build/">Hexo 搭建全记录</a>
+            </li>
+            
+    </div>
+</div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="mysql索引"><span class="iconfont-archer">&#xe606;</span>mysql索引</span>
+    
+        <span class="sidebar-tag-name" data-tags="TCP/IP"><span class="iconfont-archer">&#xe606;</span>TCP/IP</span>
+    
+        <span class="sidebar-tag-name" data-tags="csrf攻击"><span class="iconfont-archer">&#xe606;</span>csrf攻击</span>
+    
+        <span class="sidebar-tag-name" data-tags="hexo 部署"><span class="iconfont-archer">&#xe606;</span>hexo 部署</span>
+    
+        <span class="sidebar-tag-name" data-tags="hexo部署"><span class="iconfont-archer">&#xe606;</span>hexo部署</span>
+    
+        <span class="sidebar-tag-name" data-tags="http协议"><span class="iconfont-archer">&#xe606;</span>http协议</span>
+    
+        <span class="sidebar-tag-name" data-tags="datatables"><span class="iconfont-archer">&#xe606;</span>datatables</span>
+    
+        <span class="sidebar-tag-name" data-tags="冒泡排序"><span class="iconfont-archer">&#xe606;</span>冒泡排序</span>
+    
+        <span class="sidebar-tag-name" data-tags="二分查找"><span class="iconfont-archer">&#xe606;</span>二分查找</span>
+    
+        <span class="sidebar-tag-name" data-tags="mysql事务"><span class="iconfont-archer">&#xe606;</span>mysql事务</span>
+    
+        <span class="sidebar-tag-name" data-tags="nginx"><span class="iconfont-archer">&#xe606;</span>nginx</span>
+    
+        <span class="sidebar-tag-name" data-tags="锁机制"><span class="iconfont-archer">&#xe606;</span>锁机制</span>
+    
+        <span class="sidebar-tag-name" data-tags="redis集群"><span class="iconfont-archer">&#xe606;</span>redis集群</span>
+    
+        <span class="sidebar-tag-name" data-tags="sql优化"><span class="iconfont-archer">&#xe606;</span>sql优化</span>
+    
+        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
+    
+        <span class="sidebar-tag-name" data-tags="分库分表"><span class="iconfont-archer">&#xe606;</span>分库分表</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
+    
+        <span class="sidebar-category-name" data-categories="redis"><span class="iconfont-archer">&#xe60a;</span>redis</span>
+    
+        <span class="sidebar-category-name" data-categories="计算机网络"><span class="iconfont-archer">&#xe60a;</span>计算机网络</span>
+    
+        <span class="sidebar-category-name" data-categories="web安全"><span class="iconfont-archer">&#xe60a;</span>web安全</span>
+    
+        <span class="sidebar-category-name" data-categories="docker"><span class="iconfont-archer">&#xe60a;</span>docker</span>
+    
+        <span class="sidebar-category-name" data-categories="git"><span class="iconfont-archer">&#xe60a;</span>git</span>
+    
+        <span class="sidebar-category-name" data-categories="hexo"><span class="iconfont-archer">&#xe60a;</span>hexo</span>
+    
+        <span class="sidebar-category-name" data-categories="jquery"><span class="iconfont-archer">&#xe60a;</span>jquery</span>
+    
+        <span class="sidebar-category-name" data-categories="leetcode"><span class="iconfont-archer">&#xe60a;</span>leetcode</span>
+    
+        <span class="sidebar-category-name" data-categories="消息队列"><span class="iconfont-archer">&#xe60a;</span>消息队列</span>
+    
+        <span class="sidebar-category-name" data-categories="php基础"><span class="iconfont-archer">&#xe60a;</span>php基础</span>
+    
+        <span class="sidebar-category-name" data-categories="设计模式"><span class="iconfont-archer">&#xe60a;</span>设计模式</span>
+    
+        <span class="sidebar-category-name" data-categories="业务实现"><span class="iconfont-archer">&#xe60a;</span>业务实现</span>
+    
+        <span class="sidebar-category-name" data-categories="高并发处理"><span class="iconfont-archer">&#xe60a;</span>高并发处理</span>
+    
+        <span class="sidebar-category-name" data-categories="计算机网络协议"><span class="iconfont-archer">&#xe60a;</span>计算机网络协议</span>
+    
+        <span class="sidebar-category-name" data-categories="前端"><span class="iconfont-archer">&#xe60a;</span>前端</span>
+    
+        <span class="sidebar-category-name" data-categories="算法"><span class="iconfont-archer">&#xe60a;</span>算法</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "杯倾川与溪"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+        <div class="site-search">
+  <div class="algolia-popup popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="iconfont-archer">&#xe609;</i>
+    </span>
+  </div>
+</div>
+        <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.8.0/dist/instantsearch.min.js" defer></script>
+        <script src="/scripts/search.js" defer></script>
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+

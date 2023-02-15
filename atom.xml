@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Hexo</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://www.starmoon.cloud/"/>
+  <updated>2023-02-15T09:00:00.817Z</updated>
+  <id>https://www.starmoon.cloud/</id>
+  
+  <author>
+    <name>杯倾川与溪</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>缓存穿透、缓存击穿、缓存雪崩</title>
+    <link href="https://www.starmoon.cloud/2019/12/28/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E3%80%81%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/"/>
+    <id>https://www.starmoon.cloud/2019/12/28/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E3%80%81%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/</id>
+    <published>2019-12-28T16:04:53.000Z</published>
+    <updated>2023-02-15T09:00:00.817Z</updated>
+    
+    <content type="html"><![CDATA[<p>-缓存穿透</p><p>指查询一个一定不存在的数据，如果从存储层查不到数据则不写入缓存，这将导致这个不存在的数据每次请求都要到DB去查询，可能导致DB挂掉。</p><p>-解决方案</p><p>查询返回的数据为空，仍把这个空结果进行缓存，但过期时间会比较短；<br>布隆过滤器：将所有可能存在的数据哈希到一个足够大的bitmap中，一个一定不存在的数据会被这个bitmap拦截掉，从而避免了对DB的查询。<br>BloomFilter 类似于一个hbase set 用来判断某个元素（key）是否存在于某个集合中。<br>这种方式在大数据场景应用比较多，比如 Hbase 中使用它去判断数据是否在磁盘上。还有在爬虫场景判断url 是否已经被爬取过。<br>这种方案可以加在第一种方案中，在缓存之前在加一层 BloomFilter ，在查询的时候先去 BloomFilter 去查询 key 是否存在，如果不存在就直接返回，存在再走查缓存 -&gt; 查 DB。</p><p>-如何选择</p><p>针对于一些恶意攻击，攻击带过来的大量key 是不存在的，那么我们采用第一种方案就会缓存大量不存在key的数据。<br>此时我们采用第一种方案就不合适了，我们完全可以先对使用第二种方案进行过滤掉这些key。 针对这种key异常多、请求重复率比较低的数据，我们就没有必要进行缓存，使用第二种方案直接过滤掉。<br>而对于空数据的key有限的，重复率比较高的，我们则可以采用第一种方式进行缓存。</p><p>-缓存击穿</p><p>对于设置了过期时间的key，缓存在某个时间点过期的时候，恰好这时间点对这个Key有大量的并发请求过来，这些请求发现缓存过期一般都会从后端DB加载数据并回设到缓存，这个时候大并发的请求可能会瞬间把DB压垮。</p><p>-解决方案</p><p>使用互斥锁：当缓存失效时，不立即去Ioaddb，先使用如Redis的setnx去设置一个互斥锁，当操作成功返回时再进行Ioaddb的操作并回设缓存，否则重试get缓存的方法。</p><p>-缓存雪崩</p><p>设置缓存时采用了相同的过期时间，导致缓存在某一时刻同时失效，请求全部转发到DB，DB瞬时压力过重雪崩。与缓存击穿的区别：雪崩是很多key，击穿是某一个key缓存。</p><p>-解决方案</p><p>将缓存失效时间分散开，比如可以在原有的失效时间基础上增加一个随机值，比如1-5分钟随机，这样每一个缓存的过期时间的重复率就会降低，就很难引发集体失效的事件。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;-缓存穿透&lt;/p&gt;
+&lt;p&gt;指查询一个一定不存在的数据，如果从存储层查不到数据则不写入缓存，这将导致这个不存在的数据每次请求都要到DB去查询，可能导致DB挂掉。&lt;/p&gt;
+&lt;p&gt;-解决方案&lt;/p&gt;
+&lt;p&gt;查询返回的数据为空，仍把这个空结果进行缓存，但过期时间会比较短；&lt;br&gt;布
+      
+    
+    </summary>
+    
+    
+      <category term="redis" scheme="https://www.starmoon.cloud/categories/redis/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>mysql常用的四种引擎</title>
+    <link href="https://www.starmoon.cloud/2019/12/28/mysql%E5%B8%B8%E7%94%A8%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BC%95%E6%93%8E/"/>
+    <id>https://www.starmoon.cloud/2019/12/28/mysql%E5%B8%B8%E7%94%A8%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BC%95%E6%93%8E/</id>
+    <published>2019-12-28T16:03:04.000Z</published>
+    <updated>2023-02-15T09:00:00.813Z</updated>
+    
+    <content type="html"><![CDATA[<p>(1)：MyISAM存储引擎<br>不支持事务、也不支持外键，优势是访问速度快，对事务完整性没有 要求或者以select，insert为主的应用基本上可以用这个引擎来创建表  </p><p>支持3种不同的存储格式，分别是：静态表；动态表；压缩表  </p><p>静态表：表中的字段都是非变长字段，这样每个记录都是固定长度的，优点存储非常迅速，容易缓存，出现故障容易恢复；缺点是占用的空间通常比动态表多（因为存储时会按照列的宽度定义补足空格）ps：在取数据的时候，默认会把字段后面的空格去掉，如果不注意会把数据本身带的空格也会忽略。<br>动态表：记录不是固定长度的，这样存储的优点是占用的空间相对较少；缺点：频繁的更新、删除数据容易产生碎片，需要定期执行OPTIMIZE TABLE或者myisamchk-r命令来改善性能<br>压缩表：因为每个记录是被单独压缩的，所以只有非常小的访问开支<br>MyISAM的表存储成3个文件。文件的名字与表名相同。拓展名为_frm_、MYD、MYI。其实，frm文件存储表的结构；MYD文件存储数据，是MYData的缩写；MYI文件存储索引，是MYIndex的缩写。<br>MyISAM：只支持表级锁，只支持表级锁，用户在操作myisam表时，select，update，delete，insert语句都会给表自动加锁。  </p><p>(2) InnoDB存储引擎<br>该存储引擎提供了具有提交、回滚和崩溃恢复能力的事务安全。但是对比MyISAM引擎，写的处理效率会差一些，并且会占用更多的磁盘空间以保留数据和索引。<br>InnoDB存储引擎的特点：支持自动增长列，支持外键约束，支持事务<br>InnoDB中，创建的表的表结构存储在_.frm_文件中（我觉得是frame的缩写吧）。数据和索引存储在innodb_data_home_dir和innodb_data_file_path定义的表空间中<br>InnoDB：支持事务和行级锁，是innodb的最大特色。行锁大幅度提高了多用户并发操作的新能。  </p><p>(3)：MEMORY存储引擎<br>Memory存储引擎使用存在于内存中的内容来创建表。每个memory表只实际对应一个磁盘文件，格式是.frm。memory类型的表访问非常的快，因为它的数据是放在内存中的，并且默认使用HASH索引，但是一旦服务关闭，表中的数据就会丢失掉。<br>MEMORY存储引擎的表可以选择使用BTREE索引或者HASH索引，两种不同类型的索引有其不同的使用范围  </p><p>Hash索引优点：<br>Hash 索引结构的特殊性，其检索效率非常高，索引的检索可以一次定位，不像B-Tree 索引需要从根节点到枝节点，最后才能访问到页节点这样多次的IO访问，所以 Hash 索引的查询效率要远高于 B-Tree 索引。<br>Hash索引缺点： 那么不精确查找呢，也很明显，因为hash算法是基于等值计算的，所以对于“like”等范围查找hash索引无效，不支持；<br>Memory类型的存储引擎主要用于哪些内容变化不频繁的代码表，或者作为统计操作的中间结果表，便于高效地对中间结果进行分析并得到最终的统计结果。对存储引擎为memory的表进行更新操作要谨慎，因为数据并没有实际写入到磁盘中，所以一定要对下次重新启动服务后如何获得这些修改后的数据有所考虑。  </p><p>(4) MERGE存储引擎<br>Merge存储引擎是一组MyISAM表的组合，这些MyISAM表必须结构完全相同，merge表本身并没有数据，对merge类型的表可以进行查询，更新，删除操作，这些操作实际上是对内部的MyISAM表进行的。  </p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;(1)：MyISAM存储引擎&lt;br&gt;不支持事务、也不支持外键，优势是访问速度快，对事务完整性没有 要求或者以select，insert为主的应用基本上可以用这个引擎来创建表  &lt;/p&gt;
+&lt;p&gt;支持3种不同的存储格式，分别是：静态表；动态表；压缩表  &lt;/p&gt;
+&lt;p&gt;静态表：
+      
+    
+    </summary>
+    
+    
+      <category term="mysql" scheme="https://www.starmoon.cloud/categories/mysql/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>mysql常见锁机制</title>
+    <link href="https://www.starmoon.cloud/2019/12/28/mysql%E5%B8%B8%E8%A7%81%E9%94%81%E6%9C%BA%E5%88%B6/"/>
+    <id>https://www.starmoon.cloud/2019/12/28/mysql%E5%B8%B8%E8%A7%81%E9%94%81%E6%9C%BA%E5%88%B6/</id>
+    <published>2019-12-28T16:02:01.000Z</published>
+    <updated>2023-02-15T09:00:00.813Z</updated>
+    
+    <content type="html"><![CDATA[<p>MySQL有三种锁的级别：页级、表级、行级。<br>表级锁：开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高,并发度最低。<br>行级锁：开销大，加锁慢；会出现死锁；锁定粒度最小，发生锁冲突的概率最低,并发度也最高。  </p><p>所谓死锁:<br>是指两个或两个以上的进程在执行过程中,<br>因争夺资源而造成的一种互相等待的现象,若无外力作用,它们都将无法推进下去.<br>此时称系统处于死锁状态或系统产生了死锁,这些永远在互相等竺的进程称为死锁进程.<br>表级锁不会产生死锁.所以解决死锁主要还是针对于最常用的InnoDB.</p><p>死锁的关键在于：<br>两个(或以上)的Session加锁的顺序不一致。<br>那么对应的解决死锁问题的关键就是：让不同的session加锁有次序</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;MySQL有三种锁的级别：页级、表级、行级。&lt;br&gt;表级锁：开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高,并发度最低。&lt;br&gt;行级锁：开销大，加锁慢；会出现死锁；锁定粒度最小，发生锁冲突的概率最低,并发度也最高。  &lt;/p&gt;
+&lt;p&gt;所谓死锁:&lt;br&gt;是指两
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>redis与memcache比较的优势与特点</title>
+    <link href="https://www.starmoon.cloud/2019/12/27/redis%E4%B8%8Ememcache%E6%AF%94%E8%BE%83%E7%9A%84%E4%BC%98%E5%8A%BF%E4%B8%8E%E7%89%B9%E7%82%B9/"/>
+    <id>https://www.starmoon.cloud/2019/12/27/redis%E4%B8%8Ememcache%E6%AF%94%E8%BE%83%E7%9A%84%E4%BC%98%E5%8A%BF%E4%B8%8E%E7%89%B9%E7%82%B9/</id>
+    <published>2019-12-27T21:10:59.000Z</published>
+    <updated>2023-02-15T09:00:00.813Z</updated>
+    
+    <content type="html"><![CDATA[<p>因为CPU不是Redis的瓶颈。Redis的瓶颈最有可能是机器内存或者网络带宽。（以上主要来自官方FAQ）既然单线程容易实现，而且CPU不会成为瓶颈，那就顺理成章地采用单线程的方案了。关于redis的性能，官方网站也有，普通笔记本轻松处理每秒几十万的请求,单线程可以处理高并发请求吗？  </p><p>当然可以了，Redis都实现了。有一点概念需要澄清，并发并不是并行。<br>（相关概念：并发性I/O流，意味着能够让一个计算单元来处理来自多个客户端的流请求。并行性，意味着服务器能够同时执行几个事情，具有多个计算单元）</p><p>Redis总体快速的原因：<br>采用队列模式将并发访问变为串行访问<br>单线程指的是网络请求模块使用了一个线程（所以不需考虑并发安全性），其他模块仍用了多个线程。</p><p>总体来说快速的原因如下：<br>1）绝大部分请求是纯粹的内存操作（非常快速）<br>2）采用单线程,避免了不必要的上下文切换和竞争条件<br>3）非阻塞IO<br>内部实现采用epoll，采用了epoll+自己实现的简单的事件框架。epoll中的读、写、关闭、连接都转化成了事件，然后利用epoll的多路复用特性，绝不在io上浪费一点时间<br>这3个条件不是相互独立的，特别是第一条，如果请求都是耗时的，采用单线程吞吐量及性能可想而知了。应该说redis为特殊的场景选择了合适的技术方案。</p><p>1.Redis服务端是个单线程的架构，不同的Client虽然看似可以同时保持连接，但发出去的命令是序列化执行的，这在通常的数据库理论下是最高级别的隔离（serialize)<br>2.用MULTI/EXEC 来把多个命令组装成一次发送，达到原子性<br>3.用WATCH提供的乐观锁功能，在你EXEC的那一刻，如果被WATCH的键发生过改动，则MULTI到EXEC之间的指令全部不执行，不需要rollback<br>4.其他回答中提到的DISCARD指令只是用来撤销EXEC之前被暂存的指令，并不是回滚  </p><p>1.使用Redis有哪些好处？<br>(1) 速度快，因为数据存在内存中，类似于HashMap，HashMap的优势就是查找和操作的时间复杂度都是O(1)<br>(2) 支持丰富数据类型，支持string，list，set，sorted set，hash<br>(3) 支持事务，操作都是原子性，所谓的原子性就是对数据的更改要么全部执行，要么全部不执行<br>(4) 丰富的特性：可用于缓存，消息，按key设置过期时间，过期后将会自动删除    </p><p>2.Redis相比memcached有哪些优势？<br>(1) memcached所有的值均是简单的字符串，redis作为其替代者，支持更为丰富的数据类型<br>(2) redis的速度比memcached快很多<br>(3) redis可以持久化其数据<br>(4)Redis支持数据的备份，即master-slave模式的数据备份。<br>(5)、使用底层模型不同<br>它们之间底层实现方式 以及与客户端之间通信的应用协议不一样。<br>Redis直接自己构建了VM 机制 ，因为一般的系统调用系统函数的话，会浪费一定的时间去移动和请求。<br>(6）value大小：redis最大可以达到1GB，而memcache只有1MB  </p><p>redis的一些其他特点:<br>(1)Redis是单进程单线程的<br>redis利用队列技术将并发访问变为串行访问，消除了传统数据库串行控制的开销</p><p>(2)读写分离模型<br>通过增加Slave DB的数量，读的性能可以线性增长。为了避免Master DB的单点故障，集群一般都会采用两台Master DB做双机热备，所以整个集群的读和写的可用性都非常高。<br>读写分离架构的缺陷在于，不管是Master还是Slave，每个节点都必须保存完整的数据，如果在数据量很大的情况下，集群的扩展能力还是受限于单个节点的存储能力，而且对于Write-intensive类型的应用，读写分离架构并不适合。</p><p>(3)数据分片模型<br>为了解决读写分离模型的缺陷，可以将数据分片模型应用进来。<br>可以将每个节点看成都是独立的master，然后通过业务实现数据分片。<br>结合上面两种模型，可以将每个master设计成由一个master和多个slave组成的模型。  </p><p>什么时候倾向于选择memcache？<br>纯kv，数据量非常大，并发量非常大的业务，使用mc或许更合适</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;因为CPU不是Redis的瓶颈。Redis的瓶颈最有可能是机器内存或者网络带宽。（以上主要来自官方FAQ）既然单线程容易实现，而且CPU不会成为瓶颈，那就顺理成章地采用单线程的方案了。关于redis的性能，官方网站也有，普通笔记本轻松处理每秒几十万的请求,单线程可以处理高并
+      
+    
+    </summary>
+    
+    
+      <category term="redis" scheme="https://www.starmoon.cloud/categories/redis/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>mysql索引建立原则</title>
+    <link href="https://www.starmoon.cloud/2019/12/27/mysql%E7%B4%A2%E5%BC%95%E5%BB%BA%E7%AB%8B%E5%8E%9F%E5%88%99/"/>
+    <id>https://www.starmoon.cloud/2019/12/27/mysql%E7%B4%A2%E5%BC%95%E5%BB%BA%E7%AB%8B%E5%8E%9F%E5%88%99/</id>
+    <published>2019-12-27T16:28:43.000Z</published>
+    <updated>2023-02-15T09:00:00.813Z</updated>
+    
+    <content type="html"><![CDATA[<p>单值索引：一个索引只包含单个列，一个表可以有多个单列索引<br>唯一索引：索引列的值必须唯一，但允许有空值<br>复合索引：一个索引包含多个列，实际开发中推荐使用<br>实际开发中推荐使用复合索引，并且单表创建的索引个数建议不要超过五个</p><p>基本语法：<br>创建：<br>create [unique] index indexName on tableName (columnName…)<br>alter tableName add [unique] index [indexName] on (columnName…)<br>删除：<br>drop index [indexName] on tableName<br>查看：<br>show index from tableName  </p><p>哪些情况需要建索引：<br>主键，唯一索引<br>经常用作查询条件的字段需要创建索引<br>经常需要排序、分组和统计的字段需要建立索引<br>查询中与其他表关联的字段，外键关系建立索引  </p><p>哪些情况不要建索引：<br>表的记录太少，百万级以下的数据不需要创建索引<br>经常增删改的表不需要创建索引<br>数据重复且分布平均的字段不需要创建索引，如 true,false 之类。<br>频发更新的字段不适合创建索引<br>where条件里用不到的字段不需要创建索引  </p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;单值索引：一个索引只包含单个列，一个表可以有多个单列索引&lt;br&gt;唯一索引：索引列的值必须唯一，但允许有空值&lt;br&gt;复合索引：一个索引包含多个列，实际开发中推荐使用&lt;br&gt;实际开发中推荐使用复合索引，并且单表创建的索引个数建议不要超过五个&lt;/p&gt;
+&lt;p&gt;基本语法：&lt;br&gt;创建
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>mysql使用explain分析查询语句</title>
+    <link href="https://www.starmoon.cloud/2019/12/27/mysql%E4%BD%BF%E7%94%A8explain%E5%88%86%E6%9E%90%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5/"/>
+    <id>https://www.starmoon.cloud/2019/12/27/mysql%E4%BD%BF%E7%94%A8explain%E5%88%86%E6%9E%90%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5/</id>
+    <published>2019-12-27T15:51:37.000Z</published>
+    <updated>2023-02-15T09:00:00.813Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>索引分类</strong> </p><p>我们常说的索引一般指的是BTree（多路搜索树）结构组织的索引。其中还有聚合索引，次要索引，复合索引，前缀索引，唯一索引，统称索引，当然除了B+树外，还有哈希索引（hash index）等。</p><p>单值索引：一个索引只包含单个列，一个表可以有多个单列索引<br>唯一索引：索引列的值必须唯一，但允许有空值<br>复合索引：一个索引包含多个列，实际开发中推荐使用<br>实际开发中推荐使用复合索引，并且单表创建的索引个数建议不要超过五个</p><p><strong>explain 分析sql语句</strong> </p><p>使用explain关键字可以模拟优化器执行sql查询语句，从而得知MySQL 是如何处理sql语句。</p><p>+—-+————-+——-+————+——+—————+—–+———+——+——+———-+——-+<br>id | select_type| table | partitions | type | possible_keys | key | key_len | ref  | rows | filtered | Extra|<br>+—-+————-+——-+————+——+—————+—–+———+——+——+———-+——-+</p><p>id </p><p>select 查询的序列号，包含一组可以重复的数字，表示查询中执行sql语句的顺序。一般有三种情况：<br>第一种：id全部相同，sql的执行顺序是由上至下；<br>第二种：id全部不同，sql的执行顺序是根据id大的优先执行；<br>第三种：id既存在相同，又存在不同的。先根据id大的优先执行，再根据相同id从上至下的执行。</p><p>select_type </p><p>select 查询的类型，主要是用于区别普通查询，联合查询，子查询<br>simple：简单的select 查询，查询中不包含子查询或者union<br>primary：查询中若包含任何复杂的子查询，最外层查询则被标记为primary<br>subquery：在select或where 列表中包含了子查询<br>derived：在from列表中包含的子查询被标记为derived（衍生）MySQL会递归执行这些子查询，把结果放在临时表里。<br>union：若第二个select出现在union之后，则被标记为union，若union包含在from子句的子查询中，外层select将被标记为：derived<br>union result：从union表获取结果的select<br>partitions: 表所使用的分区，如果要统计十年公司订单的金额，可以把数据分为十个区，每一年代表一个区。这样可以大大的提高查询效率。</p><p>type </p><p>这是一个非常重要的参数，连接类型，常见的有：all , index , range , ref , eq_ref , const , system , null 八个级别。<br>性能从最优到最差的排序：system &gt; const &gt; eq_ref &gt; ref &gt; range &gt; index &gt; all<br>对java程序员来说，若保证查询至少达到range级别或者最好能达到ref则算是一个优秀而又负责的程序员。<br>all：（full table scan）全表扫描无疑是最差，若是百万千万级数据量，全表扫描会非常慢。<br>index：（full index scan）全索引文件扫描比all好很多，毕竟从索引树中找数据，比从全表中找数据要快。<br>range：只检索给定范围的行，使用索引来匹配行。范围缩小了，当然比全表扫描和全索引文件扫描要快。sql语句中一般会有between，in，&gt;，&lt; 等查询。<br>ref：非唯一性索引扫描，本质上也是一种索引访问，返回所有匹配某个单独值的行。比如查询公司所有属于研发团队的同事，匹配的结果是多个并非唯一值。<br>eq_ref：唯一性索引扫描，对于每个索引键，表中有一条记录与之匹配。比如查询公司的CEO，匹配的结果只可能是一条记录，<br>const：表示通过索引一次就可以找到，const用于比较primary key 或者unique索引。因为只匹配一行数据，所以很快，若将主键至于where列表中，MySQL就能将该查询转换为一个常量。<br>system：表只有一条记录（等于系统表），这是const类型的特列，平时不会出现，了解即可<br>possible_keys：显示查询语句可能用到的索引(一个或多个或为null)，不一定被查询实际使用。仅供参考使用。<br>key：显示查询语句实际使用的索引。若为null，则表示没有使用索引。<br>key_len：显示索引中使用的字节数，可通过key_len计算查询中使用的索引长度。在不损失精确性的情况下索引长度越短越好。key_len 显示的值为索引字段的最可能长度，并非实际使用长度，即key_len是根据表定义计算而得，并不是通过表内检索出的。<br>ref：显示索引的哪一列或常量被用于查找索引列上的值。<br>rows：根据表统计信息及索引选用情况，大致估算出找到所需的记录所需要读取的行数，值越大越不好。</p><p>extra </p><p>Using filesort： 说明MySQL会对数据使用一个外部的索引排序，而不是按照表内的索引顺序进行读取。MySQL中无法利用索引完成的排序操作称为“文件排序” 。出现这个就要立刻优化sql。</p><p>Using temporary： 使用了临时表保存中间结果，MySQL在对查询结果排序时使用临时表。常见于排序 order by 和 分组查询 group by。 出现这个更要立刻优化sql。</p><p>Using index： 表示相应的select 操作中使用了覆盖索引（Covering index），避免访问了表的数据行，效果不错！如果同时出现Using where，表明索引被用来执行索引键值的查找。如果没有同时出现Using where，表示索引用来读取数据而非执行查找动作。</p><p>覆盖索引（Covering Index） ：也叫索引覆盖，就是select 的数据列只用从索引中就能够取得，不必读取数据行，MySQL可以利用索引返回select 列表中的字段，而不必根据索引再次读取数据文件。</p><p>Using index condition： 在5.6版本后加入的新特性，优化器会在索引存在的情况下，通过符合RANGE范围的条数 和 总数的比例来选择是使用索引还是进行全表遍历。</p><p>Using where： 表明使用了where 过滤</p><p>Using join buffer： 表明使用了连接缓存</p><p>impossible where： where 语句的值总是false，不可用，不能用来获取任何元素</p><p>distinct： 优化distinct操作，在找到第一匹配的元组后即停止找同样值的动作。</p><p>filtered </p><p>一个百分比的值，和rows 列的值一起使用，可以估计出查询执行计划(QEP)中的前一个表的结果集，从而确定join操作的循环次数。小表驱动大表，减轻连接的次数。<br>通过explain的参数介绍，我们可以得知:<br>表的读取顺序(id)<br>数据读取操作的操作类型(type)<br>哪些索引被实际使用(key)<br>表之间的引用(ref)<br>每张表有多少行被优化器查询(rows)</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;strong&gt;索引分类&lt;/strong&gt; &lt;/p&gt;
+&lt;p&gt;我们常说的索引一般指的是BTree（多路搜索树）结构组织的索引。其中还有聚合索引，次要索引，复合索引，前缀索引，唯一索引，统称索引，当然除了B+树外，还有哈希索引（hash index）等。&lt;/p&gt;
+&lt;p&gt;单值索引
+      
+    
+    </summary>
+    
+    
+      <category term="mysql" scheme="https://www.starmoon.cloud/categories/mysql/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>mysql查询优化经验</title>
+    <link href="https://www.starmoon.cloud/2019/12/27/mysql%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96%E7%BB%8F%E9%AA%8C/"/>
+    <id>https://www.starmoon.cloud/2019/12/27/mysql%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96%E7%BB%8F%E9%AA%8C/</id>
+    <published>2019-12-27T15:44:41.000Z</published>
+    <updated>2023-02-15T09:00:00.813Z</updated>
+    
+    <content type="html"><![CDATA[<p>《阿里巴巴Java开发手册》提出单表行数超过500万行或者单表容量超过2GB，才推荐分库分表。性能由综合因素决定，抛开业务复杂度，影响程度依次是硬件配置、MySQL配置、数据表设计、索引优化。500万这个值仅供参考，并非铁律。</p><p><strong>性能下降的原因</strong></p><p>从程序员的角度<br>查询语句写的不好<br>没建索引，索引建的不合理或索引失效<br>关联查询有太多的join<br>从服务器的角度<br>服务器磁盘空间不足<br>服务器调优配置参数设置不合理</p><p>最大并发数<br>并发数是指同一时刻数据库能处理多少个请求，由max_connections和max_user_connections决定。max_connections是指MySQL实例的最大连接数，上限值是16384，max_user_connections是指每个数据库用户的最大连接数。<br>MySQL会为每个连接提供缓冲区，意味着消耗更多的内存。如果连接数设置太高硬件吃不消，太低又不能充分利用硬件。一般要求两者比值超过10%，计算方法如下：<br>max_used_connections / max_connections * 100% = 3/100 *100% ≈ 3%</p><p>查询耗时0.5秒<br>建议将单次查询耗时控制在0.5秒以内，0.5秒是个经验值，源于用户体验的3秒原则。如果用户的操作3秒内没有响应，将会厌烦甚至退出。响应时间=客户端UI渲染耗时+网络请求耗时+应用程序处理耗时+查询数据库耗时，0.5秒就是留给数据库1/6的处理时间。</p><p>充分利用但不滥用索引，须知索引也消耗磁盘和CPU。<br>不推荐使用数据库函数格式化数据，交给应用程序处理。<br>不推荐使用外键约束，用应用程序保证数据准确性。<br>写多读少的场景，不推荐使用唯一索引，用应用程序保证唯一性。<br>适当冗余字段，尝试创建中间表，用应用程序计算中间结果，用空间换时间。<br>不允许执行极度耗时的事务，配合应用程序拆分成更小的事务。<br>预估重要数据表（比如订单表）的负载和数据增长态势，提前优化。</p><p><strong>数据表设计优化</strong></p><p>数据类型<br>数据类型的选择原则：更简单或者占用空间更小。<br>如果长度能够满足，整型尽量使用tinyint、smallint、medium_int而非int。<br>如果字符串长度确定，采用char类型。<br>如果varchar能够满足，不采用text类型。<br>精度要求较高的使用decimal类型，也可以使用BIGINT，比如精确两位小数就乘以100后保存。<br>尽量采用timestamp而非datetime。<br>避免空值<br>MySQL中字段为NULL时依然占用空间，会使索引、索引统计更加复杂。从NULL值更新到非NULL无法做到原地更新，容易发生索引分裂影响性能。尽可能将NULL值用有意义的值代替，也能避免SQL语句里面包含is not null的判断。</p><p>text类型优化<br>由于text字段储存大量数据，表容量会很早涨上去，影响其他字段的查询性能。建议抽取出来放在子表里，用业务主键关联。</p><p><strong>索引优化</strong></p><p>索引分类<br>普通索引：最基本的索引。<br>组合索引：多个字段上建立的索引，能够加速复合查询条件的检索。<br>唯一索引：与普通索引类似，但索引列的值必须唯一，允许有空值。<br>组合唯一索引：列值的组合必须唯一。<br>主键索引：特殊的唯一索引，用于唯一标识数据表中的某一条记录，不允许有空值，一般用primary key约束。<br>全文索引：用于海量文本的查询，MySQL5.6之后的InnoDB和MyISAM均支持全文索引。由于查询精度以及扩展性不佳，更多的企业选择Elasticsearch。<br>索引优化<br>分页查询很重要，如果查询数据量超过30%，MYSQL不会使用索引。<br>单表索引数不超过5个、单个索引字段数不超过5个。<br>字符串可使用前缀索引，前缀长度控制在5-8个字符。<br>字段唯一性太低，增加索引没有意义，如：是否删除、性别。</p><p><strong>OR优化</strong><br>在Innodb引擎下or无法使用组合索引，比如：<br>select id，product_name from orders where mobile_no = ‘13421800407’ or user_id = 100;</p><p>OR无法命中mobile_no + user_id的组合索引，可采用union，如下所示：<br>(select id，product_name from orders where mobile_no = ‘13421800407’)<br> union<br>(select id，product_name from orders where user_id = 100);</p><p><strong>IN优化</strong><br>IN适合主表大子表小，EXIST适合主表小子表大。由于查询优化器的不断升级，很多场景这两者性能差不多一样了。<br>尝试改为join查询，举例如下：<br>select id from orders where user_id in (select id from user where level = ‘VIP’);</p><p>采用JOIN如下所示：<br>select o.id from orders o left join user u on o.user_id = u.id where u.level = ‘VIP’;</p><p>不做列运算</p><p>通常在查询条件列运算会导致索引失效，如下所示：<br>查询当日订单<br>select id from order where date_format(create_time，’%Y-%m-%d’) = ‘2018-07-01’;<br>date_format函数会导致这个查询无法使用索引，改写后：<br>select id from order where create_time between ‘2018-07-01 00:00:00’ and ‘2018-07-01 23:59:59’;</p><p>避免Select all<br>如果不查询表中所有的列，避免使用SELECT *，它会进行全表扫描，不能有效利用索引。</p><p>Join优化</p><p>join的实现是采用Nested Loop Join算法，就是通过驱动表的结果集作为基础数据，通过该结数据作为过滤条件到下一个表中循环查询数据，然后合并结果。如果有多个join，则将前面的结果集作为循环数据，再次到后一个表中查询数据。<br>驱动表和被驱动表尽可能增加查询条件，满足ON的条件而少用Where，用小结果集驱动大结果集。<br>被驱动表的join字段上加上索引，无法建立索引的时候，设置足够的Join Buffer Size。<br>禁止join连接三个以上的表，尝试增加冗余字段。</p><p>Limit优化 </p><p>limit用于分页查询时越往后翻性能越差，解决的原则：缩小扫描范围，如下所示：<br>select * from orders order by id desc limit 100000,10<br>耗时0.4秒<br>select * from orders order by id desc limit 1000000,10<br>耗时5.2秒<br>先筛选出ID缩小查询范围，写法如下：<br>select * from orders where id &gt; (select id from orders order by id desc  limit 1000000, 1) order by id desc limit 0,10<br>耗时0.5秒<br>如果查询条件仅有主键ID，写法如下：<br>select id from orders where id between 1000000 and 1000010 order by id desc<br>耗时0.3秒<br>如果以上方案依然很慢呢？只好用游标了，感兴趣的朋友阅读JDBC使用游标实现分页查询的方法</p><p><strong>总结</strong></p><p>索引是排好序且快速查找的数据结构。其目的是为了提高查询的效率。<br>创建索引后，查询数据变快，但更新数据变慢。<br>性能下降的原因很可能是索引失效导致。<br>索引创建的原则，经常查询的字段适合创建索引，频繁需要更新的数据不适合创建索引。<br>索引字段频繁更新，或者表数据物理删除容易造成索引失效。<br>擅用 explain 分析sql语句<br>除了优化sql语句外，还可以优化表的设计。如尽量做成单表查询，减少表之间的关联。设计归档表等。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;《阿里巴巴Java开发手册》提出单表行数超过500万行或者单表容量超过2GB，才推荐分库分表。性能由综合因素决定，抛开业务复杂度，影响程度依次是硬件配置、MySQL配置、数据表设计、索引优化。500万这个值仅供参考，并非铁律。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;性能下降的原因&lt;
+      
+    
+    </summary>
+    
+    
+      <category term="mysql" scheme="https://www.starmoon.cloud/categories/mysql/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>mysql知识点结构图</title>
+    <link href="https://www.starmoon.cloud/2019/12/22/mysql%E7%9F%A5%E8%AF%86%E7%82%B9%E7%BB%93%E6%9E%84%E5%9B%BE/"/>
+    <id>https://www.starmoon.cloud/2019/12/22/mysql%E7%9F%A5%E8%AF%86%E7%82%B9%E7%BB%93%E6%9E%84%E5%9B%BE/</id>
+    <published>2019-12-22T09:49:51.000Z</published>
+    <updated>2023-02-15T09:00:00.813Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="https://www.starmoon.cloud/img/mysql_struct.png" alt></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;img src=&quot;https://www.starmoon.cloud/img/mysql_struct.png&quot; alt&gt;&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+    
+      <category term="mysql" scheme="https://www.starmoon.cloud/categories/mysql/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>数据库为什么要分库分表</title>
+    <link href="https://www.starmoon.cloud/2019/12/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8/"/>
+    <id>https://www.starmoon.cloud/2019/12/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8/</id>
+    <published>2019-12-21T17:28:33.000Z</published>
+    <updated>2023-02-15T09:00:00.817Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="一、基本思想之什么是分库分表？"><a href="#一、基本思想之什么是分库分表？" class="headerlink" title="一、基本思想之什么是分库分表？"></a>一、基本思想之什么是分库分表？</h2><p>从字面上简单理解，就是把原本存储于一个库的数据分块存储到多个库上，把原本存储于一个表的数据分块存储到多个表上。</p><h2 id="二、基本思想之为什么要分库分表？"><a href="#二、基本思想之为什么要分库分表？" class="headerlink" title="二、基本思想之为什么要分库分表？"></a>二、基本思想之为什么要分库分表？</h2><p>数据库中的数据量不一定是可控的，在未进行分库分表的情况下，随着时间和业务的发展，库中的表会越来越多，表中的数据量也会越来越大，相应地，数据操作，增删改查的开销也会越来越大；另外，由于无法进行分布式式部署，而一台服务器的资源（CPU、磁盘、内存、IO等）是有限的，最终数据库所能承载的数据量、数据处理能力都将遭遇瓶颈。</p><h2 id="三、分库分表的实施策略。"><a href="#三、分库分表的实施策略。" class="headerlink" title="三、分库分表的实施策略。"></a>三、分库分表的实施策略。</h2><p>分库分表有垂直切分和水平切分两种。</p><p>何谓垂直切分，即将表按照功能模块、关系密切程度划分出来，部署到不同的库上。例如，我们会建立定义数据库workDB、商品数据库payDB、用户数据库userDB、日志数据库logDB等，分别用于存储项目数据定义表、商品定义表、用户数据表、日志数据表等。</p><p>何谓水平切分，当一个表中的数据量过大时，我们可以把该表的数据按照某种规则，例如userID散列，进行划分，然后存储到多个结构相同的表，和不同的库上。例如，我们的userDB中的用户数据表中，每一个表的数据量都很大，就可以把userDB切分为结构相同的多个userDB：part0DB、part1DB等，再将userDB上的用户数据表userTable，切分为很多userTable：userTable0、userTable1等，然后将这些表按照一定的规则存储到多个userDB上。</p><p>应该使用哪一种方式来实施数据库分库分表，这要看数据库中数据量的瓶颈所在，并综合项目的业务类型进行考虑。<br>如果数据库是因为表太多而造成海量数据，并且项目的各项业务逻辑划分清晰、低耦合，那么规则简单明了、容易实施的垂直切分必是首选。<br>而如果数据库中的表并不多，但单表的数据量很大、或数据热度很高，这种情况之下就应该选择水平切分，水平切分比垂直切分要复杂一些，它将原本逻辑上属于一体的数据进行了物理分割，除了在分割时要对分割的粒度做好评估，考虑数据平均和负载平均，后期也将对项目人员及应用程序产生额外的数据管理负担。<br>在现实项目中，往往是这两种情况兼而有之，这就需要做出权衡，甚至既需要垂直切分，又需要水平切分。我们的游戏项目便综合使用了垂直与水平切分，我们首先对数据库进行垂直切分，然后，再针对一部分表，通常是用户数据表，进行水平切分。</p><h2 id="四、分库分表存在的问题"><a href="#四、分库分表存在的问题" class="headerlink" title="四、分库分表存在的问题"></a>四、分库分表存在的问题</h2><h3 id="事务问题"><a href="#事务问题" class="headerlink" title="事务问题"></a>事务问题</h3><p>在执行分库分表之后，由于数据存储到了不同的库上，数据库事务管理出现了困难。如果依赖数据库本身的分布式事务管理功能去执行事务，将付出高昂的性能代价；如果由应用程序去协助控制，形成程序逻辑上的事务，又会造成编程方面的负担。</p><h3 id="跨库跨表的join问题"><a href="#跨库跨表的join问题" class="headerlink" title="跨库跨表的join问题"></a>跨库跨表的join问题</h3><p>在执行了分库分表之后，难以避免会将原本逻辑关联性很强的数据划分到不同的表、不同的库上，这时，表的关联操作将受到限制，我们无法join位于不同分库的表，也无法join分表粒度不同的表，结果原本一次查询能够完成的业务，可能需要多次查询才能完成。</p><h3 id="额外的数据管理负担和数据运算压力"><a href="#额外的数据管理负担和数据运算压力" class="headerlink" title="额外的数据管理负担和数据运算压力"></a>额外的数据管理负担和数据运算压力</h3><p>额外的数据管理负担，最显而易见的就是数据的定位问题和数据的增删改查的重复执行问题，这些都可以通过应用程序解决，但必然引起额外的逻辑运算，例如，对于一个记录用户成绩的用户数据表userTable，业务要求查出成绩最好的100位，在进行分表之前，只需一个order by语句就可以搞定，但是在进行分表之后，将需要n个order by语句，分别查出每一个分表的前100名用户数据，然后再对这些数据进行合并计算，才能得出结果。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;一、基本思想之什么是分库分表？&quot;&gt;&lt;a href=&quot;#一、基本思想之什么是分库分表？&quot; class=&quot;headerlink&quot; title=&quot;一、基本思想之什么是分库分表？&quot;&gt;&lt;/a&gt;一、基本思想之什么是分库分表？&lt;/h2&gt;&lt;p&gt;从字面上简单理解，就是把原本存储于一
+      
+    
+    </summary>
+    
+    
+      <category term="mysql" scheme="https://www.starmoon.cloud/categories/mysql/"/>
+    
+    
+      <category term="分库分表" scheme="https://www.starmoon.cloud/tags/%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>leetcode回文数算法题</title>
+    <link href="https://www.starmoon.cloud/2019/02/23/leetcode%E5%9B%9E%E6%96%87%E6%95%B0%E7%AE%97%E6%B3%95%E9%A2%98/"/>
+    <id>https://www.starmoon.cloud/2019/02/23/leetcode%E5%9B%9E%E6%96%87%E6%95%B0%E7%AE%97%E6%B3%95%E9%A2%98/</id>
+    <published>2019-02-23T13:38:26.000Z</published>
+    <updated>2023-02-15T09:00:00.813Z</updated>
+    
+    <content type="html"><![CDATA[<p>1.题目：判断一个整数是否是回文数。回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。<br>示例 1:<br>输入: 121<br>输出: true</p><p>示例 2:<br>输入: -121<br>输出: false<br>解释: 从左向右读, 为 -121 。 从右向左读, 为 121- 。因此它不是一个回文数。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">class Solution &#123;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * @param Integer $x</span><br><span class="line">     * @return Boolean</span><br><span class="line">     *&#x2F;</span><br><span class="line">    function isPalindrome($x) &#123;</span><br><span class="line"></span><br><span class="line">        if($x&lt;0)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        $result&#x3D;strval($x);</span><br><span class="line">        if(strrev($result)&#x3D;&#x3D;$result)&#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>2.给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。<br>示例 1：<br>输入: “babad”<br>输出: “bab”<br>注意: “aba” 也是一个有效答案。</p><p>示例 2：<br>输入: “cbbd”<br>输出: “bb”</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">class Solution </span><br><span class="line">&#123;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * @param String $s</span><br><span class="line">     * @return String</span><br><span class="line">     *&#x2F;</span><br><span class="line">    function longestPalindrome($s) </span><br><span class="line">    &#123;</span><br><span class="line">        $s_length &#x3D; strlen($s);</span><br><span class="line">        if ($s_length &lt; 1) &#123;</span><br><span class="line">            return &#39;&#39;;</span><br><span class="line">        &#125; elseif ($s_length &lt;&#x3D; 2) &#123;</span><br><span class="line">            return $s&#123;0&#125; &#x3D;&#x3D; $s&#123;1&#125; ? $s : $s&#123;0&#125;; </span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        $start &#x3D; 0;</span><br><span class="line">        $offset &#x3D; 0;</span><br><span class="line">        </span><br><span class="line">        for ($i &#x3D; 0; $i &lt; $s_length; $i ++) &#123;</span><br><span class="line">            </span><br><span class="line">            if ($offset&#x2F;2 &gt; $s_length - $i) &#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            $len1 &#x3D; $this-&gt;around($s, $s_length, $i, $i);</span><br><span class="line">            $len2 &#x3D; $this-&gt;around($s, $s_length, $i, $i + 1);</span><br><span class="line">            </span><br><span class="line">            if ($len1 &gt; $len2) &#123;</span><br><span class="line">                if ($len1 &gt; $offset) &#123;</span><br><span class="line">                    $start &#x3D; $i - ($len1 - 1)&#x2F;2;</span><br><span class="line">                    $offset &#x3D; $len1;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                if ($len2 &gt; $offset) &#123;</span><br><span class="line">                    $start &#x3D; $i - $len2&#x2F;2 + 1;</span><br><span class="line">                    $offset &#x3D; $len2;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return substr($s, $start, $offset);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function around($s, $s_length, $left, $right)</span><br><span class="line">    &#123;</span><br><span class="line">        while ($left &gt;&#x3D; 0 &amp;&amp; $right &lt; $s_length &amp;&amp; $s&#123;$left&#125; &#x3D;&#x3D; $s&#123;$right&#125;) &#123;</span><br><span class="line">            $left --;</span><br><span class="line">            $right ++;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return $right - $left - 1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;1.题目：判断一个整数是否是回文数。回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。&lt;br&gt;示例 1:&lt;br&gt;输入: 121&lt;br&gt;输出: true&lt;/p&gt;
+&lt;p&gt;示例 2:&lt;br&gt;输入: -121&lt;br&gt;输出: false&lt;br&gt;解释: 从左向右读, 为 -
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>mysql索引数据结构（B+树与B树）</title>
+    <link href="https://www.starmoon.cloud/2019/02/21/Mysql%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E5%92%8C%E9%9D%9E%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95/"/>
+    <id>https://www.starmoon.cloud/2019/02/21/Mysql%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E5%92%8C%E9%9D%9E%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95/</id>
+    <published>2019-02-21T11:00:15.000Z</published>
+    <updated>2023-02-15T09:00:00.813Z</updated>
+    
+    <content type="html"><![CDATA[<p>索引有很多种，hash索引，B树索引，B+树索引，全文索引等。Mysql支持多种存储引擎，多种存储引擎对索引的支持也各不相同。本文探究Mysql为什么使用B+树来作为索引的数据结构，索引的原理已经Sql中索引的优化。</p><p>官方定义：索引（Index） 是帮助MySQL高效获取数据的数据结构。<br>大家一定很好奇，索引为什么是一种数据结构，它又是怎么提高查询的速度？我们拿最常用的二叉树来分析索引的工作原理。</p><p>创建索引的优势 </p><p>提高数据的检索速度，降低数据库IO成本：使用索引的意义就是通过缩小表中需要查询的记录的数目从而加快搜索的速度。<br>降低数据排序的成本，降低CPU消耗：索引之所以查的快，是因为先将数据排好序，若该字段正好需要排序，则真好降低了排序的成本。</p><p>创建索引的劣势 </p><p>占用存储空间：索引实际上也是一张表，记录了主键与索引字段，一般以索引文件的形式存储在磁盘上。<br>降低更新表的速度：表的数据发生了变化，对应的索引也需要一起变更，从而减低的更新速度。否则索引指向的物理数据可能不对，这也是索引失效的原因之一。<br>优质索引创建难：索引的创建并非一日之功，也并非一直不变。需要频繁根据用户的行为和具体的业务逻辑去创建最佳的索引。</p><p>索引的目的 </p><p>索引的目的在于提高查询或检索效率。例如我们要在字典中查询“mysql”这个单词，是不是先要查询m开头的单词表，然后在查询第二个字母为y的单词，然后缩小范围继续找，知道找到“mysql”这个单词为止或者查无此词。这就好像我们沿着一个树从树根开始找，沿着主干，树干，到最后的末梢，走了其中的一条路径。这比一个查询一个链表的结构，从头找到尾，在大多数情况下，效率要高得多。<br>mysql的索引为什么是B+树<br>为什么不用普通的二叉树，这里就不必多说了，因为对于大的数据量，二叉树的高度太高，索引的效率低下。这里主要说明为什么不用B树（B-树就是B树），而是用B+树。</p><p>B树（B-树）介绍 </p><p>我们都知道二叉树查询的时间复杂度为Ｏ(logN)，查询效率已经够高了，但为什么还要有B树和B+树呢？答案是磁盘IO。我们都知道，IO操作的效率很低，当有存储的有很大的数据量，查询的时候，我们不可能把全部数据都加载到内存中，只能逐一加载磁盘页，每个磁盘页对应树的节点，造成大量的磁盘IO操作（最坏情况下，磁盘IO操作次数是树的高度），平衡二叉树由于树的高度太大造成磁盘IO读写过于频繁，从而导致效率低下，所以多路查找树-B树/B+树应运而生。<br>下面是一个三阶的B树（实际中节点元素很多）</p><p><img src="https://www.starmoon.cloud/img/mysqlbtree.png" alt></p><p>B树有以下特点： </p><p>在一个节点中存放着数据和指针，且相互间隔在同一个节点中，key是增序的<br>如果一个节点最左边的指针不为空，则它指定的节点左右的key小于最左边的key。中间的指针指向的节点的key位于相邻两个key的中间。<br>B树中不同节点存放的key和指针可能数量不一致，但是每个节点的域和上限是一致的，所以在实现中B树往往对每个节点申请同等大小的空间<br>每个非叶子节点由n-1个key和n个指针组成，其中d&lt;=n&lt;=2d</p><p>B+树有以下特点： </p><p><img src="https://www.starmoon.cloud/img/mysqlb+.png" alt></p><p>内节点不存储data，只存储key和指针，叶子结点不存储指针，只存储key和data<br>内节点和叶子结点的大小不同，因为存储的东西不同<br>每个非叶子结点的指针上限为2d而不是2d+1<br>因为节点内部没有data，所以有更多的空间放key，所以B+树的出度一般比B树要大，而对于一定的数据，出度大的话，树的深度就小，所以B+树的检索效率比B树高</p><p>为什么B+树比B树更适合mysql索引？ </p><p>B+树的磁盘读取代价低：因为B+树的非叶子结点没有存储数据，所以如果把所有同一内部节点的关键字存放在同一盘块中，那么盘块所能容纳的关键字数量也越多。一次性读内存中的需要查找的关键字也就越多。相对来说IO读写次数也就降低了。</p><p>B+树的查询效率更稳定：由于B+树的分支结点并不是最终指向文件内容的结点，只是叶子结点的索引，所以任意关键字的查找都必须从根节点走向分支结点，查询路径相同。但B树的分支结点保存有数据，所以查询路径可能不同。</p><p>B+树便于执行扫库操作：由于B+树的数据都存储在叶子节点上，分支节点均为索引，方便扫库，只需扫一遍叶子即可。但是B树在分支节点上都保存着数据，要找到具体的顺序数据，需要执行一次中序遍历来查找</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;索引有很多种，hash索引，B树索引，B+树索引，全文索引等。Mysql支持多种存储引擎，多种存储引擎对索引的支持也各不相同。本文探究Mysql为什么使用B+树来作为索引的数据结构，索引的原理已经Sql中索引的优化。&lt;/p&gt;
+&lt;p&gt;官方定义：索引（Index） 是帮助MyS
+      
+    
+    </summary>
+    
+    
+      <category term="mysql" scheme="https://www.starmoon.cloud/categories/mysql/"/>
+    
+    
+      <category term="mysql索引" scheme="https://www.starmoon.cloud/tags/mysql%E7%B4%A2%E5%BC%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>mysql索引数据结构（B+树与B树）</title>
+    <link href="https://www.starmoon.cloud/2019/02/21/mysql%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E5%92%8C%E9%9D%9E%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95/"/>
+    <id>https://www.starmoon.cloud/2019/02/21/mysql%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E5%92%8C%E9%9D%9E%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95/</id>
+    <published>2019-02-21T11:00:15.000Z</published>
+    <updated>2023-02-15T09:00:00.813Z</updated>
+    
+    <content type="html"><![CDATA[<p>索引有很多种，hash索引，B树索引，B+树索引，全文索引等。Mysql支持多种存储引擎，多种存储引擎对索引的支持也各不相同。本文探究Mysql为什么使用B+树来作为索引的数据结构，索引的原理已经Sql中索引的优化。</p><p>官方定义：索引（Index） 是帮助MySQL高效获取数据的数据结构。<br>大家一定很好奇，索引为什么是一种数据结构，它又是怎么提高查询的速度？我们拿最常用的二叉树来分析索引的工作原理。</p><p>创建索引的优势 </p><p>提高数据的检索速度，降低数据库IO成本：使用索引的意义就是通过缩小表中需要查询的记录的数目从而加快搜索的速度。<br>降低数据排序的成本，降低CPU消耗：索引之所以查的快，是因为先将数据排好序，若该字段正好需要排序，则真好降低了排序的成本。</p><p>创建索引的劣势 </p><p>占用存储空间：索引实际上也是一张表，记录了主键与索引字段，一般以索引文件的形式存储在磁盘上。<br>降低更新表的速度：表的数据发生了变化，对应的索引也需要一起变更，从而减低的更新速度。否则索引指向的物理数据可能不对，这也是索引失效的原因之一。<br>优质索引创建难：索引的创建并非一日之功，也并非一直不变。需要频繁根据用户的行为和具体的业务逻辑去创建最佳的索引。</p><p>索引的目的 </p><p>索引的目的在于提高查询或检索效率。例如我们要在字典中查询“mysql”这个单词，是不是先要查询m开头的单词表，然后在查询第二个字母为y的单词，然后缩小范围继续找，知道找到“mysql”这个单词为止或者查无此词。这就好像我们沿着一个树从树根开始找，沿着主干，树干，到最后的末梢，走了其中的一条路径。这比一个查询一个链表的结构，从头找到尾，在大多数情况下，效率要高得多。<br>mysql的索引为什么是B+树<br>为什么不用普通的二叉树，这里就不必多说了，因为对于大的数据量，二叉树的高度太高，索引的效率低下。这里主要说明为什么不用B树（B-树就是B树），而是用B+树。</p><p>B树（B-树）介绍 </p><p>我们都知道二叉树查询的时间复杂度为Ｏ(logN)，查询效率已经够高了，但为什么还要有B树和B+树呢？答案是磁盘IO。我们都知道，IO操作的效率很低，当有存储的有很大的数据量，查询的时候，我们不可能把全部数据都加载到内存中，只能逐一加载磁盘页，每个磁盘页对应树的节点，造成大量的磁盘IO操作（最坏情况下，磁盘IO操作次数是树的高度），平衡二叉树由于树的高度太大造成磁盘IO读写过于频繁，从而导致效率低下，所以多路查找树-B树/B+树应运而生。<br>下面是一个三阶的B树（实际中节点元素很多）</p><p><img src="https://www.starmoon.cloud/img/mysqlbtree.png" alt></p><p>B树有以下特点： </p><p>在一个节点中存放着数据和指针，且相互间隔在同一个节点中，key是增序的<br>如果一个节点最左边的指针不为空，则它指定的节点左右的key小于最左边的key。中间的指针指向的节点的key位于相邻两个key的中间。<br>B树中不同节点存放的key和指针可能数量不一致，但是每个节点的域和上限是一致的，所以在实现中B树往往对每个节点申请同等大小的空间<br>每个非叶子节点由n-1个key和n个指针组成，其中d&lt;=n&lt;=2d</p><p>B+树有以下特点： </p><p><img src="https://www.starmoon.cloud/img/mysqlb+.png" alt></p><p>内节点不存储data，只存储key和指针，叶子结点不存储指针，只存储key和data<br>内节点和叶子结点的大小不同，因为存储的东西不同<br>每个非叶子结点的指针上限为2d而不是2d+1<br>因为节点内部没有data，所以有更多的空间放key，所以B+树的出度一般比B树要大，而对于一定的数据，出度大的话，树的深度就小，所以B+树的检索效率比B树高</p><p>为什么B+树比B树更适合mysql索引？ </p><p>B+树的磁盘读取代价低：因为B+树的非叶子结点没有存储数据，所以如果把所有同一内部节点的关键字存放在同一盘块中，那么盘块所能容纳的关键字数量也越多。一次性读内存中的需要查找的关键字也就越多。相对来说IO读写次数也就降低了。</p><p>B+树的查询效率更稳定：由于B+树的分支结点并不是最终指向文件内容的结点，只是叶子结点的索引，所以任意关键字的查找都必须从根节点走向分支结点，查询路径相同。但B树的分支结点保存有数据，所以查询路径可能不同。</p><p>B+树便于执行扫库操作：由于B+树的数据都存储在叶子节点上，分支节点均为索引，方便扫库，只需扫一遍叶子即可。但是B树在分支节点上都保存着数据，要找到具体的顺序数据，需要执行一次中序遍历来查找</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;索引有很多种，hash索引，B树索引，B+树索引，全文索引等。Mysql支持多种存储引擎，多种存储引擎对索引的支持也各不相同。本文探究Mysql为什么使用B+树来作为索引的数据结构，索引的原理已经Sql中索引的优化。&lt;/p&gt;
+&lt;p&gt;官方定义：索引（Index） 是帮助MyS
+      
+    
+    </summary>
+    
+    
+      <category term="mysql" scheme="https://www.starmoon.cloud/categories/mysql/"/>
+    
+    
+      <category term="mysql索引" scheme="https://www.starmoon.cloud/tags/mysql%E7%B4%A2%E5%BC%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>mysql事物隔离级别</title>
+    <link href="https://www.starmoon.cloud/2019/02/14/mysql%E4%BA%8B%E7%89%A9%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/"/>
+    <id>https://www.starmoon.cloud/2019/02/14/mysql%E4%BA%8B%E7%89%A9%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</id>
+    <published>2019-02-14T17:51:40.000Z</published>
+    <updated>2023-02-15T09:00:00.813Z</updated>
+    
+    <content type="html"><![CDATA[<p>我们将事务隔离级别设置为read uncommitted，即便是事务没有commit，但是我们仍然能读到未提交的数据，这是所有隔离级别中最低的一种。</p><p><img src="https://www.starmoon.cloud/img/mysqltransac.png" alt></p><p><code>未提交读(Read Uncommitted)</code>：允许脏读，也就是可能读取到其他会话中未提交事务修改的数据,这是所有隔离级别中最低的一种。</p><p><code>提交读(Read Committed)</code>：只能读取到已经提交的数据。Oracle等多数数据库默认都是该级别 (不重复读)</p><p><code>可重复读(Repeated Read)</code>：可重复读。在同一个事务内的查询都是事务开始时刻一致的，InnoDB默认级别。在SQL标准中，该隔离级别消除了不可重复读，但是还存在幻读.当我们将当前会话的隔离级别设置为repeatable read的时候，当前会话可以重复读，就是每次读取的结果集都相同，而不管其他事务有没有提交</p><p><code>串行读(Serializable)</code>：完全串行化的读，每次读都需要获得表级共享锁，读写相互都会阻塞.当我们将当前会话的隔离级别设置为serializable的时候，其他会话对该表的写操作将被挂起。可以看到，这是隔离级别中最严格的，但是这样做势必对性能造成影响。所以在实际的选用上，我们要根据当前具体的情况选用合适的。</p><p>脏读: 脏读就是指当一个事务正在访问数据，并且对数据进行了修改，而这种修改还没有提交到数据库中，这时，另外一个事务也访问这个数据，然后<strong>使用了这个数据</strong>。</p><p>不可重复读:是指在一个事务内，多次读同一数据。在这个事务还没有结束时，另外一个事务也访问该同一数据。那么，在第一个事务中的两次读数据之间，由于第二个事务的修改，那么第一个事务两次读到的的数据可能是不一样的。这样就发生了在<strong>一个事务内两次读到的数据是不一样的</strong>，因此称为是不可重复读。</p><p>幻读:第一个事务对一个表中的数据进行了修改，这种修改涉及到表中的<strong>全部数据行</strong>。同时，第二个事务也修改这个表中的数据，这种修改是向表中插入一行新数据。那么，以后就会发生操作第一个事务的用户发现表中还有没有修改的数据行，就好象发生了幻觉一样。</p><p>本事务中第一次读取出一行，做了一次更新后，另一个事务里提交的数据就出现了。也可以看做是一种幻读。<br>当隔离级别是可重复读，且<strong>禁用innodb_locks_unsafe_for_binlog</strong>的情况下，在搜索和扫描index的时候使用的next-key locks可以<strong>避免幻读</strong>。</p><p>如果使用普通的读，会得到一致性的结果，如果使用了加锁的读，就会读到“最新的”“提交”读的结果。</p><p>本身，可重复读和提交读是矛盾的。在同一个事务里，如果保证了可重复读，就会看不到其他事务的提交，违背了提交读；如果保证了提交读，就会导致前后两次读到的结果不一致，违背了可重复读(Repeated Read)。</p><p>可以这么讲，InnoDB提供了这样的机制，在默认的可重复读的隔离级别里，可以使用加锁读去查询最新的数据（提交读）。<br>MySQL InnoDB的可重复读并不保证避免幻读，需要应用使用加锁读来保证。而这个加锁度使用到的机制就是next-key locks。</p><p>总结:</p><p>四个级别逐渐增强，每个级别解决一个问题。事务级别越高,性能越差,大多数环境read committed 可以用.</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;我们将事务隔离级别设置为read uncommitted，即便是事务没有commit，但是我们仍然能读到未提交的数据，这是所有隔离级别中最低的一种。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://www.starmoon.cloud/img/mysqltransac.p
+      
+    
+    </summary>
+    
+    
+      <category term="mysql" scheme="https://www.starmoon.cloud/categories/mysql/"/>
+    
+    
+      <category term="mysql事务" scheme="https://www.starmoon.cloud/tags/mysql%E4%BA%8B%E5%8A%A1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于秒杀业务的处理</title>
+    <link href="https://www.starmoon.cloud/2019/02/06/%E5%85%B3%E4%BA%8E%E7%A7%92%E6%9D%80%E4%B8%9A%E5%8A%A1%E7%9A%84%E5%A4%84%E7%90%86/"/>
+    <id>https://www.starmoon.cloud/2019/02/06/%E5%85%B3%E4%BA%8E%E7%A7%92%E6%9D%80%E4%B8%9A%E5%8A%A1%E7%9A%84%E5%A4%84%E7%90%86/</id>
+    <published>2019-02-06T19:28:33.000Z</published>
+    <updated>2023-02-15T09:00:00.817Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="秒杀系统特点"><a href="#秒杀系统特点" class="headerlink" title="秒杀系统特点"></a>秒杀系统特点</h2><p>秒杀业务简单，卖家查询，买家下订单减库存。<br>秒杀时网站访问流量激增，出现峰值；<br>访问请求数量远大于实际需求量。</p><p><strong>秒杀系统架构设计优化</strong><br>一个常规的秒杀系统从前到后，依次有：<br>前端浏览器秒杀页面=》中间代理服务=》后端服务层=》数据库层</p><h2 id="整体设计思路和优化点："><a href="#整体设计思路和优化点：" class="headerlink" title="整体设计思路和优化点："></a>整体设计思路和优化点：</h2><p>限流：屏蔽掉无用的流量，允许少部分流量流向后端。<br>削峰：瞬时大流量峰值容易压垮系统，解决这个问题是重中之重。常用的消峰方法有异步处理、缓存和消息中间件等技术。<br>异步处理：秒杀系统是一个高并发系统，采用异步处理模式可以极大地提高系统并发量，其实异步处理就是削峰的一种实现方式。<br>内存缓存：秒杀系统最大的瓶颈一般都是数据库读写，由于数据库读写属于磁盘IO，性能很低，如果能够把部分数据或业务逻辑转移到内存缓存，效率会有极大地提升。<br>可拓展：当然如果我们想支持更多用户，更大的并发，最好就将系统设计成弹性可拓展的，如果流量来了，拓展机器就好了。像淘宝、京东等双十一活动时会增加大量机器应对交易高峰。<br>消息队列：消息队列可以削峰，将拦截大量并发请求，这也是一个异步处理过程，后台业务根据自己的处理能力，从消息队列中主动的拉取请求消息进行业务处理。<br>充分利用缓存：利用缓存可极大提高系统读写速度。 </p><h2 id="详细方案"><a href="#详细方案" class="headerlink" title="详细方案:"></a>详细方案:</h2><p><strong>前端方案</strong><br>静态资源缓存：将活动页面上的所有可以静态的元素全部静态化，尽量减少动态元素；通过CDN缓存静态资源，来抗峰值。<br>禁止重复提交：用户提交之后按钮置灰，禁止重复提交<br>用户限流：在某一时间段内只允许用户提交一次请求，比如可以采取IP限流</p><p><strong>中间代理层</strong><br>可利用负载均衡（例如反响代理Nginx等）使用多个服务器并发处理请求，减小服务器压力。</p><p><strong>后端方案</strong><br>控制层(网关层)<br>限制同一UserID访问频率：尽量拦截浏览器请求，但针对某些恶意攻击或其它插件，在服务端控制层需要针对同一个访问uid，限制访问频率。</p><p><strong>服务层</strong><br>当用户量非常大的时候，拦截流量后的请求访问量还是非常大，此时仍需进一步优化。</p><p>1.业务分离:将秒杀业务系统和其他业务分离，单独放在高配服务器上，可以集中资源对访问请求抗压。<br>2.采用消息队列缓存请求：将大流量请求写到消息队列缓存，利用服务器根据自己的处理能力主动到消息缓存队列中抓取任务处理请求，数据库层订阅消息减库存，减库存成功的请求返回秒杀成功，失败的返回秒杀结束。<br>3.利用缓存应对读请求：对于读多写少业务，大部分请求是查询请求，所以可以读写分离，利用缓存分担数据库压力。<br>4.利用缓存应对写请求：缓存也是可以应对写请求的，可把数据库中的库存数据转移到Redis缓存中，所有减库存操作都在Redis中进行，然后再通过后台进程把Redis中的用户秒杀请求同步到数据库中。</p><p><strong>数据库层</strong><br>数据库层是最脆弱的一层，一般在应用设计时在上游就需要把请求拦截掉，数据库层只承担“能力范围内”的访问请求。所以，上面通过在服务层引入队列和缓存，让最底层的数据库高枕无忧。<br>如果不使用缓存来作为中间缓冲而是直接访问数据库的话，可以对数据库进行优化，减少数据库压力。<br>对于秒杀系统，直接访问数据库的话，存在一个【事务竞争优化】问题，可使用存储过程（或者触发器）等技术绑定操作，整个事务在MySQL端完成，把整个热点执行放在一个过程当中一次性完成，可以屏蔽掉网络延迟时间，减少行级锁持有时间，提高事务并发访问速度。</p><h2 id="其他秒杀策略"><a href="#其他秒杀策略" class="headerlink" title="其他秒杀策略"></a>其他秒杀策略</h2><p><strong>减少硬件开销的策略:</strong><br>策略1：消息队列缓存请求，按照队列模型取任务执行，秒杀完毕即终止到秒杀结束页面。<br>策略2：使用数组为并发请求随机分配秒杀状态（成功和失败），然后将分配到失败状态的请求派发到秒杀失败的页面，分到成功状态的用户在慢慢的按顺序执行秒杀操作；（如果处理失败了可以利用日志来查找具体秒杀失败的商品和用户，执行补救措施或者从其他用户中拿取一个来执行秒杀操作）<br>策略3：类似于策略2，不过是用数组为用户分配秒杀资格，将大流量的用户限制为小流量的用户，得到秒杀资格的去执行秒杀，得不到秒杀资格的跳到秒杀失败页面。 </p><p>（分配状态或分配秒杀资格的策略：（数组状态密度不同，由前到后逐渐稀疏，可以让先到的在前面随机分配，后到的在后面随机分配）根据先到的时间）</p><p><strong>利用消息中间件和Redis缓存实现</strong><br>Redis是一个分布式缓存系统，支持多种数据结构，可利用Redis轻松实现一个强大的秒杀系统。<br>我们可以采用Redis 最简单的key-value数据结构，用一个原子类型的变量值(AtomicInteger)作为key，把用户id作为value，库存数量便是原子变量的最大值。对于每个用户的秒杀，我们使用 RPUSH key value插入秒杀请求， 当插入的秒杀请求数达到上限时，停止所有后续插入。<br>然后我们可以再启动多个工作线程，使用 LPOP key 读取秒杀成功者的用户id，然后再操作数据库做最终的下订单减库存操作。<br>当然，上面Redis也可以替换成消息中间件如ActiveMQ、RabbitMQ等，也可以将缓存和消息中间件 组合起来，缓存系统负责接收记录用户请求，消息中间件负责将缓存中的请求同步到数据库。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;秒杀系统特点&quot;&gt;&lt;a href=&quot;#秒杀系统特点&quot; class=&quot;headerlink&quot; title=&quot;秒杀系统特点&quot;&gt;&lt;/a&gt;秒杀系统特点&lt;/h2&gt;&lt;p&gt;秒杀业务简单，卖家查询，买家下订单减库存。&lt;br&gt;秒杀时网站访问流量激增，出现峰值；&lt;br&gt;访问请求数量远大
+      
+    
+    </summary>
+    
+    
+      <category term="高并发处理" scheme="https://www.starmoon.cloud/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E5%A4%84%E7%90%86/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>rbac权限控制系统总结</title>
+    <link href="https://www.starmoon.cloud/2019/02/06/rbac%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93/"/>
+    <id>https://www.starmoon.cloud/2019/02/06/rbac%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93/</id>
+    <published>2019-02-06T16:20:57.000Z</published>
+    <updated>2023-02-15T09:00:00.813Z</updated>
+    
+    <content type="html"><![CDATA[<p>rbac 权限控制是一个非常成熟的权限控制系统，其原理是给每个用户一个或多个角色 而每个角色对系统相应模块有访问权限。RBAC（Role-Based Access Control）模型<br>RBAC认为权限授权的过程可以抽象地概括为：Who是否可以对What进行How的访问操作，在RBAC模型里面，有3个基础组成部分，分别是：用户、角色和权限。<br>RBAC 模型可以分为：RBAC0、RBAC1、RBAC2、RBAC3 四种。其中 RBAC0 是基础，其它三种都是在 RBAC0 基础上的变种。大部分情况下，使用 RBAC0 模型就可以满足常规的权限管理系统设计了。不过一定不要拘泥于模型，要以业务需要为先导。接下来简单对四种模型进行简单的介绍一下。<br>RBAC的优缺点<br>优点：简化了用户和权限的关系，易扩展、易维护<br>缺点：RBAC模型没有提供操作顺序的控制机制，这一缺陷使得RBAC模型很难适应哪些对操作次序有严格要求的系统<br><img src="https://www.starmoon.cloud/img/rbac1.png" alt></p><p>总共5张表，user,role,user_role,permission,role_permission，用户和角色是多对多关系，角色和权限也是多对多关系。当用户访问某个action的时候，检查user对应的role包含的permission中是否含有这个action。对于laravel框架而言现在也有很多laravel rbac的权限拓展包，laravel/permission等等可以实现</p><p><img src="https://www.starmoon.cloud/img/rbac2.png" alt><br>这里以yii框架为例：<br>1.写一个BaseadminController放在component文件夹下面，BaseadminController继承自Controller，其他的controller又继承BaseadminController.<br>BaseadminController要做的工作有：<br>1.里面以数组的方式存放所有的<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">   public $Menu &#x3D; array(</span><br><span class="line">        &#39;site&#39; &#x3D;&gt; [</span><br><span class="line">            &#39;title&#39; &#x3D;&gt; &#39;首页管理&#39;,</span><br><span class="line">            &#39;icon&#39; &#x3D;&gt; &#39;fa fa-desktop&#39;,</span><br><span class="line">            &#39;actions&#39; &#x3D;&gt; [</span><br><span class="line">                &#39;index&#39; &#x3D;&gt; &#39;首页&#39;,</span><br><span class="line">                &#39;findcode&#39; &#x3D;&gt; &#39;查询验证码&#39;,</span><br><span class="line">            ]</span><br><span class="line">        ],</span><br><span class="line">   ...</span><br><span class="line">）</span><br></pre></td></tr></table></figure><br>的菜单目录，这些是针对管理员的，因为管理拥有所有的目录权限。其次前端根据数组结构显示相应的页面；</p><p>2.BaseadminController里面beforeaction方法里面根据用户传入的role和id判断用户是否拥有该路由访问权限，如果没有重定向到相关页面，并且提示联系管理员开通权限；有的话则进入相关页面<br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">if (!\Yii::$app-&gt;admin-&gt;isGuest  ) &#123;</span><br><span class="line">    &#x2F;&#x2F;判断权限</span><br><span class="line">    &#x2F;&#x2F;略</span><br><span class="line">     &#123;</span><br><span class="line">        $homeurl &#x3D; Url::toRoute(&#39;site&#x2F;index&#39;);</span><br><span class="line">        die(&quot;&#123;$action-&gt;id&#125;无权限访问，请联系管理员！&lt;a href&#x3D;&#39;&quot; . $homeurl . &quot;&#39;&gt;返回&lt;&#x2F;a&gt;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><br>3.对于管理员而言，可以编辑添加角色，同时可以给角色添加相应的权限。<br>可以单独另写一个AdminController,在里面editrole,addrole做相关操作</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;rbac 权限控制是一个非常成熟的权限控制系统，其原理是给每个用户一个或多个角色 而每个角色对系统相应模块有访问权限。RBAC（Role-Based Access Control）模型&lt;br&gt;RBAC认为权限授权的过程可以抽象地概括为：Who是否可以对What进行How的访
+      
+    
+    </summary>
+    
+    
+      <category term="业务实现" scheme="https://www.starmoon.cloud/categories/%E4%B8%9A%E5%8A%A1%E5%AE%9E%E7%8E%B0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>前端自适应网页布局技术总结</title>
+    <link href="https://www.starmoon.cloud/2019/02/05/%E5%89%8D%E7%AB%AF%E8%87%AA%E9%80%82%E5%BA%94%E7%BD%91%E9%A1%B5%E5%B8%83%E5%B1%80%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93/"/>
+    <id>https://www.starmoon.cloud/2019/02/05/%E5%89%8D%E7%AB%AF%E8%87%AA%E9%80%82%E5%BA%94%E7%BD%91%E9%A1%B5%E5%B8%83%E5%B1%80%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93/</id>
+    <published>2019-02-05T16:34:12.000Z</published>
+    <updated>2023-02-15T09:00:00.817Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="目的："><a href="#目的：" class="headerlink" title="目的："></a>目的：</h3><p>在不同的设备大小呈现不同的网页，很多网站的解决方法，我们为不同的设备提供不同的网页，比如专门提供一个mobile版本，或者iPhone / iPad版本。这样虽然达到了目的，同时要维护好几个版本，不利于扩展。</p><p>这里需要提及<code>自适应和响应式布局</code>两个概念，说下我个人的理解：<br><code>自适应布局：</code>不同尺寸的设备显示同一个网页它的布局是一样的，无论屏幕尺寸如何变化，你看到的排版都是一模一样的。所有设备的代码是一样的<br><code>响应式布局：</code>虽然网页内容一样，但是根据屏幕自身大小会做出不同的排版，比如屏幕较宽，6张图片排成一排，较小就排成两排等等依次类推。不同设备的代码是不一样的</p><p>两者相比较而言，响应式布局覆盖了自适应的布局，同时更胜一筹。自适应布局的弊端在于同样的布局在小屏幕设备上内容拥挤，不便于阅读。</p><p><code>如何选择：</code>建议为手头的项目选择最佳工具。<br>你是否被迫选择一个？如果您知道站点必须支持特定的设备，则选择可能会更容易。你可能会认为，iPhone 6是唯一重要的设备，因此与之相比，适应其他设备要容易得多且效率更高。另一方面，响应式设计是一个很好的策略，可以使网站在将来能够应对市场上任何（也许甚至未发布的）设备的可能性。<br>区别在于响应式设计不关心使用什么浏览器，它响应浏览器的大小并相应地对布局进行重排。<br>另一方面，自适应设计专门适应浏览器环境，并且可能会或可能不会考虑浏览器的当前大小。<br>它本质上是媒体查询（响应）和设备检测（自适应）之间的区别。</p><h3 id="如何实现："><a href="#如何实现：" class="headerlink" title="如何实现："></a>如何实现：</h3><p><code>响应式布局的核心，就是CSS3引入的Media Query模块。</code><br>它的意思就是，自动探测屏幕宽度，然后加载相应的CSS文件。<br>1.在网页头部加入viewport元标签</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">　&lt;meta name&#x3D;&quot;viewport&quot; content&#x3D;&quot;width&#x3D;device-width, initial-scale&#x3D;1&quot; &#x2F;&gt; </span><br></pre></td></tr></table></figure><p>所有主流浏览器都支持这个设置，包括IE9。对于那些老式浏览器（主要是IE6、7、8），需要使用css3-mediaqueries.js。</p><p>2.不适用绝对宽度<br>不使用width:100px;而是width:100%or width:auto代替<br>字体不使用xxpx而是相对大小xxem;(1em=16px)</p><p>3.流动布局<br>使用float而不是absolute，这样可以位置就不是固定不变的，避免宽度不够水平溢出；</p><p>4.使用@media查询<br>同一个CSS文件中，也可以根据不同的屏幕分辨率，选择应用不同的CSS规则。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@media screen and (max-width: 300px) &#123;</span><br><span class="line">    body &#123;</span><br><span class="line">        background-color:lightblue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure><p>html标签加载CSS文件：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel&#x3D;&quot;stylesheet&quot; type&#x3D;&quot;text&#x2F;css&quot;</span><br><span class="line">　　　　media&#x3D;&quot;screen and (min-width: 400px) and (max-device-width: 600px)&quot;</span><br><span class="line">　　　　href&#x3D;&quot;smallScreen.css&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure><p>在现有CSS文件中加载：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@import url(&quot;tinyScreen.css&quot;) screen and (max-device-width: 400px);</span><br></pre></td></tr></table></figure><p>5.图片的自适应（fluid image）<br>根据屏幕大小加载不同分辨率的图片，屏幕大加载分辨率高的图片，小则反之</p><p>6.除了媒体查询，js也可以判断是pc还是手持移动设备</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">function IsPC()&#123;  </span><br><span class="line">     var userAgentInfo &#x3D; navigator.userAgent;</span><br><span class="line">     var Agents &#x3D; new Array(&quot;Android&quot;, &quot;iPhone&quot;, &quot;SymbianOS&quot;, &quot;Windows Phone&quot;, &quot;iPad&quot;, &quot;iPod&quot;);  </span><br><span class="line">     var flag &#x3D; true;  </span><br><span class="line">     for (var v &#x3D; 0; v &lt; Agents.length; v++) &#123;  </span><br><span class="line">         if (userAgentInfo.indexOf(Agents[v]) &gt; 0) &#123; flag &#x3D; false; break; &#125;  </span><br><span class="line">     &#125;  </span><br><span class="line">     return flag;  </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">if (&#x2F;(iPhone|iPad|iPod|iOS)&#x2F;i.test(navigator.userAgent)) &#123;</span><br><span class="line">    &#x2F;&#x2F;alert(navigator.userAgent);  </span><br><span class="line">    window.location.href &#x3D;&quot;iPhone.html&quot;;</span><br><span class="line">&#125; else if (&#x2F;(Android)&#x2F;i.test(navigator.userAgent)) &#123;</span><br><span class="line">    &#x2F;&#x2F;alert(navigator.userAgent); </span><br><span class="line">    window.location.href &#x3D;&quot;Android.html&quot;;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    window.location.href &#x3D;&quot;pc.html&quot;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;目的：&quot;&gt;&lt;a href=&quot;#目的：&quot; class=&quot;headerlink&quot; title=&quot;目的：&quot;&gt;&lt;/a&gt;目的：&lt;/h3&gt;&lt;p&gt;在不同的设备大小呈现不同的网页，很多网站的解决方法，我们为不同的设备提供不同的网页，比如专门提供一个mobile版本，或者iPhon
+      
+    
+    </summary>
+    
+    
+      <category term="前端" scheme="https://www.starmoon.cloud/categories/%E5%89%8D%E7%AB%AF/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>windows下scrapy框架搭建爬取数据</title>
+    <link href="https://www.starmoon.cloud/2019/01/22/windows%E4%B8%8Bscrapy%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E7%88%AC%E5%8F%96%E6%95%B0%E6%8D%AE/"/>
+    <id>https://www.starmoon.cloud/2019/01/22/windows%E4%B8%8Bscrapy%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E7%88%AC%E5%8F%96%E6%95%B0%E6%8D%AE/</id>
+    <published>2019-01-22T20:08:30.000Z</published>
+    <updated>2023-02-15T09:00:00.813Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>一、安装scrapy的时候，使用pip install scrapy一般会失败，报超时的错误</strong><br>解决方法：pip install scrapy框架报错，就分开安装库<br>1.将scrapy安装过程中所用到的依赖的库安装完成之后，再安装scrapy<br>2.需要安装的依赖库有 lxml、 pyOpenSSL 、 Twisted 、pywin32<br>3.所有安装都可以使用pip install **来执行，一切进展都顺利，尝试多试几次<br>ps:我在安装过程中只有pip install Twisted报错，于是去这个网站<a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/#twisted">https://www.lfd.uci.edu/~gohlke/pythonlibs/#twisted</a> 寻找合适的安装whl文件<br>我这里下载的是Twisted-19.10.0-cp38-cp38-win32.whl，将它放在执行命令的根目录下<br>pip install Twisted-19.10.0-cp38-cp38-win32.whl<br>pip 安装Twisted成功<br>最后执行pip install scrapy全部成功</p><p><strong>二、IDE中出现IndentationError:unindent does not match any outer indentation level：</strong><br>在setting.json中配置：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;python.linting.pylintArgs&quot;: [</span><br><span class="line">    &quot;--generate-members&quot;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;strong&gt;一、安装scrapy的时候，使用pip install scrapy一般会失败，报超时的错误&lt;/strong&gt;&lt;br&gt;解决方法：pip install scrapy框架报错，就分开安装库&lt;br&gt;1.将scrapy安装过程中所用到的依赖的库安装完成之后，再安装
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>mq消息中间件最全面分析</title>
+    <link href="https://www.starmoon.cloud/2019/01/15/mq%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%B2%97%E7%95%A5%E5%88%86%E6%9E%90/"/>
+    <id>https://www.starmoon.cloud/2019/01/15/mq%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%B2%97%E7%95%A5%E5%88%86%E6%9E%90/</id>
+    <published>2019-01-15T19:29:25.000Z</published>
+    <updated>2023-02-15T09:00:00.813Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>问题</strong><br>为什么使用消息队列？消息队列有什么优点和缺点？Kafka、ActiveMQ、RabbitMQ、RocketMQ 都有什么区别，以及适合哪些场景？<br><strong>为什么使用消息队列?</strong><br>先说一下消息队列常见的使用场景吧，其实场景有很多，但是比较核心的有 3 个：解耦、异步、削峰</p><p><strong>解耦</strong><br>看以下场景：A 系统发送数据到 BCD 三个系统，通过接口调用发送。如果 E 系统也要这个数据呢？那如果 C 系统现在不需要了呢？A 系统负责人几乎崩溃……</p><p><img src="https://www.starmoon.cloud/img/MQ1.png" alt></p><p>在这个场景中，A 系统跟其它各种乱七八糟的系统严重耦合，A 系统产生一条比较关键的数据，很多系统都需要 A 系统将这个数据发送过来。A 系统要时时刻刻考虑 BCDE 四个系统如果挂了该咋办？要不要重发，要不要把消息存起来？<br>如果使用 MQ，A 系统产生一条数据，发送到 MQ 里面去，哪个系统需要数据自己去 MQ 里面消费。如果新系统需要数据，直接从 MQ 里消费即可；如果某个系统不需要这条数据了，就取消对 MQ 消息的消费即可。这样下来，A 系统压根儿不需要去考虑要给谁发送数据，不需要维护这个代码，也不需要考虑人家是否调用成功、失败超时等情况。</p><p><img src="https://www.starmoon.cloud/img/MQ2.png" alt></p><p>总结：通过一个 MQ，Pub/Sub 发布订阅消息这么一个模型，A 系统就跟其它系统彻底解耦了。</p><p><strong>异步</strong><br>你需要去考虑一下你负责的系统中是否有类似的场景，就是一个系统或者一个模块，调用了多个系统或者模块，互相之间的调用很复杂，维护起来很麻烦。但是其实这个调用是不需要直接同步调用接口的，如果用 MQ 给它异步化解耦，也是可以的，你就需要去考虑在你的项目里，是不是可以运用这个 MQ 去进行系统的解耦。<br>再来看一个场景，A 系统接收一个请求，需要在自己本地写库，还需要在 BCD 三个系统写库，自己本地写库要 3ms，BCD 三个系统分别写库要 300ms、450ms、200ms。最终请求总延时是 3 + 300 + 450 + 200 = 953ms，接近 1s，用户通过浏览器发起请求，等待个 1s，这几乎是不可接受的。  </p><p><img src="https://www.starmoon.cloud/img/MQ3.png" alt></p><p>一般互联网类的企业，对于用户直接的操作，一般要求是每个请求都必须在 200 ms 以内完成，对用户几乎是无感知的。<br>如果使用 MQ，那么 A 系统连续发送 3 条消息到 MQ 队列中，假如耗时 5ms，A 系统从接受一个请求到返回响应给用户，总时长是 3 + 5 = 8ms，对于用户而言，其实感觉上就是点个按钮，8ms 以后就直接返回了。<br><img src="https://www.starmoon.cloud/img/MQ4.png" alt></p><p><strong>削峰</strong></p><p>每天 0:00 到 12:00，A 系统风平浪静，每秒并发请求数量就 50 个。结果每次一到 12:00 ~ 13:00 ，每秒并发请求数量突然会暴增到 5k+ 条。但是系统是直接基于 MySQL 的，大量的请求涌入 MySQL，每秒钟对 MySQL 执行约 5k 条 SQL。<br>一般的 MySQL，扛到每秒 2k 个请求就差不多了，如果每秒请求到 5k 的话，可能就直接把 MySQL 给打死了，导致系统崩溃，用户也就没法再使用系统了。<br>但是高峰期一过，到了下午的时候，就成了低峰期，可能也就 1w 的用户同时在网站上操作，每秒中的请求数量可能也就 50 个请求，对整个系统几乎没有任何的压力。</p><p>如果使用 MQ，每秒 5k 个请求写入 MQ，A 系统每秒钟最多处理 2k 个请求，因为 MySQL 每秒钟最多处理 2k 个。A 系统从 MQ 中慢慢拉取请求，每秒钟就拉取 2k 个请求，不要超过自己每秒能处理的最大请求数量就 ok，这样下来，哪怕是高峰期的时候，A 系统也绝对不会挂掉。而 MQ 每秒钟 5k 个请求进来，就 2k 个请求出去，结果就导致在中午高峰期（1 个小时），可能有几十万甚至几百万的请求积压在 MQ 中。</p><p><img src="https://www.starmoon.cloud/img/MQ5.png" alt></p><p>这个短暂的高峰期积压是 ok 的，因为高峰期过了之后，每秒钟就 50 个请求进 MQ，但是 A 系统依然会按照每秒 2k 个请求的速度在处理。所以说，只要高峰期一过，A 系统就会快速将积压的消息给解决掉。<br>优点上面已经说了，就是在特殊场景下有其对应的好处，解耦、异步、削峰。<br><strong>缺点有以下几个：</strong></p><p>系统可用性降低<br>系统引入的外部依赖越多，越容易挂掉。本来就是 A 系统调用 BCD 三个系统的接口就好了，ABCD 四个系统好好的一旦加个 MQ 进来，万一 MQ 挂了，整套系统会崩溃的，所以还得考虑如何保证消息队列的高可用。</p><p>系统复杂度提高<br>硬生生加个 MQ 进来，你怎么保证消息没有重复消费？怎么处理消息丢失的情况？怎么保证消息传递的顺序性？头大头大，问题一大堆，痛苦不已。</p><p><strong>一致性问题</strong></p><p>A 系统处理完了直接返回成功了，人都以为你这个请求就成功了；但是问题是，要是 BCD 三个系统那里，BD 两个系统写库成功了，结果 C 系统写库失败了，咋整？你这数据就不一致了。<br>所以消息队列实际是一种非常复杂的架构，你引入它有很多好处，但是也得针对它带来的坏处做各种额外的技术方案和架构来规避掉，做好之后，你会发现，系统复杂度提升了一个数量级，也许是复杂了 10 倍。但是关键时刻还是得用的。<br>Kafka、ActiveMQ、RabbitMQ、RocketMQ 有什么优缺点？</p><p><img src="https://www.starmoon.cloud/img/MQ6.jpg" alt></p><p>综上，各种对比之后，有如下建议：<br>一般的业务系统要引入 MQ，最早大家都用 ActiveMQ，但是现在确实大家用的不多了，没经过大规模吞吐量场景的验证，社区也不是很活跃，所以不推荐用这个了；<br>后来大家开始用 RabbitMQ，但是确实 erlang 语言阻止了大量的 Java 工程师去深入研究和掌控它，对公司而言，几乎处于不可控的状态，但是确实人家是开源的，比较稳定的支持，活跃度也高；<br>不过现在确实越来越多的公司会去用 RocketMQ，确实很不错，毕竟是阿里出品，但社区可能有突然黄掉的风险（目前 RocketMQ 已捐给 Apache，但 GitHub 上的活跃度其实不算高）对自己公司技术实力有绝对自信的，推荐用 RocketMQ，或者使用用 RabbitMQ ，它有活跃的开源社区。<br>所以中小型公司，技术实力较为一般，技术挑战不是特别高，用 RabbitMQ 是不错的选择；大型公司，基础架构研发实力较强，用 RocketMQ 是很好的选择。<br>如果是大数据领域的实时计算、日志采集等场景，用 Kafka 是业内标准的，绝对没问题，社区活跃度很高，几乎是全世界这个领域的事实性规范。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;strong&gt;问题&lt;/strong&gt;&lt;br&gt;为什么使用消息队列？消息队列有什么优点和缺点？Kafka、ActiveMQ、RabbitMQ、RocketMQ 都有什么区别，以及适合哪些场景？&lt;br&gt;&lt;strong&gt;为什么使用消息队列?&lt;/strong&gt;&lt;br&gt;先说一下消息队
+      
+    
+    </summary>
+    
+    
+      <category term="消息队列" scheme="https://www.starmoon.cloud/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>windows搭建django框架本地环境</title>
+    <link href="https://www.starmoon.cloud/2019/01/07/windows%E6%90%AD%E5%BB%BAdjango%E6%A1%86%E6%9E%B6%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83/"/>
+    <id>https://www.starmoon.cloud/2019/01/07/windows%E6%90%AD%E5%BB%BAdjango%E6%A1%86%E6%9E%B6%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83/</id>
+    <published>2019-01-07T22:39:41.000Z</published>
+    <updated>2023-02-15T09:00:00.817Z</updated>
+    
+    <content type="html"><![CDATA[<p>这是我最终搭建好的环境<br>python 3.8.0<br>django 3.0.2</p><p>1.在安装django框架之前，得确保本地环境有python和pip,pip是一个包依赖管理工具。<br>中间解决了pip更新问题，按照提示安装与python匹配的pip版本；</p><p>这是python安装参考教程：<br><a href="https://baijiahao.baidu.com/s?id=1606573927720991570&amp;wfr=spider&amp;for=pc">https://baijiahao.baidu.com/s?id=1606573927720991570&amp;wfr=spider&amp;for=pc</a></p><p>中间出现过这个问题：<br>WARNING: You are using pip version 19.2.3, however version 19.3.1 is available.<br>当直接输入python -m pip install –upgrade pip更新还报错的时候，<br>输入命令：python -m pip install -U pip</p><p>2.pip install Django==3.0.2<br>在pip安装过程中(python pip安装第三方库超时问题（raise ReadTimeoutErrorself._pool, None, ‘Read timed out.’)<br>方案一：pip下载超时处理<br>pip –default-timeout=100 install 第三方库名<br>但是发现依然下载太慢解决不了问题<br>方案二：更换安装源<br>不用改pip的配置文件<br>安装python的库函数只要<br>python -m pip install -i <a href="https://pypi.tuna.tsinghua.edu.cn/simple">https://pypi.tuna.tsinghua.edu.cn/simple</a> pack_name</p><p>3.直到在命令行窗口输出可以看到版本信息，证明安装成功</p><p>4.创建django项目<br>django-admin startproject 项目名称<br>例：django-admin startproject mytest</p><p>5.创建django应用<br>项目创建完成后需要有具体的应用，一个项目下可以有多个应用。<br>进入命令行窗口：<br>python manage.py startapp 应用名称<br>例：python manage.py startapp myapp</p><p>6.在项目设置添加应用<br>打开mytest/settings.py,INSTALLED_APPS下添加：</p><p>7.在终端启动django自带的测试用服务器：<br>python manage.py runserver ip:port<br>例：python manage.py runserver</p><p>说明：ip和port可以分别设置服务器的ip和端口；省略不写默认ip为127.0.0.1；端口：8000；</p><p>8.打开浏览器输入”127.0.0.1:8000”，即可得到网页</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;这是我最终搭建好的环境&lt;br&gt;python 3.8.0&lt;br&gt;django 3.0.2&lt;/p&gt;
+&lt;p&gt;1.在安装django框架之前，得确保本地环境有python和pip,pip是一个包依赖管理工具。&lt;br&gt;中间解决了pip更新问题，按照提示安装与python匹配的pip版
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>redis乐观锁与悲观锁的区别</title>
+    <link href="https://www.starmoon.cloud/2018/12/18/Redis%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+    <id>https://www.starmoon.cloud/2018/12/18/Redis%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81%E7%9A%84%E5%8C%BA%E5%88%AB/</id>
+    <published>2018-12-18T20:23:47.000Z</published>
+    <updated>2023-02-15T09:00:00.813Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>悲观锁</strong><br>总是假设最坏的情况，每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会阻塞直到它拿到锁（共享资源每次只给一个线程使用，其它线程阻塞，用完后再把资源转让给其它线程）。传统的关系型数据库里边就用到了很多这种锁机制，比如行锁，表锁等，读锁，写锁等，都是在做操作之前先上锁</p><p><strong>乐观锁</strong><br>总是假设最好的情况，每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，可以使用版本号机制和CAS算法实现。<br>从上面对两种锁的介绍，我们知道两种锁各有优缺点，不可认为一种好于另一种，像乐观锁适用于写比较少的情况下（多读场景），即冲突真的很少发生的时候，这样可以省去了锁的开销，加大了系统的整个吞吐量。但如果是多写的情况，一般会经常产生冲突，这就会导致上层应用会不断的进行retry，这样反倒是降低了性能，所以一般多写的场景下用悲观锁就比较合适。</p><p>乐观锁一般会使用版本号机制或CAS算法实现</p><p>版本号机制<br>一般是在数据表中加上一个数据版本号version字段，表示数据被修改的次数，当数据被修改时，version值会加一。当线程A要更新数据值时，在读取数据的同时也会读取version值，在提交更新时，若刚才读取到的version值为当前数据库中的version值相等时才更新，否则重试更新操作，直到更新成功。<br>举一个简单的例子：假设数据库中帐户信息表中有一个 version 字段，当前值为 1 ；而当前帐户余额字段（ balance ）为 $100 。操作员 A 此时将其读出（ version=1 ），并从其帐户余额中扣除 $50（ $100-$50 ）。在操作员 A 操作的过程中，操作员B 也读入此用户信息（ version=1 ），并从其帐户余额中扣除 $20 （ $100-$20 。操作员 A 完成了修改工作，将数据版本号加一（ version=2 ），连同帐户扣除后余额（ balance=$50 ），提交至数据库更新，此时由于提交数据版本大于数据库记录当前版本，数据被更新，数据库记录 version 更新为 2 。操作员 B 完成了操作，也将版本号加一（ version=2 ）试图向数据库提交数据（ balance=$80 ），但此时比对数据库记录版本时发现，操作员 B 提交的数据版本号为 2 ，数据库记录当前版本也为 2 ，不满足 “ 提交版本必须大于记录当前版本才能执行更新 “ 的乐观锁策略，因此，操作员 B 的提交被驳回。这样，就避免了操作员 B 用基于 version=1 的旧数据修改的结果覆盖操作员A 的操作结果的可能。  </p><p>CAS算法compare and swap（比较与交换）<br>关于乐观锁的概念比较通俗易懂，这里仔细分析一下cas算法的原理以及如何实践运用。乐观锁实现使用Redis 自有的watch multi exec等命令进行封装 总体就是一句话概括，使用了相关命令就实现了CAS操作</p><p>CAS操作包括了3个操作数：<br>(1)需要读写的内存位置(V)<br>(2)进行比较的预期值(A)<br>(3)拟写入的新值(B)<br>CAS操作逻辑如下：如果内存位置V的值等于预期的A值，则将该位置更新为新值B，否则不进行任何操作。许多CAS的操作是自旋的：如果操作不成功，会一直重试，直到操作成功为止。<br>这里引出一个新的问题，既然CAS包含了Compare和Swap两个操作，它又如何保证原子性呢？答案是：CAS是由CPU支持的原子操作，其原子性是在硬件层面进行保证的。</p><p><strong>CAS有哪些缺点？</strong><br>1.ABA问题：一个线程读取内存数据后，另一个线程对此数据修改两次最终改回原值。<br>假设有两个线程——线程1和线程2，两个线程按照顺序进行以下操作：<br>(1)线程1读取内存中数据为A；<br>(2)线程2将该数据修改为B；<br>(3)线程2将该数据修改为A；<br>(4)线程1对数据进行CAS操作<br>在第(4)步中，由于内存中数据仍然为A，因此CAS操作成功，但实际上该数据已经被线程2修改过了。这就是ABA问题。<br>在AtomicInteger的例子中，ABA似乎没有什么危害。但是在某些场景下，ABA却会带来隐患，例如栈顶问题：一个栈的栈顶经过两次(或多次)变化又恢复了原值，但是栈可能已发生了变化。对于ABA问题，比较有效的方案是引入版本号，内存中的值每发生一次变化，版本号都+1；在进行CAS操作时，不仅比较内存中的值，也会比较版本号，只有当二者都没有变化时，CAS才能执行成功。Java中的AtomicStampedReference类便是使用版本号来解决ABA问题的。  </p><p><strong>2.高竞争下的开销问题</strong><br>在并发冲突概率大的高竞争环境下，如果CAS一直失败，会一直重试，CPU开销较大。针对这个问题的一个思路是引入退出机制，如重试次数超过一定阈值后失败退出。当然，更重要的是避免在高竞争环境下使用乐观锁。</p><p><strong>3.CAS的功能是比较受限的</strong><br>例如CAS只能保证单个变量（或者说单个内存值）操作的原子性，这意味着：(1)原子性不一定能保证线程安全，例如在Java中需要与volatile配合来保证线程安全；(2)当涉及到多个变量(内存值)时，CAS也无能为力。</p><p>除此之外，CAS的实现需要硬件层面处理器的支持，在Java中普通用户无法直接使用，只能借助atomic包下的原子类使用，灵活性受到限制。</p><p><strong>两种锁的使用场景</strong><br>1、功能限制<br>与悲观锁相比，乐观锁适用的场景受到了更多的限制，无论是CAS还是版本号机制。<br>例如，CAS只能保证单个变量操作的原子性，当涉及到多个变量时，CAS是无能为力的，而synchronized则可以通过对整个代码块加锁来处理。再比如版本号机制，如果query的时候是针对表1，而update的时候是针对表2，也很难通过简单的版本号来实现乐观锁。</p><p>2、竞争激烈程度<br>如果悲观锁和乐观锁都可以使用，那么选择就要考虑竞争的激烈程度：<br>当竞争不激烈 (出现并发冲突的概率小)时，乐观锁更有优势，因为悲观锁会锁住代码块或数据，其他线程无法同时访问，影响并发，而且加锁和释放锁都需要消耗额外的资源。<br>当竞争激烈(出现并发冲突的概率大)时，悲观锁更有优势，因为乐观锁在执行更新时频繁失败，需要不断重试，浪费CPU资源。</p><p>从上面对两种锁的介绍，我们知道两种锁各有优缺点，不可认为一种好于另一种，像乐观锁适用于写比较少的情况下多读场景，即冲突真的很少发生的时候，这样可以省去了锁的开销，加大了系统的整个吞吐量。但如果是多写的情况，一般会经常产生冲突，这就会导致上层应用会不断的进行retry，这样反倒是降低了性能，所以一般多写的场景下用悲观锁就比较合适。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;strong&gt;悲观锁&lt;/strong&gt;&lt;br&gt;总是假设最坏的情况，每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会阻塞直到它拿到锁（共享资源每次只给一个线程使用，其它线程阻塞，用完后再把资源转让给其它线程）。传统的关系型数据库里
+      
+    
+    </summary>
+    
+    
+      <category term="redis" scheme="https://www.starmoon.cloud/categories/redis/"/>
+    
+    
+  </entry>
+  
+</feed>
